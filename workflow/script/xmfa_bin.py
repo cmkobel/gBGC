@@ -21,7 +21,7 @@ def eprint(*args, **kwargs):
     # I'm too lazy to write 'file = sys.stderr' manually...
     print(*args, **kwargs, file = sys.stderr)
 
-concatenated_alignments = {} # could also be named current_bin
+current_bin = {} # could also be named current_bin
 current_bin_size = 0
 
 with open(input_file, 'r') as open_input_file:
@@ -34,22 +34,23 @@ with open(input_file, 'r') as open_input_file:
 
             
             # Check the bin size each time an alignment is gone by.
-            current_bin_size = [concatenated_alignments[key]['length'] for key in concatenated_alignments.keys()][0]
+            current_bin_size = [current_bin[key]['length'] for key in current_bin.keys()][0]
             eprint(f"current_bin_size (target_bin_size): {current_bin_size} ({target_bin_size})")
             eprint('current_bin_size:', current_bin_size)
 
-            # Når current bin-size er nået (eller overskredet) skal indholdet skrives gemmes som et enkelt alignment, og concatenated_alignments kan slettes, så der kan startes forfra med en ny bin.
+            # Når current bin-size er nået (eller overskredet) skal indholdet skrives gemmes som et enkelt alignment, og current_bin kan slettes, så der kan startes forfra med en ny bin.
             if current_bin_size >= target_bin_size:
                 eprint('writing bin!')
                 # Skriv bin
-                for key in concatenated_alignments.keys():
-                    print(f"> {key}\n{concatenated_alignments[key]['sequence']}")
+                for key in current_bin.keys():
+                    print(f"> {key}\n{current_bin[key]['sequence']}")
                 print('=')
 
+                # Reset the current bin                
+                current_bin = {}
                 
-                concatenated_alignments = {}
-                # Reset the bin size
-                #current_bin_size = 0
+            del current_bin_size
+
                     
         elif line[0] == ">": # A new "fasta" header commences.
             m = re.match(XMFA_HEADER_REGEX, line)
@@ -82,14 +83,21 @@ with open(input_file, 'r') as open_input_file:
             eprint(json.dumps(current_header, indent = 4))
         
         else: # DNA sequence data for which we should (hopefully) already have obtained the metadata.
-            if not current_header['id'] in concatenated_alignments:
-                concatenated_alignments[current_header['id']] = {'sequence': '', 'length': 0}
+            if not current_header['id'] in current_bin:
+                current_bin[current_header['id']] = {'sequence': '', 'length': 0}
 
 
 
-            concatenated_alignments[current_header['id']]['sequence'] += line.strip()
-            concatenated_alignments[current_header['id']]['length'] += len(line.strip())
+            current_bin[current_header['id']]['sequence'] += line.strip()
+            current_bin[current_header['id']]['length'] += len(line.strip())
             
-        
 
-eprint(json.dumps(concatenated_alignments))
+
+# The last sequence might not necessarily have been written to file.
+# Let's do that.
+for key in current_bin.keys():
+    print(f"> {key}\n{current_bin[key]['sequence']}")
+    print('=')
+
+
+eprint(json.dumps(current_bin))
