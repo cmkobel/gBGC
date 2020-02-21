@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 help_text = """
-    This file concatenates the genes of a sorted .xmfa-file to the size of whatever is set in 'target_bin_size'.
-    Outputs to STDOUT.
+This file concatenates the genes of a sorted .xmfa-file to the size of whatever is set in 'target_bin_size'.
+Outputs to STDOUT.
 
-    Example:
-        ./xmfa_bin.py genome.xmfa 1000
-    will bin the genes in genome.xmfa into bins of minimum 1000 basepairs
+Example:
+    ./xmfa_bin.py genome.xmfa 1000
+will bin the genes in genome.xmfa into bins of minimum 1000 basepairs
 """
 
 
@@ -19,17 +19,17 @@ import json
 import re
 
 
+def eprint(*args, **kwargs):
+    # I'm too lazy to write 'file = sys.stderr' manually...
+    print(*args, **kwargs, file = sys.stderr)
+
 try:
     input_file = sys.argv[1]
     target_bin_size = int(sys.argv[2]) # 1K, 10K, 100K
 except Exception as e:
-    print('errrr', e)
-    print(help_text)
-#    exit()
-
-def eprint(*args, **kwargs):
-    # I'm too lazy to write 'file = sys.stderr' manually...
-    print(*args, **kwargs, file = sys.stderr)
+    eprint('Exception:', e)
+    eprint(help_text)
+    exit()
 
 eprint(f"will concatenate sequences of {input_file} in bins of size {target_bin_size}.")
 eprint(f"Outputting to STDOUT.")
