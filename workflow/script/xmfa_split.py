@@ -17,7 +17,7 @@ with open(input_file, 'r') as file:
         buffer += line
         
         if line[0] == '=':
-            with open(f'{gene.strip()}.fa', 'w') as output_file:
+            with open(f'{gene.strip()}.xmfa', 'w') as output_file:
                 #buffer += '\n' # apparently necessary for mcorr-xmfa to work. Who would have known..
                 output_file.write(buffer)
 
