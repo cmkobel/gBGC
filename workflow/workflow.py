@@ -6,7 +6,7 @@ from gwf import *
 import subprocess, sys
 import glob
 import os.path
-from os import path
+
 #from workflow_templates import *
 
 
@@ -31,7 +31,7 @@ gwf = Workflow(defaults={
 })
 
 
-title = "Spyo1"
+
 
 """ 
 if not path.isdir(f'output/{title}'):
@@ -43,28 +43,44 @@ if not path.isdir(f'output/{title}'):
  """
 
 
+title = 'Rlegum'
+bin_size = 5000
 
-
-genomes = glob.glob('genomes/corrected_header*')
+genomes = glob.glob('genomes/corrected_header/*')
 
 for genome in genomes:
+    genome_basename = os.path.basename(genome)
+    genome_stem = os.path.splitext(genome_basename)[0]
+
     print(genome)
+    print(genome_basename)
+    print(genome_stem)
+    print()
 
 
-
-
+    file_binned_xmfa_out = f"{genome_stem}_binned_{int(bin_size)}bp"
+    
     gwf.target(sanify('aag_bin_' + title),
-                    inputs = [],#'accession_list.txt'],
-                    outputs = [f'output/{title}/{title}_core.xmfa', f'output/{title}/accession_list.txt'],
-                    cores = 8,
-                    walltime = '24:00:00',
-                    memory = '16gb', account = "clinicalmicrobio") << f"""
+        inputs = f"{genome}",
+        outputs = [f"output/{title}/{file_binned_xmfa_out}.xmfa", f"output/{title}/{file_binned_xmfa_out}_gc.tab", f"output/{title}/metadata.tab"],
+        cores = 1,
+        walltime = '1:00:00',
+        memory = '4gb', account = "clinicalmicrobio") << f"""
 
+    
     mkdir -p output/{title}
+    cd output/{title}
+    
+    # bin
+    ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
 
-    cp accession_list.txt output/{title}
 
-    AssemblyAlignmentGenerator/AssemblyAlignmentGenerate_be AssemblyAlignmentGenerator/assembly_summary_refseq.txt accession_list.txt output/{title} {title}
+    # compute GC
+    ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa > {file_binned_xmfa_out}_gc.tab
+
+
+    # write pipeline metadata
+    echo -e "{title}\t{bin_size}\t{genome_stem}\t{genome}\t{file_binned_xmfa_out}.xmfa\t{file_binned_xmfa_out}_gc.tab" >> metadata.tab
 
     """
 
@@ -76,4 +92,4 @@ for genome in genomes:
 
 
 
-    break
+    
