@@ -1,26 +1,26 @@
 > 1:1-10 + some
 dERVAR
 ENGA
-> 2:1-10 + some
+> 1:1-10 + some
 DeRVAR
 ENGA
-> 3:1-10 + some
+> 1:1-10 + some
 DErVAR
 ENGA
 =
-> 1:11-20 + random
+> 2:11-20 + random
 nGENKO
 PAEN_
 > 2:11-20 + random
 NgENKO
 PAEN_
-> 3:11-20 + random
+> 2:11-20 + random
 NGeNKO
 PAEN_
 =
-> 1:21-24 + comment
+> 3:21-24 + comment
 mARK
-> 2:21-24 + comment
+> 3:21-24 + comment
 MaRK
 > 3:21-24 + comment
 MArK
