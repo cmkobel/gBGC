@@ -44,7 +44,7 @@ if not path.isdir(f'output/{title}'):
 
 
 title_prefix = 'Rlegum'
-bin_sizes = [10000]
+bin_sizes = [15000, 35000]
 
 for bin_size in bin_sizes:
     #title = title_prefix + str(bin_size)
@@ -122,8 +122,8 @@ for bin_size in bin_sizes:
                         f"output/{title}/split/{single_gene_stem}_fit_results.csv",
                         f"output/{title}/split/{single_gene_stem}_fitpar.csv"],
                 cores = 1,
-                walltime = '4:00:00',
-                memory = '8gb',
+                walltime = '6:00:00',
+                memory = '12gb',
                 account = "gBGC") << f"""
 
     cd output/{title}/split
