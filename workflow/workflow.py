@@ -44,21 +44,27 @@ if not path.isdir(f'output/{title}'):
 
 
 title_prefix = 'Rlegum'
-bin_sizes = [15000, 35000]
+
+bin_sizes = [15000, 20000, 25000, 30000, 40000]
+#bin_sizes = [20000]
 
 for bin_size in bin_sizes:
     #title = title_prefix + str(bin_size)
-    genomes = glob.glob('genomes/corrected_header/*')
+    genomes = glob.glob('genomes/corrected_header_2/*')
 
     for genome in genomes:
         genome_basename = os.path.basename(genome)
         genome_stem = os.path.splitext(genome_basename)[0]
-        title = title_prefix + str(genome_stem) + '_' + str(bin_size)
 
-        print(genome)
-        print(genome_basename)
-        print(genome_stem)
-        print()
+        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2'
+        #title = f"{title_prefix} + '_' + {str(genome_stem)} + '_' + {str(bin_size)}"
+        
+
+        print(f"{genome} ({genome_stem})")
+
+        #print(genome_basename)
+        #print(genome_stem)
+        
 
 
         file_binned_xmfa_out = f"{genome_stem}_binned_{int(bin_size)}bp"
@@ -80,7 +86,7 @@ for bin_size in bin_sizes:
 
 
         # compute GC
-        ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa > {file_binned_xmfa_out}_gc.tab
+        ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa {bin_size} {genome_stem} > {file_binned_xmfa_out}_gc.tab
 
 
         # write pipeline metadata
@@ -143,16 +149,51 @@ for bin_size in bin_sizes:
 
         # Merge the _fitpar.csv files together, so it can be imported in R later.
         fitpars = glob.glob(f"output/{title}/split/*_fitpar.csv")
-        for num, fitpar in enumerate(fitpars):
-            gwf.target(sanify('C_merge_recomb_' + title + '_' + str(num)),
-                inputs = [i for i in fitpars],
-                outputs = [],#[f"output/{title}/{file_binned_xmfa_out}_fitpars.csv"],
-                cores = 1,
-                walltime = '10:00',
-                memory = '1gb',
-                account = "gBGC") << f"""
+        #for num, fitpar in enumerate(fitpars): # I have no idea why this job existed for each 
+        
+        gwf.target(sanify('C_merge_recomb_' + title),
+            inputs = [i for i in fitpars],
+            outputs = [f"output/{title}/{file_binned_xmfa_out}_fitpars.csv"],
+            cores = 1,
+            walltime = '10:00',
+            memory = '1gb',
+            account = "gBGC") << f"""
 
-    cat output/{title}/split/*_fitpar.csv > output/{title}/{file_binned_xmfa_out}_fitpars.csv
+
+cd output/{title}
+
+inputfile="split/*_fitpar.csv"
+
+outputfile="{file_binned_xmfa_out}_fitpars.csv"
+
+
+#if stat -t $inputfile >/dev/null 2>&1
+#then
+#    echo found
+#    echo "" > $outputfile
+#else
+#    echo not found
+#fi
+
+
+for fitpar in $inputfile; do
+    
+    # collect all output
+    #cat $fitpar > ${{outputfile}}_temp
+
+    # append column with run data
+    #awk '{{print $0, ",{bin_size}, {genome_stem}"}}' ${{outputfile}}_temp > $outputfile
+    awk '{{print $0, ",{bin_size}, {genome_stem}"}}' $fitpar >> $outputfile
+    
+    
+    
+
+    #rm ${{outputfile}}_temp
+
+done
+
+
+    
 
 
             """

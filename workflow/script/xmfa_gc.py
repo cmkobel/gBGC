@@ -10,6 +10,19 @@ import sys, json
 #Warning! This script only works for single line sequences
 
 input_file = sys.argv[1]
+try:
+    cli_comment_1 = str(sys.argv[2])
+    cli_comment_2 = str(sys.argv[3])
+    
+except Exception as e:
+    print(e)
+    cli_comment_1 = ""
+    cli_comment2 = ""
+
+
+
+
+
 
 
 def eprint(*args, **kwargs):
@@ -18,7 +31,7 @@ def eprint(*args, **kwargs):
 
 dict = {}
 
-print('gene', 'posA', 'posB', 'comment', 'gc_content', sep = '\t')
+print('gene', 'posA', 'posB', 'comment', 'gc_content', 'cli_comment_1', 'cli_comment_2', sep = '\t')
 
 with open(input_file, 'r') as file:
     for line in file:
@@ -53,6 +66,6 @@ with open(input_file, 'r') as file:
 
 
             
-            print(gene, posA, posB, comment, gc_content, sep = '\t')
+            print(gene, posA, posB, comment, gc_content, cli_comment_1, cli_comment_2, sep = '\t')
 
 

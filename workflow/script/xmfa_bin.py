@@ -11,6 +11,7 @@ will bin the genes in genome.xmfa into bins of minimum 1000 basepairs
 
 
 
+
 # Author: Carl Kobel. Some ideas are taken from biopython
 
 import sys 
@@ -35,12 +36,13 @@ eprint(f"will concatenate sequences of {input_file} in bins of size {target_bin_
 eprint(f"Outputting to STDOUT.")
 eprint()
 
-XMFA_HEADER_REGEX = re.compile(r"> (?P<id>\d+):(?P<start>\d+)-(?P<end>\d+) (?P<strand>[+-]) (?P<comments>.*)") 
+# Info: According to the xmfa-format, strictly speaking, there should be a space between > and the seq_num identifier
+XMFA_HEADER_REGEX = re.compile(r"> *(?P<id>\d+):(?P<start>\d+)-(?P<end>\d+) (?P<strand>[+-]) (?P<comments>.*)") 
 
 current_bin = {} # could also be named current_bin
 current_bin_size = 0
 n_bins = 0
-number = 0
+
 last_end = 1
 
 
@@ -51,7 +53,7 @@ with open(input_file, 'r') as open_input_file:
 
             # The last current header is irrelevant to the current bin as a whole, and may be deleted now.
             del current_header
-            number = 0
+            
 
             # Check that all sequences in the current bin have the same length.
             current_bin_sizes = list(set([len(current_bin[key]) for key in current_bin.keys()]))
@@ -68,7 +70,7 @@ with open(input_file, 'r') as open_input_file:
                 #eprint(json.dumps(current_bin, indent = 4))
                 # Skriv bin
                 for key in sorted(current_bin.keys()):
-                    print(f"> {current_id}:{last_end}-{last_end+current_bin_size-1} + bin {n_bins}\n{current_bin[key]}")
+                    print(f">{current_id}:{last_end}-{last_end+current_bin_size-1} + isolate {key} bin {n_bins}\n{current_bin[key]}")
                 print('=')
                 
                 last_end += current_bin_size
@@ -83,15 +85,17 @@ with open(input_file, 'r') as open_input_file:
                     
         elif line[0] == ">": # A new "fasta" header commences.
             m = re.match(XMFA_HEADER_REGEX, line)
-            number += 1
+            
             #eprint(m)
 
 
             # Let's check that the id actually exists.
             current_id = m.group('id')
+            current_comments = m.group('comments')
             #eprint('id', current_id)
 
             # Read metadata
+            # Not really necessary, but why not..?
             current_header = {} 
             for key in ("start", "end", "id", "strand", "comments", "realname"): 
                 try: 
@@ -110,15 +114,18 @@ with open(input_file, 'r') as open_input_file:
                     # doesn't exist. It's fine as long as it is not the id, which we already checked.
                     pass 
 
+            eprint(line.strip())
             #eprint(json.dumps(current_header, indent = 4))
-        
+            
+        elif line[0] == "#": # Comment, continue
+            continue
 
         else: # DNA sequence data for which we should (hopefully) already have obtained the metadata.
 
-            if not number in current_bin:
-                current_bin[number] = "" 
+            if not current_comments in current_bin:
+                current_bin[current_comments] = "" 
 
-            current_bin[number] += line.strip()
+            current_bin[current_comments] += line.strip()
             
             
 
@@ -130,9 +137,7 @@ if len(current_bin.keys()) > 0:
     #eprint(json.dumps(current_bin, indent = 4))
     # Skriv bin
     for key in sorted(current_bin.keys()):
-        #print(f"> {current_id}\n{current_bin[key]}")
-        #print(f"> {current_id}:{last_end}-{last_end+current_bin_size-1}\n{current_bin[key]}")
-        print(f"> {current_id}:{last_end}-{last_end+current_bin_size-1} + bin {n_bins}\n{current_bin[key]}")
+        print(f">{current_id}:{last_end}-{last_end+current_bin_size-1} + isolate {key} bin {n_bins}\n{current_bin[key]}")
     print('=')
 
 
