@@ -43,6 +43,7 @@ n_bins = 0
 number = 0
 last_end = 1
 
+
 with open(input_file, 'r') as open_input_file:
     for line in open_input_file:
         if line[0] == "=": # The alignment ends.

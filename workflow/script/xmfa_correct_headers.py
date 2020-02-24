@@ -7,6 +7,8 @@ from Bio import AlignIO
 import json
 import re
 
+# TODO: write to STDOUT instead of sys.argv[2]
+
 break_xmfa_compatibility_for_the_sake_of_supporting_a_bug_in_mcorr = True
 
 if break_xmfa_compatibility_for_the_sake_of_supporting_a_bug_in_mcorr == True:
