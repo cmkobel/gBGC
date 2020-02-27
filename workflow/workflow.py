@@ -43,10 +43,12 @@ if not path.isdir(f'output/{title}'):
  """
 
 
-title_prefix = 'Rlegum'
+title_prefix = 'Rlegum' 
 
-bin_sizes = [15000, 20000, 25000, 30000, 40000]
+bin_sizes = [8000, 10000, 15000, 20000, 25000, 30000, 40000] #2
 #bin_sizes = [20000]
+#bin_sizes = [50000, 70000, 80000, 100000, 120000] #3
+
 
 for bin_size in bin_sizes:
     #title = title_prefix + str(bin_size)
@@ -85,7 +87,7 @@ for bin_size in bin_sizes:
         ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
 
 
-        # compute GC
+        # compute GC from the binned genome
         ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa {bin_size} {genome_stem} > {file_binned_xmfa_out}_gc.tab
 
 
@@ -167,30 +169,13 @@ inputfile="split/*_fitpar.csv"
 outputfile="{file_binned_xmfa_out}_fitpars.csv"
 
 
-#if stat -t $inputfile >/dev/null 2>&1
-#then
-#    echo found
-#    echo "" > $outputfile
-#else
-#    echo not found
-#fi
 
 
-for fitpar in $inputfile; do
-    
-    # collect all output
-    #cat $fitpar > ${{outputfile}}_temp
-
-    # append column with run data
-    #awk '{{print $0, ",{bin_size}, {genome_stem}"}}' ${{outputfile}}_temp > $outputfile
-    awk '{{print $0, ",{bin_size}, {genome_stem}"}}' $fitpar >> $outputfile
-    
-    
-    
-
-    #rm ${{outputfile}}_temp
-
-done
+if stat -t $inputfile >/dev/null 2>&1; then
+    for fitpar in $inputfile; do
+        awk '{{print $0, ",{bin_size}, {genome_stem}"}}' $fitpar >> $outputfile
+    done
+fi
 
 
     
