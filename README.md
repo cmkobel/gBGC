@@ -1,5 +1,5 @@
 # gBGC
-Investigating gBGC in Rhizobium leguminosarum
+Investigating GC-Biased Gene Conversion (gBGC) in Rhizobium leguminosarum
 
 I'm developing a number of pipelines that I use to utilize different software in order to measure recombination in bacteria
 
