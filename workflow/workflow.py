@@ -98,7 +98,7 @@ for bin_size in bin_sizes:
         
 
 
-        gwf.target(sanify('A_split_' + title),
+        gwf.target(sanify('B_split_' + title),
             inputs = [f"output/{title}/{file_binned_xmfa_out}.xmfa"],
             outputs = [f"output/{title}/leg_split.completed"],
             cores = 1,
@@ -123,8 +123,8 @@ for bin_size in bin_sizes:
         touch ../leg_split.completed
 
         """
-        break # debug for the first genome only
-        '''
+        
+        
 
         # When the above targets are done, call it again, to run the rest of the targets below:
         splitted_xmfas = glob.glob(f"output/{title}/split/*.xmfa")
@@ -135,7 +135,7 @@ for bin_size in bin_sizes:
             #print(single_gene_basename)
 
 
-            gwf.target(sanify('B_mcorr_' + title + '_' + str(num) + '_' + single_gene_stem),
+            gwf.target(sanify('C_mcorr_' + title + '_' + str(num) + '_' + single_gene_stem),
                 inputs = [single_gene],
                 outputs = [f"output/{title}/split/{single_gene_stem}.csv",
                         f"output/{title}/split/{single_gene_stem}_fit_results.csv",
@@ -158,13 +158,61 @@ for bin_size in bin_sizes:
 
         
         """
+        # Also run PHI
+        splitted_fas = glob.glob(f"output/{title}/split/*.fa")
+        
+        for num, single_gene in enumerate(splitted_fas):
+            single_gene_basename = os.path.basename(single_gene)
+            single_gene_stem = os.path.splitext(single_gene_basename)[0]
+            #print(single_gene_basename)
+
+            gwf.target(sanify('C_PHI_' + title + '_' + str(num) + '_' + single_gene_stem),
+            inputs = [single_gene],
+            outputs = [f"output/{title}/split/{single_gene_stem}_phi.txt"],
+            cores = 1,
+            walltime = '2:00:00',
+            memory = '4gb',
+            account = "gBGC") << f"""
+
+    cd output/{title}/split
+    
+    echo {single_gene_stem}
+    mkdir -p "{single_gene_stem}_temp"   
+    cd {single_gene_stem}_temp
+    
+    ../../../../script/PhiPack/Phi -f ../{single_gene_basename} -p 1000 -o > ../{single_gene_stem}_phi.txt 2> ../{single_gene_stem}_phierr.txt
+    
+    # above line fails when there is not enough informative sites.
+    #check if stderr is empty
+
+    if [ $(stat -c%s ../{single_gene_stem}_phierr.txt) -eq 0 ]; then
+        echo "empty"
+        tail -n 5 ../{single_gene_stem}_phi.txt > ../{single_gene_stem}_phiresult.txt
+    else
+        echo "not empty"
+    fi
+    cd ..
+    rm  {single_gene_stem}_phierr.txt
+    rm -r {single_gene_stem}_temp
+    # collect results in tab file 
+    cat {single_gene_stem}_phiresult.txt | sed 's/NSS/NSS NA/g' | grep -E "^NSS|^Max|^PHI" | awk '{{print $1 "\t" $2 "\t" $3 "\t{genome_stem}\t{single_gene_stem}"}}' > {single_gene_stem}_phiresult.tab
+    #printf {single_gene_stem}, >> {single_gene_stem}_fitpar.csv
+    #awk '/^all,/' {single_gene_stem}_fit_results.csv >> {single_gene_stem}_fitpar.csv
+            """
+            
+
+        
+        
             
 
         # Merge the _fitpar.csv files together, so it can be imported in R later.
         fitpars = glob.glob(f"output/{title}/split/*_fitpar.csv")
         #for num, fitpar in enumerate(fitpars): # I have no idea why this job existed for each 
         
-        gwf.target(sanify('C_merge_recomb_' + title),
+
+        # This target should be run when all the mcorr jobs are done
+        # TODO: write this as a cat asterisk job with a checkpoint input instead af manually merging? Doesn't make sense when there is no output.
+        gwf.target(sanify('D_phaseII_merge_recomb_' + title),
             inputs = [i for i in fitpars],
             outputs = [f"output/{title}/{file_binned_xmfa_out}_fitpars.csv"],
             cores = 1,
@@ -188,11 +236,36 @@ if stat -t $inputfile >/dev/null 2>&1; then
     done
 fi
 
-
-    
-
-
             """
         
 
-'''
+
+        # Run this target when all the PHI jobs are done.
+        # TODO: Consider putting this and the previous job into a post processing script that is run manually.
+        phi_results = glob.glob(f"output/{title}/split/*_phiresult.txt")
+        print(len(phi_results), 'phi_results for', genome_stem)    
+        gwf.target(sanify('E_collect_results' + title),
+            inputs = [i for i in phi_results], # Det smarte her er, at hvis der er en *phiresult.txt fil der bliver opdateret, så bliver resultaterne samlet sammen igen.
+            outputs = [f"output/{title}/{genome_stem}_phi_results.tab"],
+            cores = 1,
+            walltime = '10:00',
+            memory = '1gb',
+            account = "gBGC") << f"""
+        cd output/{title}
+        inputfile="split/*_phiresult.tab"
+        outputfile="{genome_stem}_phi_results.tab"
+        if stat -t $inputfile >/dev/null 2>&1; then
+            echo inside
+            echo -e "method\tdetail\tpvalue\tgenome\tgene" > $outputfile
+            cat $inputfile >> $outputfile
+            
+            #for resultfile in $inputfile; do
+            #    #awk '{{print $0, ",bin_size, {genome_stem}"}}' $resultfile >> $outputfile
+            #    cat 
+            #done
+        fi
+            """
+
+        
+
+
