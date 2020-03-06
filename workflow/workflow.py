@@ -43,15 +43,17 @@ if not path.isdir(f'output/{title}'):
 
 
 title_prefix = 'Rlegum' 
+genome_dir = '../Rhizobium_project_MICA/corrected_headers'
 
-bin_sizes = [1, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 40000] #2
-#bin_sizes = [20000]
+#bin_sizes = [1, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 40000] 
+bin_sizes = [20000]
 #bin_sizes = [50000, 70000, 80000, 100000, 120000] #3
 
 
 for bin_size in bin_sizes:
     #title = title_prefix + str(bin_size)
-    genomes = glob.glob('genomes/corrected_header_2/*')
+    #genomes = glob.glob('genomes/corrected_header_2/*')
+    genomes = glob.glob(genome_dir + '/*.xmfa')
 
     for genome in genomes:
         genome_basename = os.path.basename(genome)
@@ -90,10 +92,10 @@ for bin_size in bin_sizes:
         ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa {bin_size} {genome_stem} > {file_binned_xmfa_out}_gc.tab
 
 
-        # write pipeline metadata
-        echo -e "{title}\t{bin_size}\t{genome_stem}\t{genome}\t{file_binned_xmfa_out}" >> metadata.tab
+
 
         """
+        
 
 
         gwf.target(sanify('A_split_' + title),
@@ -109,10 +111,20 @@ for bin_size in bin_sizes:
         mkdir -p split
         cd split
 
+
+        # split the binned xmfa into single xmfa files for mcorr
         ../../../script/xmfa_split.py ../{file_binned_xmfa_out}.xmfa
+        touch ./xmfasplitted
+
+        # split the binned xmfa into single fa files for phi
+        ../../../script/xmfa_split_to_fa.py ../../../{file_binned_xmfa_out}.xmfa
+        touch ./fasplitted
+
         touch ../leg_split.completed
 
         """
+        break # debug for the first genome only
+        '''
 
         # When the above targets are done, call it again, to run the rest of the targets below:
         splitted_xmfas = glob.glob(f"output/{title}/split/*.xmfa")
@@ -183,3 +195,4 @@ fi
             """
         
 
+'''
