@@ -26,8 +26,7 @@ def sanify(input):
 
 
 gwf = Workflow(defaults={
-    "mail_user": "kobel@pm.me",
-    "mail_type": "FAIL",
+    #"mail_user": "kobel@pm.me", "mail_type": "FAIL",
 })
 
 
@@ -45,7 +44,7 @@ if not path.isdir(f'output/{title}'):
 
 title_prefix = 'Rlegum' 
 
-bin_sizes = [8000, 10000, 15000, 20000, 25000, 30000, 40000] #2
+bin_sizes = [1, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 40000] #2
 #bin_sizes = [20000]
 #bin_sizes = [50000, 70000, 80000, 100000, 120000] #3
 

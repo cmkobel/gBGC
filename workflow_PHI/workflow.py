@@ -17,6 +17,7 @@ def sanify(input):
     for i in str(input):
         
         ascii = ord(i)
+        # Lower case letters, upper case letters and numbers. And underscore
         if (ascii >= 48 and ascii <= 57) or (ascii >= 65 and ascii <= 90) or (ascii >= 97 and ascii <= 122) or ascii == 95:
             output.append(i)
         else:
