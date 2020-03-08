@@ -61,10 +61,12 @@ for bin_size in bin_sizes:
 
         title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2'
         #title = f"{title_prefix} + '_' + {str(genome_stem)} + '_' + {str(bin_size)}"
-        
+
+                
 
         print(f"{genome} ({genome_stem})")
-
+        if not "unitig_0" in genome:
+            continue
         #print(genome_basename)
         #print(genome_stem)
         
@@ -266,6 +268,6 @@ fi
         fi
             """
 
-        
+#        break    
 
 
