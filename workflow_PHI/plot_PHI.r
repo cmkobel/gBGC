@@ -1,7 +1,11 @@
 library(tidyverse)
 
-path = "/home/arabthal/genomedk/gBGC/carl/workflow_PHI/output/export"
-recomb_files = list.files(path=path, pattern="*phi_results.tab", full.names=TRUE, recursive=FALSE)
+path = "/home/arabthal/genomedk/gBGC/carl/workflow_PHI/output"
+path = "/home/arabthal/urecomb/lokal/phi/Rlegum/"
+setwd(path)
+
+## Import PHI result files
+recomb_files = list.files(path=path, pattern="*phi_results.tab", full.names=TRUE, recursive=T)
 recomb_data = tibble()
 for (file in recomb_files) {
     import = read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE, na = c("--"))
@@ -30,8 +34,8 @@ recomb_data_tresh %>%
 
 
 
-
-gc_files = list.files(path=path, pattern="*gc.tab", full.names=TRUE, recursive=FALSE)
+## Import GC3-content files
+gc_files = list.files(path=path, pattern="*gc.tab", full.names=TRUE, recursive=T)
 gc_data = tibble()
 for (file in gc_files) {
     import = read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE)
@@ -49,8 +53,11 @@ gc_data_summarized = gc_data %>%
 
 
 data = inner_join(gc_data_summarized, recomb_data_tresh)
-write_csv(data, "gc_and_recomb_joined.csv")
+#saveRDS(data, "phi_main.rds")
+#data = readRDS("phi_main.rds")
 
+# I suspect that the places where phi (normal) is not able to calculate a p-value, is because the sequence is to small? Let's discard those
+data = data %>% drop_na()
 
 # bin the GC content
 
@@ -61,11 +68,16 @@ data_binned20 = data %>%
     mutate(mean_GC3 = mean(GC3)) %>% # View
     group_by(genospecies, unitig, genome, method, mean_GC3) %>% # use mean instead of weird bin-range
     count(recombine) %>%
-    spread(recombine, n) %>% 
+    spread(recombine, n, fill = 0) %>% 
     rename(n_recombining = `TRUE`, n_not_recombining = `FALSE`) %>% 
     mutate(ratio = n_recombining / (n_recombining + n_not_recombining))
-write_csv(data_binned20, "binned20.csv")
 
+
+# Calculate models
+models = data_binned20 %>% 
+    group_by(genospecies, unitig, method) %>%
+    do(mod = lm(ratio ~ mean_GC3, data = .))
+    mutate(rsq = summary(mod)$r.squared) %>% View
 
 # Main plot
 data_binned20 %>% 
@@ -80,6 +92,8 @@ data_binned20 %>%
     geom_point() +
     facet_wrap(~genome, scales = "free") + 
     geom_smooth(method = "lm")
+
+
 
 
 

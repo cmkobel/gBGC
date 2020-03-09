@@ -9,6 +9,7 @@ import os.path
 
 #from workflow_templates import *
 
+print('\n\tRemember to activate urecomb2\n')
 
 def sanify(input):
     """ Makes sure that the name of the gwf target is not illegal. """
@@ -119,7 +120,7 @@ for bin_size in bin_sizes:
         touch ./xmfasplitted
 
         # split the binned xmfa into single fa files for phi
-        ../../../script/xmfa_split_to_fa.py ../../../{file_binned_xmfa_out}.xmfa
+        ../../../script/xmfa_split_to_fa.py ../{file_binned_xmfa_out}.xmfa
         touch ./fasplitted
 
         touch ../leg_split.completed
@@ -246,7 +247,7 @@ fi
         # TODO: Consider putting this and the previous job into a post processing script that is run manually.
         phi_results = glob.glob(f"output/{title}/split/*_phiresult.txt")
         print(len(phi_results), 'phi_results for', genome_stem)    
-        gwf.target(sanify('E_collect_results' + title),
+        gwf.target(sanify('D_phaseII_collect_results' + title),
             inputs = [i for i in phi_results], # Det smarte her er, at hvis der er en *phiresult.txt fil der bliver opdateret, så bliver resultaterne samlet sammen igen.
             outputs = [f"output/{title}/{genome_stem}_phi_results.tab"],
             cores = 1,
@@ -268,6 +269,6 @@ fi
         fi
             """
 
-#        break    
+        break    
 
 

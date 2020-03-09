@@ -3,13 +3,13 @@
 rm(list = ls())
 library(tidyverse)
 setwd("~/urecomb/lokal/exports/export1")
-setwd("~/genomedk/gBGC/carl/workflow/output/")
+#setwd("~/genomedk/gBGC/carl/workflow/output/")
 
 
 # Chapter 1: import the data, and make some plots.
 
 # import fitted (recombination) parameters
-mcorr_files = list.files(path=".", pattern="*/*_fitpars.csv", full.names=TRUE, recursive=T)
+mcorr_files = list.files(path=".", pattern="*_fitpars.csv", full.names=TRUE, recursive=T)
 mcorr_colnames = c("gene", "group", "d_sample", "theta_pool", "phi_pool", "ratio", "fbar", "c", "d_pool", "d_clonal", "theta_s", "phi_s", "bin_size", "genome")
 
 mcorr_data = tibble()
@@ -25,7 +25,7 @@ for (file in mcorr_files) {
 
 
 # import gc data
-gc_files = list.files(path=".", pattern="*bp_gc.tab", full.names=TRUE, recursive=FALSE)
+gc_files = list.files(path=".", pattern="*bp_gc.tab", full.names=TRUE, recursive=T)
 gc_data = tibble()
 i = 1
 for (file in gc_files) {
@@ -40,6 +40,8 @@ gc_data_summarised = gc_data %>% group_by(gene, bin_size = cli_comment_1, genome
     summarise(GC3 = mean(gc_content))
 
 data = inner_join(mcorr_data, gc_data_summarised) %>% mutate(gs = str_sub(genome, str_length(genome)))
+#saveRDS(data, "data_workflow.rds")
+#data = readRDS("data_workflow.rds")
 
 height = 8
 width = 10
@@ -74,8 +76,7 @@ data_inliers = data %>%
     
     filter(phi_pool >= quantile(phi_pool, tail_size_phi_pool) & phi_pool <= quantile(phi_pool, 1-tail_size_phi_pool)) %>% 
     filter(ratio >= quantile(ratio, tail_size_ratio) & ratio <= quantile(ratio, 1-tail_size_ratio)) %>% 
-    filter(c >= quantile(c, tail_size_c) & c <= quantile(c, 1-tail_size_c)) %>%
-    filter(phi_s >= quantile(phi_s
+    filter(c >= quantile(c, tail_size_c) & c <= quantile(c, 1-tail_size_c)) %>% 
     
     ungroup()
 
@@ -88,7 +89,9 @@ data_inliers %>% ggplot(aes(phi_pool, fill = gs)) +
 
 
 # main plot
-data_inliers %>% filter(bin_size == 30000) %>% ggplot(aes(GC3, log10(phi_pool), color = gs)) +
+data_inliers %>%
+    #filter(bin_size == 30000) %>% 
+    ggplot(aes(GC3, log10(phi_pool), color = gs)) +
     geom_point(alpha = 0.5) + 
     geom_smooth() +
     facet_grid(bin_size~gs)
@@ -134,8 +137,6 @@ data_inliers_binned20 %>% ggplot(aes(mean_GC3, median_phi_s)) +
     labs(title = "Inliers, 20 bins")
 #ggsave("2B_inliers_binned20_(c).png", height = height, width = width)
 
-
-#    C) 
 
 
 
