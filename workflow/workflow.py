@@ -7,8 +7,6 @@ import subprocess, sys
 import glob
 import os.path
 
-#from workflow_templates import *
-
 print('\n\tRemember to activate urecomb2\n')
 
 def sanify(input):
@@ -52,8 +50,7 @@ bin_sizes = [20000]
 
 
 for bin_size in bin_sizes:
-    #title = title_prefix + str(bin_size)
-    #genomes = glob.glob('genomes/corrected_header_2/*')
+
     genomes = glob.glob(genome_dir + '/*.xmfa')
 
     for genome in genomes:
@@ -61,15 +58,14 @@ for bin_size in bin_sizes:
         genome_stem = os.path.splitext(genome_basename)[0]
 
         title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2'
-        #title = f"{title_prefix} + '_' + {str(genome_stem)} + '_' + {str(bin_size)}"
+
 
                 
 
         print(f"{genome} ({genome_stem})")
         if not "unitig_0" in genome:
             continue
-        #print(genome_basename)
-        #print(genome_stem)
+
         
 
 
@@ -230,7 +226,7 @@ inputfile="split/*_fitpar.csv"
 
 outputfile="{file_binned_xmfa_out}_fitpars.csv"
 
-
+cat "" > $outputfile
 
 
 if stat -t $inputfile >/dev/null 2>&1; then
@@ -257,6 +253,9 @@ fi
         cd output/{title}
         inputfile="split/*_phiresult.tab"
         outputfile="{genome_stem}_phi_results.tab"
+
+        # reset outputfile
+        echo "" > $outputfile
         if stat -t $inputfile >/dev/null 2>&1; then
             echo inside
             echo -e "method\tdetail\tpvalue\tgenome\tgene" > $outputfile
@@ -269,6 +268,6 @@ fi
         fi
             """
 
-        break    
+        # break # single genome
 
 
