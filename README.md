@@ -37,11 +37,16 @@ I ran PHI for each gene in the core genome of these 5 genospecies of R. legumino
 _**Figure 3**: 20 bins with an equal number of genes in each. mean_GC3 is the mean GC3 content in that bin and ratio is the number of significantly recombining genes over the total number of genes in the bin. Significance of recombination is inferred with PHI._
 
 Finally we get a strong signal. The R^2 are somewhat high. I think they are low for some of the genospecies because of a limited sample size. The sample sizes for each genospecies (R. leguminosarum) are as follows:
-genospecies A   32
-genospecies B   32
-genospecies C   116
-genospecies D   5
-genospecies E   11
 
+| genospecies | # isolates |
+| ----------- | ----------:|
+| A           |  32        | 
+| B           |  32        | 
+| C           |  116       |  
+| D           |  5         |
+| E           |  11        | 
+
+
+At this point we know that the data is OK. Thus, something must be wrong with the way we apply the mcorr recombination inference tool.
 
 
