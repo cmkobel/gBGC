@@ -49,5 +49,17 @@ Finally we get a strong signal. The R^2 are somewhat high. I think they are low 
 
 At this point we know that the data is OK. Thus, something must be wrong with the way we apply the mcorr recombination inference tool.
 
-I wanted to compare the results of mcorr and PHI, but the problem is that 
+I wanted to compare the results of mcorr and PHI, but here two problems arise. 1 PHI calculates p-values and mcorr calculates recombination rates. These are very differently distributed, and hard to compare. Nevertheless, here are the results:
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/4_main_compare_logphipool_phinormal_free.png)
+
+This pretty much shows what we have been looking at all the time: That there is no relationship between what the two tests (mcorr and PHI) measure on the same data.
+
+I discovered a new problem: The distribution of p-values looks weird when it operates on concatenated genes:
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/5_dont_concat_genes.png "This is what I call false positives")
+
+Well, that tells us that we should definitely not concatenat the genes before putting them into PHI, or any other statistical program for that matter - that is - if we trust PHI's p-values.
+
+Now we can completely ditch the workflow/ directory. Let's compare mcorr and PHI on non-concatenated genes.
+
 
