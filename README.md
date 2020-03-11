@@ -34,5 +34,7 @@ I ran PHI for each gene in the core genome of these 5 genospecies of R. legumino
 
 ![](https://github.com/cmkobel/gBGC/blob/master/log/3_PHI_ratio.png)
 
+_**Figure 3**: 20 bins with an equal number of genes in each. mean_GC3 is the mean GC3 content in that bin and ratio is the number of significantly recombining genes over the total number of genes in the bin. Significance of recombination is inferred with PHI._
+
 
 
