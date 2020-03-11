@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggpmisc)
 
 path = "/home/arabthal/genomedk/gBGC/carl/workflow_PHI/output"
 path = "/home/arabthal/urecomb/lokal/phi/Rlegum/"
@@ -76,8 +77,8 @@ data_binned20 = data %>%
 # Calculate models
 models = data_binned20 %>% 
     group_by(genospecies, unitig, method) %>%
-    do(mod = lm(ratio ~ mean_GC3, data = .))
-    mutate(rsq = summary(mod)$r.squared) %>% View
+    do(mod = lm(ratio ~ mean_GC3, data = .)) %>% 
+    mutate(rsq = summary(mod)$r.squared)
 
 # Main plot
 data_binned20 %>% 
@@ -91,15 +92,17 @@ data_binned20 %>%
     
     geom_point() +
     facet_wrap(~genome, scales = "free") + 
-    geom_smooth(method = "lm")
+    geom_smooth(method = "lm") + 
+    geom_text(x = 1, y = 2, label = rep("c", 100)) +
+    stat_poly_eq(formula = y ~ x, parse = TRUE)
+
+models %>% filter(method == "PHI (Permutation):" & unitig == 0)
 
 
 
-
-
-setwd("~/genomedk/gBGC/carl/workflow_PHI/")
+#setwd("~/genomedk/gBGC/carl/workflow_PHI/")
 height = 5; width = 8
-ggsave("main_n.png", height = height, width = width)
+ggsave("main_wrr.png", height = height, width = width)
     #summarize(mean_GC3 = mean(GC3))
 
 
