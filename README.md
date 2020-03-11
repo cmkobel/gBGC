@@ -22,8 +22,17 @@ This figure shows that either there is no relationship, or something is wrong wi
 
 I think the problem is that even though there is recombination, it is hard to infer it from single genes. Recombination is measured using linkage-disequilibrium (LD). If the sequences are too short (average gene length 1000) means that there is not much LD to measure. If we concatenate syntenic genes and inferm recombination from these, we might have enough signal to actually measure recombination.
 
-I found a dataset of core genes from 5 genospecies of Rhizobium leguminosarum. Other studies on this data suggests that the recombination/GC-bias should be existing in this dataset. I concatenated the genes in bins of different sizes, inferred recombination and got the following results:
+I found a dataset of core genes from 5 genospecies of Rhizobium leguminosarum. Other studies on this data suggests that the recombination/GC-bias should be existing in this dataset. I concatenated the genes in bins of different sizes, inferred recombination. The code for this pipeline can be found in [workflow/](https://github.com/cmkobel/gBGC/tree/master/workflow). These are the results I got.
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/2_Rleg_phi_pool_all.png)
 
-The code for this pipeline can be found in [workflow/](https://github.com/cmkobel/gBGC/tree/master/workflow). 
+As we can see, again, there is no relationship between the GC3-content and recombination rate. Maybe there is a relationship for genospecies D, bin size 20000. But only if you remove all the points in the bottom.
+
+I tried removing the tails of the distribution, but this doesn't help on the relationship. I'm starting to think that either something is wrong with this method, or I'm using it wrong. As a sanity check, in order the check if there is a relationship in this data or not, using a method that we know works (PHI in Lassalle et al. 2015), we can check that the data we're feeding into mcorr actually has a signal.
+
+I ran PHI for each gene in the core genome of these 5 genospecies of R. leguminosarum. The pipeline for this can be found at [workflow_PHI/](https://github.com/cmkobel/gBGC/tree/master/workflow_PHI), and these are the results I got:
+
+![](https://github.com/cmkobel/gBGC/blob/master/log/3_PHI_ratio.png)
+
+
+
