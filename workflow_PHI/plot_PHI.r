@@ -95,6 +95,7 @@ data_binned20 %>%
     geom_smooth(method = "lm") + 
     geom_text(x = 1, y = 2, label = rep("c", 100)) +
     stat_poly_eq(formula = y ~ x, parse = TRUE)
+ggsave("~/genomedk/gBGC/carl/log/3_PHI_ratio.png")
 
 models %>% filter(method == "PHI (Permutation):" & unitig == 0)
 

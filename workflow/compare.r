@@ -4,7 +4,7 @@
 rm(list = ls())
 library(tidyverse)
 æs = aes
-setwd("~/urecomb/lokal/exports/export4compare/")
+setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
 
 
 ## GC
@@ -51,7 +51,7 @@ mcorr_data = gather_mcorr()
 
 ## PHI files
 gather_PHI = function() {
-    alpha = 0.05
+    alpha = 0.5
     phi_files = list.files(path=".", pattern="*phi_results.tab", full.names=TRUE, recursive=T)
     phi_data = tibble()
     i = 1
@@ -62,22 +62,29 @@ gather_PHI = function() {
         rm(import)
         i = i + 1
     }
-        "spread(method, pvalue) %>% 
-        rename(p_maxchisq = 'Max Chi^2:',
-               p_nss = 'NSS NA:',
-               p_phi_normal = 'PHI (Normal):',
-               p_phi_permut = 'PHI (Permutation):')
-        "
     phi_data %>%
         mutate(method = paste(method, detail),
                unitig = str_sub(genome, 8, 8),
                genospecies = str_sub(genome, 24, 24)) %>% 
         select(-detail) %>% 
         group_by(method, unitig, genospecies) %>% 
-        mutate(recombine = if_else(pvalue < alpha/length(pvalue), T, F), n_genes = length(pvalue))
+        #mutate(recombine = if_else(pvalue < alpha/length(pvalue), T, F), n_genes = length(pvalue))
+        spread(method, pvalue) %>% 
+        rename(p_maxchisq = 'Max Chi^2:',
+               p_nss = 'NSS NA:',
+               p_phi_normal = 'PHI (Normal):',
+               p_phi_permut = 'PHI (Permutation):')
+        
 }
 phi_data = gather_PHI() 
 
+
+# Check distribution of p-values from PHI
+phi_data %>% pivot_longer(starts_with("p_")) %>% 
+    ggplot(aes(value)) + 
+    facet_grid(name~genospecies) + 
+    geom_histogram()
+ggsave("~/genomedk/gBGC/carl/log/6_pvals_forbinsize1.png")
 
 
 # It doen't make sense to bin, because we don't care about GC.
@@ -92,7 +99,7 @@ data = inner_join(inner_join(gc_data_summarised, phi_data), mcorr_data) %>% sele
 data = data %>% drop_na()
 
 # bin the GC content
-
+'
 data_binned20 = data %>% 
     group_by(genospecies, unitig) %>% 
     mutate(GC3_bin = cut_number(GC3, 20)) %>% 
@@ -103,11 +110,14 @@ data_binned20 = data %>%
     spread(recombine, n, fill = 0) %>% 
     rename(n_recombining = `TRUE`, n_not_recombining = `FALSE`) %>% 
     mutate(ratio = n_recombining / (n_recombining + n_not_recombining))
-
+'
 
 # main plot
-data %>% ggplot(æs(phi_pool, p_phi_permut)) + 
-    geom_point()
+data %>% ggplot(aes(log10(phi_pool), (p_phi_normal))) + 
+    geom_point() + 
+    facet_wrap(~genospecies, scales = "free")+ 
+    geom_smooth()
+ggsave("~/genomedk/gBGC/carl/log/7_main_compare_logphipool_phinormal_free.png")
 
 
 
@@ -115,10 +125,10 @@ data %>% ggplot(æs(phi_pool, p_phi_permut)) +
 
 
 ## Let's filter the mcorr tails away
-tail_size_phi_pool = 0.0 #0.1
-tail_size_ratio = 0.0 #0.01
-tail_size_c = 0.00 # 0.00
-tail_size_phi_s = 0.0 #0.02
+tail_size_phi_pool = 0.1
+tail_size_ratio = 0.01
+tail_size_c = 0.00
+tail_size_phi_s = 0.02
 
 data_inliers = data %>%
     group_by(bin_size, genospecies, unitig) %>% 
@@ -143,7 +153,7 @@ data_inliers %>%
 
 # main plot
 # mcorr_phi_pool and PHI
-data_inliers %>% 
+data %>% 
     #filter(bin_size == 30000) %>% 
     ggplot(aes(p_phi_permut, (mcorr_ratio), color = genospecies)) +
     geom_point(alpha = 0.5) + 

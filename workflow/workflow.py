@@ -45,8 +45,9 @@ title_prefix = 'Rlegum'
 genome_dir = '../Rhizobium_project_MICA/corrected_headers'
 
 #bin_sizes = [1, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 40000] 
-bin_sizes = [20000]
 #bin_sizes = [50000, 70000, 80000, 100000, 120000] #3
+# bin_sizes = [20000] # Added PHI
+bin_sizes = [1]
 
 
 for bin_size in bin_sizes:
@@ -59,7 +60,8 @@ for bin_size in bin_sizes:
 
         title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2'
 
-
+        if not "unitig_0" in title:
+            continue
                 
 
         print(f"{genome} ({genome_stem})")
@@ -211,7 +213,7 @@ for bin_size in bin_sizes:
 
         # This target should be run when all the mcorr jobs are done
         # TODO: write this as a cat asterisk job with a checkpoint input instead af manually merging? Doesn't make sense when there is no output.
-        gwf.target(sanify('D_phaseII_merge_recomb_' + title),
+        gwf.target(sanify('D_ph2_mcorr_collect' + title),
             inputs = [i for i in fitpars],
             outputs = [f"output/{title}/{file_binned_xmfa_out}_fitpars.csv"],
             cores = 1,
@@ -226,7 +228,7 @@ inputfile="split/*_fitpar.csv"
 
 outputfile="{file_binned_xmfa_out}_fitpars.csv"
 
-cat "" > $outputfile
+echo "" > $outputfile
 
 
 if stat -t $inputfile >/dev/null 2>&1; then
@@ -243,7 +245,7 @@ fi
         # TODO: Consider putting this and the previous job into a post processing script that is run manually.
         phi_results = glob.glob(f"output/{title}/split/*_phiresult.txt")
         print(len(phi_results), 'phi_results for', genome_stem)    
-        gwf.target(sanify('D_phaseII_collect_results' + title),
+        gwf.target(sanify('D_ph2_PHI_collect' + title),
             inputs = [i for i in phi_results], # Det smarte her er, at hvis der er en *phiresult.txt fil der bliver opdateret, så bliver resultaterne samlet sammen igen.
             outputs = [f"output/{title}/{genome_stem}_phi_results.tab"],
             cores = 1,
