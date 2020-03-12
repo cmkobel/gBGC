@@ -61,6 +61,8 @@ I discovered a new problem: The distribution of p-values looks weird when it ope
 
 Well, that tells us that we should definitely not concatenat the genes before putting them into PHI, or any other statistical program for that matter - that is - if we trust PHI's p-values.
 
-Now we can completely ditch the workflow/ directory. Let's compare mcorr and PHI on non-concatenated genes.
+Now we can completely ditch the workflow/ directory. Let's compare mcorr and PHI on non-concatenated genes. This can easily be done by setting the bin size to minus infinity, or just 1. So maybe I don't have ditch the pipeline completely, just don't use the bin_size variable.
+
+TODO: run it with bin_size = 1, and plot the results.
 
 
