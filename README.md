@@ -19,6 +19,8 @@ I wanted to have a strong signal, so I chose the species with the strongest rela
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1_spyo1.png)
 
+_**Figure 1**: Recombination rate inferred from the core genes of 64 randomly selected S. pyogenes genomes from genbank shown against the GC3 content of each gene. Relationship missing._
+
 This figure shows that either there is no relationship, or something is wrong with the method. The problem is that mcorr most often infers that recombination is lacking (close to zero). 
 
 I think the problem is that even though there is recombination, it is hard to infer it from single genes. Recombination is measured using linkage-disequilibrium (LD). If the sequences are too short (average gene length 1000) means that there is not much LD to measure. If we concatenate syntenic genes and inferm recombination from these, we might have enough signal to actually measure recombination.
@@ -26,6 +28,7 @@ I think the problem is that even though there is recombination, it is hard to in
 I found a dataset of core genes from 5 genospecies of Rhizobium leguminosarum. Other studies on this data suggests that the recombination/GC-bias should be existing in this dataset. I concatenated the genes in bins of different sizes, inferred recombination. The code for this pipeline can be found in [workflow/](https://github.com/cmkobel/gBGC/tree/master/workflow). These are the results I got.
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/2_Rleg_phi_pool_all.png)
+_**Figure2**: Recombination rate against GC3 content for concatenated core genes of size 20K._
 
 As we can see, again, there is no relationship between the GC3-content and recombination rate. Maybe there is a relationship for genospecies D, bin size 20000. But only if you remove all the points in the bottom.
 
