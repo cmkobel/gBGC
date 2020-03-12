@@ -59,9 +59,23 @@ This pretty much shows what we have been looking at all the time: That there is 
 I discovered a new problem: The distribution of p-values looks weird when it operates on concatenated genes:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/5_dont_concat_genes.png "This is what I call false positives")
 
+_**Figure 5**: Distribution of p-values for the PHI-test of recombination when the genes are concatenated into 20K long bins._
+
 Well, that tells us that we should definitely not concatenat the genes before putting them into PHI, or any other statistical program for that matter - that is - if we trust PHI's p-values.
 
 Now we can completely ditch the workflow/ directory. Let's compare mcorr and PHI on non-concatenated genes. This can easily be done by setting the bin size to minus infinity, or just 1. So maybe I don't have ditch the pipeline completely, just don't use the bin_size variable.
+
+## Comparing mcorr and PHI without concatenating the genes.
+I inferred recombination in the genes without concatenating them. This means that we have a lot more points, with greater variance. We already know from initial analyses that mcorr is not able to expose a possible relationship between recombination rate nad GC3-content. But we know that PHI can (Fig. 3).
+
+Before I'm showing the comparison, I want to show the distribution of p-values for PHI. It still looks a bit weird to me (not uniform), but it looks a lot better than before (Fig. 5).
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/6_pvals_forbinsize1.png)
+_**Figure 6**: Distribution of p-values for the PHI-test of recombination when the genes are not concatenated._
+
+And here is the comparison between the two methods:
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/7_main_compare_logphipool_phinormal_free.png)
+_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of PHI-test for recombination._
+
 
 TODO: run it with bin_size = 1, and plot the results.
 
