@@ -74,9 +74,18 @@ _**Figure 6**: Distribution of p-values for the PHI-test of recombination when t
 
 And here is the comparison between the two methods:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/7_main_compare_logphipool_phinormal_free.png)
-_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of PHI-test for recombination._
+_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI)._
+
+I don't know what to think of this. I don't see any relationship. 
+My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into its theory, but I don't want to base any generality test on it.
 
 
-TODO: run it with bin_size = 1, and plot the results.
+## What to do now?
+
+I will run [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) on the R. legum data to see if it can be used for comparison instead.
+
+TODO: run ClonalFrameML on the R. legum data, compare it to PHI and discuss the results.
+TODO: understand the theory behind mcorr, PHI and ClonalFrame
+
 
 
