@@ -53,7 +53,7 @@ At this point we know that the data is OK. Thus, something must be wrong with th
 I wanted to compare the results of mcorr and PHI, but here two problems arise. 1 PHI calculates p-values and mcorr calculates recombination rates. These are very differently distributed, and hard to compare. Nevertheless, here are the results:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/4_main_compare_logphipool_phinormal_free.png)
-
+_**Figure 4**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI) when the core genome genes are concatenated into 20K bins._
 This pretty much shows what we have been looking at all the time: That there is no relationship between what the two tests (mcorr and PHI) measure on the same data.
 
 I discovered a new problem: The distribution of p-values looks weird when it operates on concatenated genes:
@@ -74,7 +74,7 @@ _**Figure 6**: Distribution of p-values for the PHI-test of recombination when t
 
 And here is the comparison between the two methods:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/7_main_compare_logphipool_phinormal_free.png)
-_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI)._
+_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI) when the core genome genes are not concatenated._
 
 I don't know what to think of this. I don't see any relationship. 
 My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into its theory, but I don't want to base any generality test on it.
