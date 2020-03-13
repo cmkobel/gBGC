@@ -19,6 +19,8 @@ I wanted to have a strong signal, so I chose the species with the strongest rela
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1_spyo1.png)
 
+_**Figure 1**: Recombination rate inferred from the core genes of 64 randomly selected S. pyogenes genomes from genbank shown against the GC3 content of each gene. Relationship missing._
+
 This figure shows that either there is no relationship, or something is wrong with the method. The problem is that mcorr most often infers that recombination is lacking (close to zero). 
 
 I think the problem is that even though there is recombination, it is hard to infer it from single genes. Recombination is measured using linkage-disequilibrium (LD). If the sequences are too short (average gene length 1000) means that there is not much LD to measure. If we concatenate syntenic genes and inferm recombination from these, we might have enough signal to actually measure recombination.
@@ -26,6 +28,7 @@ I think the problem is that even though there is recombination, it is hard to in
 I found a dataset of core genes from 5 genospecies of Rhizobium leguminosarum. Other studies on this data suggests that the recombination/GC-bias should be existing in this dataset. I concatenated the genes in bins of different sizes, inferred recombination. The code for this pipeline can be found in [workflow/](https://github.com/cmkobel/gBGC/tree/master/workflow). These are the results I got.
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/2_Rleg_phi_pool_all.png)
+_**Figure2**: Recombination rate against GC3 content for concatenated core genes of size 20K._
 
 As we can see, again, there is no relationship between the GC3-content and recombination rate. Maybe there is a relationship for genospecies D, bin size 20000. But only if you remove all the points in the bottom.
 
@@ -53,7 +56,7 @@ At this point we know that the data is OK. Thus, something must be wrong with th
 I wanted to compare the results of mcorr and PHI, but here two problems arise. 1 PHI calculates p-values and mcorr calculates recombination rates. These are very differently distributed, and hard to compare. Nevertheless, here are the results:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/4_main_compare_logphipool_phinormal_free.png)
-
+_**Figure 4**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI) when the core genome genes are concatenated into 20K bins._
 This pretty much shows what we have been looking at all the time: That there is no relationship between what the two tests (mcorr and PHI) measure on the same data.
 
 I discovered a new problem: The distribution of p-values looks weird when it operates on concatenated genes:
@@ -74,9 +77,18 @@ _**Figure 6**: Distribution of p-values for the PHI-test of recombination when t
 
 And here is the comparison between the two methods:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/7_main_compare_logphipool_phinormal_free.png)
-_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of PHI-test for recombination._
+_**Figure 7**: Comparison of the recombination rate (mcorr) and p-value of test for recombination (PHI) when the core genome genes are not concatenated._
+
+I don't know what to think of this. I don't see any relationship. 
+My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into its theory, but I don't want to base any generality test on it.
 
 
-TODO: run it with bin_size = 1, and plot the results.
+## What to do now?
+
+I will run [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) on the R. legum data to see if it can be used for comparison instead.
+
+TODO: run ClonalFrameML on the R. legum data, compare it to PHI and discuss the results.
+TODO: understand the theory behind mcorr, PHI and ClonalFrame
+
 
 
