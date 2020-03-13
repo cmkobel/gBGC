@@ -68,7 +68,7 @@ gather_PHI = function() {
                genospecies = str_sub(genome, 24, 24)) %>% 
         select(-detail) %>% 
         group_by(method, unitig, genospecies) %>% 
-        #mutate(recombine = if_else(pvalue < alpha/length(pvalue), T, F), n_genes = length(pvalue))
+ < alpha/length(pvalue), T, F), n_genes = length(pvalue))
         spread(method, pvalue) %>% 
         rename(p_maxchisq = 'Max Chi^2:',
                p_nss = 'NSS NA:',
@@ -167,5 +167,32 @@ ggsave("main_compare.pdf")
 
 # Try binning by GC content then compare PHI ratio and median phi_pool
 
+
+
+
+
+# Sanity check: Check that the relation betmeen PHI-bin p-values and GC3 is consistent.
+alpha = 0.05
+phi_data_thresh = phi_data %>% 
+    group_by(unitig, genospecies) %>% 
+    mutate(recombine = if_else(p_phi_permut < alpha/length(p_phi_permut), T, F), n_genes = length(p_phi_permut))
+
+
+data = inner_join(gc_data_summarised, phi_data_thresh) %>% select(-genome)
+data_binned20 = data %>% 
+    group_by(genospecies, unitig) %>% 
+    mutate(GC3_bin = cut_number(GC3, 20)) %>% 
+    group_by(GC3_bin, add = T) %>%
+    mutate(mean_GC3 = mean(GC3)) %>%  
+    group_by(genospecies, unitig, mean_GC3) %>%  # use mean instead of weird bin-range
+    count(recombine) %>% 
+    spread(recombine, n, fill = 0) %>% 
+    rename(n_recombining = `TRUE`, n_not_recombining = `FALSE`) %>% 
+    mutate(ratio = n_recombining / (n_recombining + n_not_recombining), n = n_recombining + n_not_recombining)
+    
+data_binned20 %>% ggplot(aes(mean_GC3, n_recombining)) + 
+    geom_point() + 
+    facet_wrap(~genospecies, scales = "free") + 
+    geom_smooth(method = "lm")
 
 
