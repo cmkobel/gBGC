@@ -1,7 +1,7 @@
 # gBGC 🦠💪
 #### Investigating GC-Biased Gene Conversion (gBGC) in Rhizobium leguminosarum
 
-I'm developing a number of pipelines that I use to utilize different software in order to measure recombination in bacteria
+I'm developing a number of pipelines that I use to utilize different software in order to measure recombination in bacteria. In order to validate my results, I relate the results of each pipeline.
 
 1. workflow_reads maps reads to a manually picked reference. Recombination is then inferred on the cg-alignment or each gene in the reference.
 1. workflow_assemblyalignmentgenerator uses the pipeline developed by kussell-lab.
