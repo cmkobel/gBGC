@@ -72,7 +72,7 @@ I inferred recombination in the genes without concatenating them. This means tha
 
 Before I'm showing the comparison, I want to show the distribution of p-values for PHI. It still looks a bit weird to me (not uniform), but it looks a lot better than before (Fig. 5).
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/6_pvals_forbinsize1.png)
-_**Figure 6**: Distribution of p-values for the PHI-test of recombination when the genes are not concatenated._
+_**Figure 6**: Distribution of p-values for the PHI-test of recombination when the genes are not concatenated. (To be honest; I don't think these distributions look nice. Too polarized.)_
 
 And here is the comparison between the two methods:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/7_main_compare_logphipool_phinormal_free.png)
