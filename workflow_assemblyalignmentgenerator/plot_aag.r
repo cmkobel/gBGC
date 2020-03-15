@@ -15,7 +15,10 @@ gc_data = read_delim("output/Spyo1/Spyo1_gc.tab", delim = "\t", col_names = c("g
 
 data = inner_join(recomb_data, gc_data)
 
-data %>% ggplot(aes(GC3, phi_pool)) + geom_point()
+data %>% filter(phi_pool >5) %>% 
+    ggplot(aes(GC3, log(phi_pool))) +
+    geom_smooth() +
+    geom_point()
 
 
 

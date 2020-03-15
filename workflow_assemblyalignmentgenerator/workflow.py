@@ -7,6 +7,7 @@ import subprocess, sys
 
 import os.path
 from os import path
+import glob
 #from workflow_templates import *
 
 
@@ -31,7 +32,7 @@ gwf = Workflow(defaults={
 })
 
 
-title = "Spyo1"
+title = "Spyo3"
 
 
 if not path.isdir(f'output/{title}'):
@@ -44,7 +45,8 @@ if not path.isdir(f'output/{title}'):
 
 gwf.target(sanify('aag_xmfa_' + title),
                   inputs = ['accession_list.txt'],
-                  outputs = [f'output/{title}/{title}_core.xmfa', f'output/{title}/accession_list.txt'],
+                  outputs = [f'output/{title}/{title}_core.xmfa',
+                             f'output/{title}/accession_list.txt'],
                   cores = 8,
                   walltime = '24:00:00',
                   memory = '16gb', account = "clinicalmicrobio") << f"""
@@ -53,80 +55,55 @@ mkdir -p output/{title}
 
 cp accession_list.txt output/{title}
 
+#Assemble genomes
 AssemblyAlignmentGenerator/AssemblyAlignmentGenerate_be AssemblyAlignmentGenerator/assembly_summary_refseq.txt accession_list.txt output/{title} {title}
+
 
 """
 
+gwf.target(sanify('aag_split_' + title),
+    inputs = [],
+    outputs = [],
+    cores = 1,
+    walltime = '1:00:00',
+    memory = '16gb',
+    account = 'clinicalmicrobio') << f"""
 
-gwf.target(sanify('aag_mcorr_xmfa_' + title),
-                  inputs = [f'output/{title}/{title}_core.xmfa'],
-                  outputs = [f'output/{title}/mcorr-xmfa.completed'],
-                  cores = 8,
-                  memory = '16gb',
-                  account = "clinicalmicrobio") << f"""
-
-cd output/{title}
-
-
-# Isolate each gene, to infer recombination independently.
-
-mkdir -p single_genes
-cd single_genes
+# Split into individual genes
+mkdir -p output/{title}/single_genes
+cd output/{title}/single_genes
 ../../../scripts/xmfa_split.py ../{title}_core.xmfa
-
-
-
-# mcorr-xmfa on each gene
-ls *.fa | parallel -j 8 'mcorr-xmfa {{}} {{.}}_mx --num-boot=5'
 
 touch ../mcorr-xmfa.completed
 """
 
+for single_gene in glob.glob(f"output/{title}/single_genes/*"):
+    single_gene_basename = os.path.basename(single_gene)
+    single_gene_stem = os.path.splitext(single_gene_basename)[0]
+    print(single_gene, single_gene_basename, single_gene_stem)
 
-gwf.target(sanify('aag_mcorr_fit_' + title),
-                  inputs = [f'output/{title}/mcorr-xmfa.completed'],
-                  outputs = [f'output/{title}/mcorr-fit.completed',
-                             f'output/{title}/{title}_recomb.csv'],
-                  cores = 16,
-                  memory = '32gb',
-                  walltime = '1:00:00', # 24
-                  account = 'clinicalmicrobio') << f"""
+    gwf.target(sanify('aag_mcorr_' + title + single_gene),
+                    inputs = [f'output/{title}/{title}_core.xmfa'],
+                    outputs = [],
+                    cores = 8,
+                    memory = '16gb',
+                    account = "clinicalmicrobio") << f"""
 
-cd output/{title}
-
-cd single_genes
-
-echo here0
-
-# Run mcorr-fit
-#ls *_mx.csv | parallel -j 16 'mcorr-fit {{}} {{.}}_mf'
+    cd output/{title}/single_genes
 
 
-echo here1
-
-# extract from txt
-
-
-echo here2
-
-# Write all fit_results.csv's to a single file
-echo "#" > ../all_genes_recomb_data.csv
-
-echo here3
+    
 
 
 
-for f in *mx_mf_fit_results.csv; do printf $f, >> ../all_genes_recomb_data.csv; awk '/^all,/' $f >> ../all_genes_recomb_data.csv; echo "" >> ../all_genes_recomb_data.csv; done
+    mcorr-xmfa {single_gene_basename} {single_gene_stem}_mx
 
-echo here4
+    #mcorr-fit {single_gene_stem}_mx.csv {single_gene_stem}_mf
 
-awk '/.*all,/' ../all_genes_recomb_data.csv > ../{title}_recomb.csv
+    #cat {single_gene_stem}_mf_fit_results.csv | grep "all" > ../final.csv
 
-echo here5
-
-touch ../mcorr-fit.completed
-
-"""
+    
+    """
 
 
 
@@ -134,7 +111,8 @@ gwf.target(sanify('aag_gc_' + title),
            inputs = [f'output/{title}/{title}_core.xmfa'],
            outputs = [f'output/{title}/{title}_gc.tab'],
            cores = 1,
-           memory = '1gb') << f"""
+           memory = '1gb',
+           account = 'clinicalmicrobio') << f"""
 
 cd output/{title}
 
