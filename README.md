@@ -82,7 +82,7 @@ I don't know what to think of this. I don't see any relationship.
 My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into its theory, but I don't want to base any generality test on it.
 
 
-## What to do now?
+## Relating to ClonalFrame
 
 I will run [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) on the R. legum data to see if it can be used for comparison instead.
 
