@@ -12,9 +12,9 @@ I'm developing a number of pipelines that I use to utilize different software in
 
 
 # Log
-I want to investigate the relationship between recombination-rate and GC3 content. I found a new method for inferring recombination rate in bacteria [kussell-lab/mcorr](https://github.com/kussell-lab/mcorr) and wanted to use it to indirectly replicate [Lassalle et al. 2015](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004941). In this study they use [PHI](https://www.maths.otago.ac.nz/~dbryant/software.html) which I will come back around later. The GC3 content is easy to measure. Just align the reading frame, and count the proportion of G's and C's.
+I want to investigate the relationship between recombination-rate and GC3 content. I found a new method for inferring recombination rate in bacteria [kussell-lab/mcorr](https://github.com/kussell-lab/mcorr) and wanted to use it to indirectly replicate [Lassalle et al. 2015](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004941). In this study they use [PHI](https://www.maths.otago.ac.nz/~dbryant/software.html) which I will come back around later. The GC3 content is easy to measure. Just align the reading frame, and count the proportion of G's and C's on every third position.
 
-I wanted to have a strong signal, so I chose the species with the strongest relation. in Lassalle et al. 2015 they show that a linear relationship between recombination and GC3 has an R^2 = .68 for Streptococcus pyogenes. Thus I randomly selected ~60 S. pyogenes genomes from genbank, aligned the core genomes and measured the recombination for each gene. When I use kussell-lab/mcorr, I get the following results:
+I wanted to have a strong signal, so I chose the species with the strongest known relation. In Lassalle et al. 2015 they show that a linear relationship between recombination and GC3 has an R^2 = .68 for Streptococcus pyogenes. Thus I randomly selected ~60 S. pyogenes genomes from genbank, aligned the core genomes and measured the recombination for each gene. When I use kussell-lab/mcorr, I get the following results:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1_spyo1.png)
 
