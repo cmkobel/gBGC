@@ -65,10 +65,13 @@ for bin_size in bin_sizes:
                 
 
         print(f"{genome} ({genome_stem})")
+        
         if not "unitig_0" in genome:
             continue
 
-        
+        if not "gsA" in genome:
+            continue
+
 
 
         file_binned_xmfa_out = f"{genome_stem}_binned_{int(bin_size)}bp"
@@ -159,7 +162,7 @@ for bin_size in bin_sizes:
 
         
         """
-        # Also run PHI
+        # Run PHI
         splitted_fas = glob.glob(f"output/{title}/split/*.fa")
         
         for num, single_gene in enumerate(splitted_fas):
@@ -201,10 +204,50 @@ for bin_size in bin_sizes:
     #awk '/^all,/' {single_gene_stem}_fit_results.csv >> {single_gene_stem}_fitpar.csv
             """
             
+            # Clonalframe also uses .fa files, thus it can use the same single_gene* variables as PHI
+            gwf.target(sanify('C_cf_' + title + '_' + str(num) + '_' + single_gene_stem),
+                inputs = [single_gene],
+                outputs = [f"output/{title}/split/{single_gene_stem}_cf/{single_gene_stem}_cf_final.tab"],
+                cores = 1,
+                walltime = '2:00:00',
+                memory = '4gb',
+                account = "gBGC") << f"""
+echo {single_gene_stem}     
+
+cd output/{title}/split/
+
+mkdir -p {single_gene_stem}_cf
+rm -r {single_gene_stem}_cf
+mkdir -p {single_gene_stem}_cf
+cd {single_gene_stem}_cf
+
+
+# generate guide-tree
+#mkdir -p tree
+#cd tree
+
+
+
+cat ../{single_gene_stem}.fa | ../../../../script/fasta_serialize_headers.py > {single_gene_stem}_serialized.fa
+
+raxml-ng --msa {single_gene_stem}_serialized.fa --model GTR --threads 1 --redo
+
+ClonalFrameML {single_gene_stem}_serialized.fa.raxml.bestTree {single_gene_stem}_serialized.fa {single_gene_stem}_cf
+
+
+# clean up output
+grep -E "(^nu)|(^1/delta)|(^R/theta)" {single_gene_stem}_cf.em.txt | awk '{{ print "{single_gene_stem}\t{title}\t" $0}}' > {single_gene_stem}_cf_final.tab
+
+
+cat {single_gene_stem}_cf_final.tab >> ../../{title}_clonalframe.tab
+
+
+# we are in the cf folder
+
 
         
-        
-            
+                """
+            #break # PHI and CF for only one gene
 
         # Merge the _fitpar.csv files together, so it can be imported in R later.
         fitpars = glob.glob(f"output/{title}/split/*_fitpar.csv")
@@ -270,6 +313,6 @@ fi
         fi
             """
 
-        # break # single genome
+        break # single genome
 
 

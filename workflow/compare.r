@@ -3,6 +3,8 @@
 
 rm(list = ls())
 library(tidyverse)
+library(ggpmisc)
+library(egg)
 æs = aes
 setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
 
@@ -20,10 +22,42 @@ gather_gc = function(whatever = NULL) {
         i = i + 1
     }
     #rm(gc_files, gc_data, file, i) # clean up
-    gc_data %>% group_by(gene, bin_size = cli_comment_1, genome = cli_comment_2) %>% 
-        summarise(GC3 = mean(gc_content))
+    #gc_data %>%
+    #    mutate(unitig = str_sub(genome, 8, 8),
+    #           genospecies = str_sub(genome, 24, 24)) %>% 
+    #    group_by(gene, bin_size = cli_comment_1, genome = cli_comment_2) %>% 
+    #    summarise(GC3 = mean(gc_content))
+    gc_data %>% 
+        rename(bin_size = cli_comment_1, genome = cli_comment_2) %>% 
+        mutate(unitig = str_sub(genome, 8, 8),
+               genospecies = str_sub(genome, 24, 24)) %>% 
+        group_by(gene, unitig, genospecies, bin_size, genome) %>% 
+                 summarise(GC3 = mean(gc_content))
 }
 gc_data_summarised = gather_gc()
+
+
+    ## ClonalFrameML
+gather_cf = function(whatever = NULL) {
+    cf_files = list.files(path=".", pattern="*clonalframe.tab", full.names=TRUE, recursive=T)
+    cf_data = tibble()
+    i = 1
+    for (file in cf_files) {
+        import <- read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE, col_names = c("gene", "title", "parameter", "post_mean", "post_var", "a_post", "b_post"))
+        print(paste(i, file, dim(import)[1]))
+        cf_data = bind_rows(cf_data, import)
+        rm(import)
+        i = i + 1
+    }
+    #rm(cf_files, cf_data, file, i) # clean up
+    #cf_data %>% group_by(gene, bin_size = cli_comment_1, genome = cli_comment_2) %>% 
+    #    summarise(GC3 = mean(gc_content))
+    cf_data %>%
+        mutate(unitig = str_sub(title, 15, 15),
+               genospecies = str_sub(title, 31, 31)) %>%
+        filter(parameter == "R/theta") %>% select(-title)
+}
+cf_data = gather_cf()
 
 
 ## mcorr    import fitted (recombination) parameters
@@ -194,5 +228,52 @@ data_binned20 %>% ggplot(aes(mean_GC3, n_recombining)) +
     geom_point() + 
     facet_wrap(~genospecies, scales = "free") + 
     geom_smooth(method = "lm")
+
+
+
+
+
+
+#### Compare GC3 and clonalframe
+
+cfgc_data = inner_join(cf_data, gc_data_summarised)
+
+# plot directly without any preprocessing
+cfgc_data %>% ggplot(aes(GC3, post_mean)) +
+    geom_errorbar(aes(ymin = post_mean-sqrt(post_var), ymax = post_mean+sqrt(post_var)), alpha = 0.1) +
+    geom_point(alpha = 0.25) +
+    labs(y = "R/theta", caption = "Error bars: ± 1 SD")
+ggsave("8_cf_raw.png")
+
+
+# Let's look at the parameter distributions
+
+cfgc_data %>% pivot_longer(c(post_mean, post_var, a_post, b_post)) %>%
+    ggplot(aes(value)) + 
+    geom_histogram() + 
+    facet_wrap(~name, scales = "free")
+ggsave("8_cf_parameter_distributions.png")
+
+
+# Let's bin, so we can compare to Lassalle
+
+cfgc_data %>%
+    group_by(unitig, genospecies) %>% 
+    mutate(GC3_bin = cut_number(GC3, 20)) %>%
+    group_by(GC3_bin, add = T) %>% 
+    mutate(mean_GC3 = mean(GC3),
+           `median_R/theta` = median(post_mean)) %>% 
+    ggplot(aes(mean_GC3, `median_R/theta`)) + 
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    stat_poly_eq(formula = y~x, 
+                 aes(label = paste(..rr.label..)), 
+                 parse = TRUE) +
+    facet_wrap(~genospecies)
+ggsave("8_cd_20_bins_lm.png")
+
+
+
+ggarrange(A, B, C, ncol = 3, labels = c("a", "b", "c"))
 
 
