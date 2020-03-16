@@ -45,7 +45,7 @@ gc_data_summarised %>% filter(unitig == 0) %>%
 
     ## ClonalFrameML
 gather_cf = function(whatever = NULL) {
-    cf_files = list.files(path=".", pattern="*clonalframe.tab", full.names=TRUE, recursive=T)
+    cf_files = list.files(path="filtered", pattern="*clonalframe.tab", full.names=TRUE, recursive=T)
     cf_data = tibble()
     i = 1
     for (file in cf_files) {
@@ -64,6 +64,7 @@ gather_cf = function(whatever = NULL) {
         filter(parameter == "R/theta") %>% select(-title)
 }
 cf_data = gather_cf()
+cf_data$genospecies %>% table
 
 
 ## mcorr    import fitted (recombination) parameters
@@ -250,7 +251,8 @@ cfgc_data = inner_join(cf_data, gc_data_summarised)
 cfgc_data %>% ggplot(aes(GC3, post_mean)) +
     geom_errorbar(aes(ymin = post_mean-sqrt(post_var), ymax = post_mean+sqrt(post_var)), alpha = 0.1) +
     geom_point(alpha = 0.25) +
-    labs(y = "R/theta", caption = "Error bars: ± 1 SD")
+    labs(y = "R/theta", caption = "Error bars: ± 1 SD") + 
+    facet_wrap(~genospecies)
 ggsave("8_cf_raw.png")
 
 
@@ -259,7 +261,7 @@ ggsave("8_cf_raw.png")
 cfgc_data %>% pivot_longer(c(post_mean, post_var, a_post, b_post)) %>%
     ggplot(aes(value)) + 
     geom_histogram() + 
-    facet_wrap(~name, scales = "free")
+    facet_grid(genospecies~name, scales = "free")
 ggsave("8_cf_parameter_distributions.png")
 
 
@@ -282,6 +284,4 @@ ggsave("8_cd_20_bins_lm.png")
 
 
 
-ggarrange(A, B, C, ncol = 3, labels = c("a", "b", "c"))
-
-
+#### Let's compare PHI and ClonalFrame

@@ -69,8 +69,7 @@ for bin_size in bin_sizes:
         if not "unitig_0" in genome:
             continue
 
-        if not "gsA" in genome:
-            continue
+
 
 
 
@@ -313,6 +312,6 @@ fi
         fi
             """
 
-        break # single genome
+        #break # single genome
 
 
