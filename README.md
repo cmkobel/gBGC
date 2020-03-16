@@ -100,7 +100,7 @@ In order to make the plot more comparable to the Lassalle results, I tried plott
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cd_20_bins_lm.png)
 _**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Genospecies A, unitig 0. Binned into 20 GC3-categories_
 
-The R^2 value is very close to the one inferred in Figure 3.
+The R^2 value is very close to the one inferred in Figure 3. It should be noted that the GC3 scale is much wider when plotting the results of ClonalFrame. That is probably because ClonalFrame is more robust. When inferring recombination with PHI, some genes cannot be successfully inferred from.
 
 
 The other genospecies will follow soon.
