@@ -109,7 +109,7 @@ gather_PHI = function() {
                genospecies = str_sub(genome, 24, 24)) %>% 
         select(-detail) %>% 
         group_by(method, unitig, genospecies) %>% 
- < alpha/length(pvalue), T, F), n_genes = length(pvalue))
+   #alpha/length(pvalue), T, F), n_genes = length(pvalue))
         spread(method, pvalue) %>% 
         rename(p_maxchisq = 'Max Chi^2:',
                p_nss = 'NSS NA:',
@@ -250,10 +250,10 @@ cfgc_data = inner_join(cf_data, gc_data_summarised)
 # plot directly without any preprocessing
 cfgc_data %>% ggplot(aes(GC3, post_mean)) +
     geom_errorbar(aes(ymin = post_mean-sqrt(post_var), ymax = post_mean+sqrt(post_var)), alpha = 0.1) +
-    geom_point(alpha = 0.25) +
+    geom_point(alpha = 0.2) +
     labs(y = "R/theta", caption = "Error bars: ± 1 SD") + 
     facet_wrap(~genospecies)
-ggsave("8_cf_raw.png")
+ggsave("~/genomedk/gBGC/carl/log/8_cf_raw.png")
 
 
 # Let's look at the parameter distributions
@@ -262,7 +262,7 @@ cfgc_data %>% pivot_longer(c(post_mean, post_var, a_post, b_post)) %>%
     ggplot(aes(value)) + 
     geom_histogram() + 
     facet_grid(genospecies~name, scales = "free")
-ggsave("8_cf_parameter_distributions.png")
+ggsave("~/genomedk/gBGC/carl/log/8_cf_parameter_distributions.png")
 
 
 # Let's bin, so we can compare to Lassalle
@@ -280,8 +280,18 @@ cfgc_data %>%
                  aes(label = paste(..rr.label..)), 
                  parse = TRUE) +
     facet_wrap(~genospecies)
-ggsave("8_cd_20_bins_lm.png")
+ggsave("~/genomedk/gBGC/carl/log/8_cd_20_bins_lm.png")
 
 
 
 #### Let's compare PHI and ClonalFrame
+
+
+data = inner_join(cf_data, phi_data)
+data %>% ggplot(aes(post_mean, -log(p_phi_normal))) + 
+    geom_point() + 
+    labs(x = "R/theta") + 
+    geom_smooth(method = "lm") + 
+    geom_smooth(color = "red")
+ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF.png")
+                
