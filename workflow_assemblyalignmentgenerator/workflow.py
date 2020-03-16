@@ -63,7 +63,7 @@ AssemblyAlignmentGenerator/AssemblyAlignmentGenerate_be AssemblyAlignmentGenerat
 
 gwf.target(sanify('aag_split_' + title),
     inputs = [],
-    outputs = [],
+    outputs = [f"output/{title}/aag_split.completed"],
     cores = 1,
     walltime = '1:00:00',
     memory = '16gb',
@@ -74,18 +74,19 @@ mkdir -p output/{title}/single_genes
 cd output/{title}/single_genes
 ../../../scripts/xmfa_split.py ../{title}_core.xmfa
 
-touch ../mcorr-xmfa.completed
+touch ../aag_split.completed
 """
 
-for single_gene in glob.glob(f"output/{title}/single_genes/*"):
+for single_gene in glob.glob(f"output/{title}/single_genes/*.fa"):
     single_gene_basename = os.path.basename(single_gene)
     single_gene_stem = os.path.splitext(single_gene_basename)[0]
-    print(single_gene, single_gene_basename, single_gene_stem)
+    #print(single_gene, single_gene_basename, single_gene_stem)
 
-    gwf.target(sanify('aag_mcorr_' + title + single_gene),
+    gwf.target(sanify('aag_mcorr_' + title + '_' + single_gene_stem),
                     inputs = [f'output/{title}/{title}_core.xmfa'],
-                    outputs = [],
-                    cores = 8,
+                    outputs = [f"output/{title}/single_genes/{single_gene_stem}_mx.csv", f"output/{title}/single_genes/{single_gene_stem}_mx.json",
+                               f"output/{title}/single_genes/{single_gene_stem}_mf_fit_results.csv"],
+                    cores = 1,
                     memory = '16gb',
                     account = "clinicalmicrobio") << f"""
 
@@ -95,13 +96,14 @@ for single_gene in glob.glob(f"output/{title}/single_genes/*"):
     
 
 
+    #mcorr-xmfa {single_gene_basename} {single_gene_stem}_mx
+    echo mcorr-xmfa done
 
-    mcorr-xmfa {single_gene_basename} {single_gene_stem}_mx
+    mcorr-fit {single_gene_stem}_mx.csv {single_gene_stem}_mf
+    echo mcorr_fit done
 
-    #mcorr-fit {single_gene_stem}_mx.csv {single_gene_stem}_mf
-
-    #cat {single_gene_stem}_mf_fit_results.csv | grep "all" > ../final.csv
-
+    #printf "{single_gene_stem}" > {single_gene_stem}_final.csv
+    #cat {single_gene_stem}_mf_fit_results.csv | grep "^all" >> {single_gene_stem}_final.csv
     
     """
 
