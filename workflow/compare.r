@@ -36,6 +36,12 @@ gather_gc = function(whatever = NULL) {
 }
 gc_data_summarised = gather_gc()
 
+# check distributions of GC
+gc_data_summarised %>% filter(unitig == 0) %>% 
+    ggplot(aes(GC3)) + 
+    geom_histogram() + 
+    facet_wrap(~genospecies)
+
 
     ## ClonalFrameML
 gather_cf = function(whatever = NULL) {
@@ -237,6 +243,8 @@ data_binned20 %>% ggplot(aes(mean_GC3, n_recombining)) +
 #### Compare GC3 and clonalframe
 
 cfgc_data = inner_join(cf_data, gc_data_summarised)
+
+
 
 # plot directly without any preprocessing
 cfgc_data %>% ggplot(aes(GC3, post_mean)) +
