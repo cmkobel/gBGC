@@ -16,11 +16,17 @@ I want to investigate the relationship between recombination-rate and GC3 conten
 
 I wanted to have a strong signal, so I chose the species with the strongest known relation. In Lassalle et al. 2015 they show that a linear relationship between recombination and GC3 has an R^2 = .68 for Streptococcus pyogenes. Thus I randomly selected ~60 S. pyogenes genomes from genbank, aligned the core genomes and measured the recombination for each gene. When I use kussell-lab/mcorr, I get the following results:
 
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1_spyo1.png)
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1.1_Spyo.png)
 
 _**Figure 1**: Recombination rate inferred from the core genes of 64 randomly selected S. pyogenes genomes from genbank shown against the GC3 content of each gene. Relationship missing._
 
 This figure shows that either there is no relationship, or something is wrong with the method. The problem is that mcorr most often infers that recombination is lacking (close to zero). 
+
+As a measure to make Figure 1 more comparable to the main figure in Lassalle, I made 20 bins with an equal number of genes in each, and calculated median phi_pool:
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/1.2_Spyo_20_bins.png)
+_**Figure 1.1**: Recombination rate inferred from the core genes of 64 randomly selected S. pyogenes genomes from genbank shown against the GC3 content of each gene. 20 bins. Relationship is negative at best._
+
 
 I think the problem is that even though there is recombination, it is hard to infer it from single genes. Recombination is measured using linkage-disequilibrium (LD). If the sequences are too short (average gene length 1000) means that there is not much LD to measure. If we concatenate syntenic genes and inferm recombination from these, we might have enough signal to actually measure recombination.
 
