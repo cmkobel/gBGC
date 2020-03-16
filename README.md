@@ -109,7 +109,7 @@ The other genospecies will follow soon.
 
 For each gene in the R. leguminosarum data, I inferred the recombination rate with ClonalFrameML, and independently of that I inferred the p-value of signal for recombination. Plotting these results against each other gives the following figure:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF.png)
-_**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum._
+_**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum. Blue line: linear model fit, Red line: Shrinked cubic splines_
 
 
 ## Linkage decay
