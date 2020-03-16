@@ -96,4 +96,19 @@ TODO: run ClonalFrameML on the R. legum data, compare it to PHI and discuss the 
 TODO: understand the theory behind mcorr, PHI and ClonalFrame
 
 
+[ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) uses EM and Viterbi in order to infer recombination. I ran each gene from the Rhizobium leguminosarum dataset through ClonalFrame, and plotted each genes recombination rate per mutation rate as follows:
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_raw.png)
+_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Genospecies A, unitig 0._
+
+
+In order to make the plot more comparable to the Lassalle results, I tried plotting in a small number of bins, and adding a linear line:
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cd_20_bins_lm.png)
+_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Genospecies A, unitig 0. Binned into 20 GC3-categories_
+
+The other genospecies will follow soon.
+
+
+
+
 
