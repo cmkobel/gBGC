@@ -93,12 +93,12 @@ My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into 
 [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) uses EM and Viterbi in order to infer recombination. I ran each gene from the Rhizobium leguminosarum dataset through ClonalFrame, and plotted each genes recombination rate per mutation rate as follows:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_raw.png)
-_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Genospecies A, unitig 0._
+_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Unitig 0._
 
 
 In order to make the plot more comparable to the Lassalle results, I tried plotting in a small number of bins, and adding a linear line:
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cd_20_bins_lm.png)
-_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Genospecies A, unitig 0. Binned into 20 GC3-categories_
+_**Figure 9**: Genes from the Rhizobium leguminosarum dataset. Unitig 0. Binned into 20 GC3-categories_
 
 The R^2 value is very close to the one inferred in Figure 3. It should be noted that the GC3 scale is much wider when plotting the results of ClonalFrame. That is probably because ClonalFrame is more robust. When inferring recombination with PHI, some genes cannot be successfully inferred from.
 
