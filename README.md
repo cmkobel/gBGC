@@ -53,7 +53,8 @@ Finally we get a strong signal. The R^2 are somewhat high. I think they are low 
 | B           |  32        | 
 | C           |  116       |  
 | D           |  5         |
-| E           |  11        | 
+| E           |  11        |
+_**Table 1**: Overview of the number of isolates (samples) in each genospecies._
 
 
 At this point we know that the data is OK. Thus, something must be wrong with the way we apply the mcorr recombination inference tool.
@@ -111,8 +112,12 @@ For each gene in the R. leguminosarum data, I inferred the recombination rate wi
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF_.png)
 _**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum. Blue line: linear model fit, Red line: Shrinked cubic splines_
 
+TODO: Make figure 10 logarithmic in both axes.
 
-## Linkage decay
+### Investigating the population structure in genospecies C
+
+
+### Segregating sites as a proxy for selection.
 
 
 
