@@ -53,7 +53,8 @@ Finally we get a strong signal. The R^2 are somewhat high. I think they are low 
 | B           |  32        | 
 | C           |  116       |  
 | D           |  5         |
-| E           |  11        | 
+| E           |  11        |
+_**Table 1**: Overview of the number of isolates (samples) in each genospecies._
 
 
 At this point we know that the data is OK. Thus, something must be wrong with the way we apply the mcorr recombination inference tool.
@@ -90,7 +91,7 @@ My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into 
 
 ## Relating to ClonalFrame
 
-[ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) uses EM and Viterbi in order to infer recombination. I ran each gene from the Rhizobium leguminosarum dataset through ClonalFrame, and plotted each genes recombination rate per mutation rate as follows:
+[ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) uses EM and Viterbi in order to infer recombination. Unlike mcorr, ClonalFrame is originally designed for use on single gene data. I ran each gene from the Rhizobium leguminosarum dataset through ClonalFrame, and plotted each genes recombination rate per mutation rate as follows:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_raw.png)
 _**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Unitig 0._
@@ -108,11 +109,15 @@ The other genospecies will follow soon.
 ### ClonalFrameML VS PHI
 
 For each gene in the R. leguminosarum data, I inferred the recombination rate with ClonalFrameML, and independently of that I inferred the p-value of signal for recombination. Plotting these results against each other gives the following figure:
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF.png)
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF_.png)
 _**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum. Blue line: linear model fit, Red line: Shrinked cubic splines_
 
+TODO: Make figure 10 logarithmic in both axes.
 
-## Linkage decay
+### Investigating the population structure in genospecies C
+
+
+### Segregating sites as a proxy for selection.
 
 
 
