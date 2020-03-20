@@ -279,7 +279,7 @@ cfgc_data %>%
     stat_poly_eq(formula = y~x, 
                  aes(label = paste(..rr.label..)), 
                  parse = TRUE) +
-    facet_wrap(~genospecies)
+    facet_wrap(~genospecies, scales = "free")
 ggsave("~/genomedk/gBGC/carl/log/8_cd_20_bins_lm.png")
 
 
@@ -296,7 +296,7 @@ data %>% select(post_mean, p_phi_normal) %>%
     facet_wrap(~name, scales = "free")
 
 data = inner_join(cf_data, phi_data)
-data %>% ggplot(aes(log(post_mean+.0001), -log10(p_phi_normal))) + 
+data %>% ggplot(aes(log(post_mean+0.0000000001), -log10(p_phi_normal))) + 
     geom_point(alpha = 0.5) + 
     #labs(x = "R/theta") + 
     geom_smooth(method = "lm") + 
