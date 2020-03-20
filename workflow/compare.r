@@ -43,7 +43,7 @@ gc_data_summarised %>% filter(unitig == 0) %>%
     facet_wrap(~genospecies)
 
 
-    ## ClonalFrameML
+## ClonalFrameML
 gather_cf = function(whatever = NULL) {
     cf_files = list.files(path="filtered", pattern="*clonalframe.tab", full.names=TRUE, recursive=T)
     cf_data = tibble()
@@ -287,11 +287,20 @@ ggsave("~/genomedk/gBGC/carl/log/8_cd_20_bins_lm.png")
 #### Let's compare PHI and ClonalFrame
 
 
+# compare distributions
+data %>% select(post_mean, p_phi_normal) %>% 
+    mutate(log(post_mean), log(p_phi_normal)) %>% 
+    pivot_longer(everything()) %>% # everything() is all columns
+    ggplot(aes((value))) + 
+    geom_histogram()+
+    facet_wrap(~name, scales = "free")
+
 data = inner_join(cf_data, phi_data)
-data %>% ggplot(aes(post_mean, -log(p_phi_normal))) + 
-    geom_point() + 
-    labs(x = "R/theta") + 
+data %>% ggplot(aes(log(post_mean+.0001), -log10(p_phi_normal))) + 
+    geom_point(alpha = 0.5) + 
+    #labs(x = "R/theta") + 
     geom_smooth(method = "lm") + 
-    geom_smooth(color = "red")
+    geom_smooth(color = "red") +
+    facet_wrap(~genospecies, scales = "free")
 ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF.png")
                 
