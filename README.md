@@ -119,6 +119,7 @@ _**Figure 10**: X-axis: recombination rate per mutation rate inferred with Clona
 | C           |  116       | .58     | .71             |
 | D           |  5         | .0035   | .0017           |
 | E           |  11        | .22     | .7              |
+
 _**Table 2**: Comparison of the model fits for PHI and ClonalFrameML._
 
 
