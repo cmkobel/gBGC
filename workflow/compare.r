@@ -296,11 +296,11 @@ data %>% select(post_mean, p_phi_normal) %>%
     facet_wrap(~name, scales = "free")
 
 data = inner_join(cf_data, phi_data)
-data %>% ggplot(aes(log(post_mean+0.0000000001), -log10(p_phi_normal))) + 
+data %>% ggplot(aes(log(post_mean+1e-10), -log10(p_phi_normal+1e-10))) + 
     geom_point(alpha = 0.5) + 
     #labs(x = "R/theta") + 
     geom_smooth(method = "lm") + 
     geom_smooth(color = "red") +
     facet_wrap(~genospecies, scales = "free")
-ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF.png")
+ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF_.png")
                 
