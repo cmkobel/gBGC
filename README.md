@@ -112,7 +112,16 @@ For each gene in the R. leguminosarum data, I inferred the recombination rate wi
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF_.png)
 _**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum. Blue line: linear model fit, Red line: Shrinked cubic splines_
 
-TODO: Make figure 10 logarithmic in both axes.
+| genospecies | # isolates | PHI R^2 | ClonalFrame R^2 |
+| ----------- | ----------:| -------:| ---------------:|
+| A           |  32        | .65     | .64             |
+| B           |  32        | .27     | .21             |
+| C           |  116       | .58     | .71             |
+| D           |  5         | .0035   | .0017           |
+| E           |  11        | .22     | .7              |
+_**Table 2**: Comparison of the model fits for PHI and ClonalFrameML._
+
+
 
 ### Investigating the population structure in genospecies C
 
