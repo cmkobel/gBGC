@@ -112,19 +112,24 @@ For each gene in the R. leguminosarum data, I inferred the recombination rate wi
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/9_PHIvsCF__.png)
 _**Figure 10**: X-axis: recombination rate per mutation rate inferred with ClonalFrame. Y-axis: -log(p-value) of signal for recombination inferred with PHI. Each point is a gene from the core genome of R. leguminosarum. Blue line: linear model fit, Red line: Shrinked cubic splines_
 
-| genospecies | # isolates | PHI R²  | ClonalFrame R²  |
-| ----------- | ----------:|:------- |:--------------- |
-| A           |  32        | .65     | .64             |
-| B           |  32        | .27     | .21             |
-| C           |  116       | .58     | .71             |
-| D           |  5         | .01 >   | .01 >           |
-| E           |  11        | .22     | .70             |
+| genospecies | # isolates | PHI R²   | ClonalFrame R²   |
+| ----------- | ----------:|:-------  |:---------------  |
+| A           |  32        | 0.65     | 0.64             |
+| B           |  32        | 0.27     | 0.21             |
+| C           |  116       | 0.58     | 0.71             |
+| D           |  5         | 0.01 >   | 0.01 >           |
+| E           |  11        | 0.22     | 0.70             |
 
 _**Table 2**: Comparison of linear model fits for PHI and ClonalFrameML._
 
 
 
 ### Investigating the population structure in genospecies C
+Genospecies C consists of 116 isolates (samples). I want to investigate whether the recombination/GC3 signal relationship is still there if we break genospecies C into geographical groups.
+
+Genospecies C stems from 3 geographical groups. 30 from DK, 46 from DKO and 40 from F.
+
+
 
 
 ### Segregating sites as a proxy for selection.
