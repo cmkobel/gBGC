@@ -125,6 +125,11 @@ _**Table 2**: Comparison of linear model fits for PHI and ClonalFrameML._
 
 
 ### Investigating the population structure in genospecies C
+Genospecies C consists of 116 isolates (samples). I want to investigate whether the recombination/GC3 signal relationship is still there if we break genospecies C into geographical groups.
+
+Genospecies C stems from 3 geographical groups. 30 from DK, 46 from DKO and 40 from F.
+
+
 
 
 ### Segregating sites as a proxy for selection.
