@@ -288,8 +288,8 @@ ggsave("~/genomedk/gBGC/carl/log/8_cd_20_bins_lm.png")
 
 
 # compare distributions
-data %>% select(post_mean, p_phi_normal) %>% 
-    mutate(log(post_mean), log(p_phi_normal)) %>% 
+data %>% select(post_mean, p_phi_permut, p_phi_normal) %>% 
+    mutate(log(post_mean), log(p_phi_permut), log(p_phi_normal)) %>% 
     pivot_longer(everything()) %>% # everything() is all columns
     ggplot(aes((value))) + 
     geom_histogram()+
@@ -302,5 +302,5 @@ data %>% ggplot(aes(log(post_mean+1e-10), -log10(p_phi_normal+1e-10))) +
     geom_smooth(method = "lm") + 
     geom_smooth(color = "red") +
     facet_wrap(~genospecies, scales = "free")
-ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF_.png")
+ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF__.png")
                 
