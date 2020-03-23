@@ -148,15 +148,7 @@ _**Figure 11**: Number of significantly recombining genes (PHI) per bin. There a
 
 #### Results from ClonalFrameML
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/14_cf_20_bins_lm.png)
-_**Figure 11**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
-
-
-
-
-
-
-
-
+_**Figure 12**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
 
 
 
