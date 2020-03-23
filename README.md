@@ -97,7 +97,7 @@ My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into 
 _**Figure 8A**: Genes from the Rhizobium leguminosarum dataset. Unitig 0._
 
 
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_parameter_distributions)
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_parameter_distributions.png)
 _**Figure 8B**: Distribution of the parameters from ClonalFrameML. Unitig 0._
 
 
