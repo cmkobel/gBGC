@@ -31,22 +31,10 @@ gwf = Workflow(defaults={
 
 
 
-""" 
-if not path.isdir(f'output/{title}'):
-    try:
-        subprocess.run(f'mkdir -p output/{title}; AssemblyAlignmentGenerator/AssemblyAlignmentGenerate_fe AssemblyAlignmentGenerator/assembly_summary_refseq.txt accession_list.txt output/{title} {title}', shell = True, check = True)
-    except subprocess.CalledProcessError as e:
-        print(f'\nAn error occured while initializing:\n', e)
-        sys.exit()
- """
-
 
 title_prefix = 'Rlegum' 
-genome_dir = '../Rhizobium_project_MICA/corrected_headers'
+genome_dir = '../Rhizobium_project_MICA/corrected_headers/consistent_order/0C_origin2'
 
-#bin_sizes = [1, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 40000] 
-#bin_sizes = [50000, 70000, 80000, 100000, 120000] #3
-# bin_sizes = [20000] # Added PHI
 bin_sizes = [1]
 
 
@@ -58,17 +46,15 @@ for bin_size in bin_sizes:
         genome_basename = os.path.basename(genome)
         genome_stem = os.path.splitext(genome_basename)[0]
 
-        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2'
+        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size)
 
-        if not "unitig_0" in title:
-            continue
+        #if not "unitig_0" in title:
+        #    continue
                 
 
         print(f"{genome} ({genome_stem})")
         
-        if not "unitig_0" in genome:
-            continue
-
+        
 
 
 
@@ -137,7 +123,7 @@ for bin_size in bin_sizes:
             single_gene_stem = os.path.splitext(single_gene_basename)[0]
             #print(single_gene_basename)
 
-
+            '''
             gwf.target(sanify('C_mcorr_' + title + '_' + str(num) + '_' + single_gene_stem),
                 inputs = [single_gene],
                 outputs = [f"output/{title}/split/{single_gene_stem}.csv",
@@ -161,6 +147,7 @@ for bin_size in bin_sizes:
 
         
         """
+        '''
         # Run PHI
         splitted_fas = glob.glob(f"output/{title}/split/*.fa")
         
