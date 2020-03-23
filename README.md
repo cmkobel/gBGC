@@ -134,6 +134,29 @@ _**Table 2**: Comparison of linear model fits for PHI and ClonalFrameML._
 Genospecies C consists of 116 isolates (samples). I want to investigate whether the recombination/GC3 signal relationship is still there if we break genospecies C into geographical groups.
 
 Genospecies C stems from 3 geographical groups. 30 from DK, 46 from DKO and 40 from F.
+_(I assume DK in denmark, DKO is Denmark Organic and F is Faroe islands.)_
+
+_Concern: Does it make sense to group into organic and non-organic (DK)?_
+
+#### Results from PHI
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/13_phi_permut_bin.png)
+
+_**Figure 11**: Number of significantly recombining genes (PHI) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
+
+
+
+
+#### Results from ClonalFrameML
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/14_cf_20_bins_lm.png)
+_**Figure 11**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
+
+
+
+
+
+
+
+
 
 
 
