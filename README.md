@@ -151,6 +151,10 @@ _**Figure 11**: Number of significantly recombining genes (PHI) per bin. There a
 _**Figure 12**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
 
 
+It is curious that PHI (Figure 11) and ClonalFrame (Figure 12) are so divided on the results for DK (non-organic). 
+I have a couple of ideas of how to investigate this further:
+* check if the genes that are exclusive by each method don't distort the GC3-recombination signal.
+*
 
 
 ### Segregating sites as a proxy for selection.
