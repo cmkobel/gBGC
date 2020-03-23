@@ -94,7 +94,13 @@ My conclusion is to ditch the mcorr test completely. Maybe I will go a bit into 
 [ClonalFrameML](https://github.com/xavierdidelot/ClonalFrameML) uses EM and Viterbi in order to infer recombination. Unlike mcorr, ClonalFrame is originally designed for use on single gene data. I ran each gene from the Rhizobium leguminosarum dataset through ClonalFrame, and plotted each genes recombination rate per mutation rate as follows:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_raw.png)
-_**Figure 8**: Genes from the Rhizobium leguminosarum dataset. Unitig 0._
+_**Figure 8A**: Genes from the Rhizobium leguminosarum dataset. Unitig 0._
+
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/8_cf_parameter_distributions)
+_**Figure 8B**: Distribution of the parameters from ClonalFrameML. Unitig 0._
+
+
 
 
 In order to make the plot more comparable to the Lassalle results, I tried plotting in a small number of bins, and adding a linear line:
