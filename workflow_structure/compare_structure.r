@@ -92,6 +92,7 @@ phi_data = gather_PHI()
 
 
 
+
 # Check distribution of p-values from PHI
 phi_data %>% pivot_longer(starts_with("p_")) %>% 
     ggplot(aes(value)) + 
@@ -99,7 +100,39 @@ phi_data %>% pivot_longer(starts_with("p_")) %>%
     geom_histogram()
 
 
+#### Investigating difference between CF and PHI
+# check the difference between CF and PHI
+not_in_phi = anti_join(cf_data, phi_data, by = c("gene", "genome")) %>% transmute(gene, genome, not_in_phi = T)
+not_in_cf = anti_join(phi_data, cf_data, by = c("gene", "genome")) %>% transmute(gene, genome, not_in_cf = T)
 
+
+
+# Let's start with PHI
+not_in_cf$not_in_cf %>% table
+phi_gc_data = inner_join(phi_data, gc_data_summarised) %>%
+    left_join(not_in_cf) %>% 
+    mutate(not_in_cf = if_else(is.na(not_in_cf), F, T))
+
+phi_gc_data %>%
+    ggplot(aes(GC3, -log10(p_phi_permut+1e-10), color = not_in_cf)) + 
+    geom_point(aes(size = not_in_cf), alpha = 0.3) +
+    facet_wrap(~genome) 
+ggsave("~/genomedk/gBGC/carl/log/16A_culprit_PHI_not_in_cf.png")
+
+# I guess PHI seems quite honest with only 9 missing genes relative to CF
+
+# And let's look at CF
+not_in_phi$not_in_phi %>% table
+cf_gc_data = inner_join(cf_data, gc_data_summarised) %>% 
+    left_join(not_in_phi) %>% 
+    mutate(not_in_phi = if_else(is.na(not_in_phi), F, T))
+
+cf_gc_data %>% 
+    ggplot(aes(GC3, log10(post_mean+1e-10), color = not_in_phi)) +
+    geom_point(alpha = 0.1) +
+    facet_wrap(~genome) + 
+    labs(y = "log10(R/theta+1e-10)")
+ggsave("~/genomedk/gBGC/carl/log/16B_culprit_CF_not_in_phi.png")
 
 
 
@@ -182,16 +215,34 @@ cfgc_data %>%
 ggsave("~/genomedk/gBGC/carl/log/14_cf_20_bins_lm.png")
 
 
+
+
+
+# What is the distribution of GC-content
+cfgc_data %>% 
+    ggplot(aes(GC3)) + 
+    geom_histogram() + 
+    facet_wrap(~genome)
+# And peek at that from the PHI results
+data %>% 
+    ggplot(aes(GC3)) +
+    geom_histogram() + 
+    facet_wrap(~genome)
+
+#
+
+
+
 # Let's bin more explicitly with jitter
 cfgc_data %>% 
     group_by(genome) %>% 
-    mutate(GC3_bin = cut_number(GC3, 20)) %>% 
+    mutate(GC3_bin = cut_interval(GC3, 20)) %>% 
     group_by(GC3_bin, add = T) %>% 
     mutate(mean_GC3 = mean(GC3),
            `median_R/theta` = median(post_mean)) %>%
     ungroup %>% 
     ggplot(aes(mean_GC3, `median_R/theta`)) +
-    geom_jitter(aes(mean_GC3, post_mean), alpha = 0.05, width = 0.005, height = 0) +
+    geom_jitter(aes(mean_GC3, post_mean), alpha = 0.05, width = 0.002, height = 0) +
     
     geom_point(aes(mean_GC3, `median_R/theta`), color = "blue") + 
     
@@ -201,7 +252,7 @@ cfgc_data %>%
                  aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~~")), 
                  parse = TRUE) +
     facet_wrap(~genome)
-ggsave("~/genomedk/gBGC/carl/log/12_explicit_with_jitter.png")
+ggsave("~/genomedk/gBGC/carl/log/15_explicit_with_jitter_interval.png")
 
 
 
