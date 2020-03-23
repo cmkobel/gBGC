@@ -141,14 +141,14 @@ _Concern: Does it make sense to group into organic and non-organic (DK)?_
 #### Results from PHI
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/13_phi_permut_bin.png)
 
-_**Figure 11**: Number of significantly recombining genes (PHI) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
+_**Figure 11**: Number of significantly recombining genes (PHI) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each pane represents a geographical group._
 
 
 
 
 #### Results from ClonalFrameML
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/14_cf_20_bins_lm.png)
-_**Figure 12**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each group represents a geographical group._
+_**Figure 12**: Median recombination rate per mutation rate (ClonalFrameML) per bin. There are 20 bins with an equal number of genes in each. The genes are from genospecies C, unitig 0 from Rhizobium leguminosarum, where each pane represents a geographical group._
 
 
 It is curious that PHI (Figure 11) and ClonalFrame (Figure 12) are so divided on the results for DK (non-organic). 
