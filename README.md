@@ -169,6 +169,7 @@ My interpretation of this plot is that most genes have been skipped in 0C_DK. Th
 
 The reason why these genes are not included in the PHI test is that the individual genes do not have enough informative sites to test significance.
 
+The conclusion then must be that ClonalFrameML has more power than PHI.
 
 
 
