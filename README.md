@@ -192,6 +192,14 @@ There doesn't seem to be any correlation between the two covariates here.
 Because the variation in the number of informative sites can be structured differently between geographical groups, it might be possible to get a clearer signal by stratifying these groups:
 
 
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/20_GC_infsites_0C.png)
+_**Figure 14**: Informative sites (log-transformed) against GC3 for each gene in the core genome of Rhizobium leguminosarum. Each pane represents a geographical group from genospecies C._
+
+Stratifying into geographical groups does not change the lack of correlation between GC3 and the number of infinite sites.
+
+
+_Problem: PHI only calculates the number of informative sites on genes that have enough informative sites to be able to say significantly if recombination is happening or not. This impacts a major bias on genes with a low number of informative sites. This analysis needs to be redone._ 
+
 
 
 
