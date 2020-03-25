@@ -136,7 +136,7 @@ Genospecies C consists of 116 isolates (samples). I want to investigate whether 
 Genospecies C stems from 3 geographical groups. 30 from DK, 46 from DKO and 40 from F.
 _(I assume DK in denmark, DKO is Denmark Organic and F is Faroe islands.)_
 
-_Concern: Does it make sense to group into organic and non-organic (DK)?_
+_Concern: DK and DKO are in geographically close proximity to each other. Does it make sense to group into organic and non-organic (DK)?_
 
 #### Results from PHI
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/13_phi_permut_bin.png)
@@ -156,14 +156,17 @@ It is curious that PHI (Figure 11) and ClonalFrame (Figure 12) are so divided on
 It got me thinking that it might be because ClonalFrameML is able to infer recombination from a lot more genes than PHI is. In this specific dataset for genospecies C, I have 9990 genes. ClonalFrameML successfully infers recombination from 9890 of these (100 missing) whereas PHI is only able to successfully infer recombination from 8551 of these (1439 missing) which is quite a lot. I want to investigate whether the 1439 genes missing from the PHI analysis are somehow confounding a stronger relationship between GC3 and recombination. Thus I made the following two plots: (figure 13A and 13B)
 
 
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16A_culprit_PHI_not_in_cf_.png)
-_**Figure 13A**: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with PHI. The red points are the genes (n = 9) that could not be successfully analysed with ClonalFrameML. In order to highlight the location of these genes in the plot, the size has been raised on these. 
+
+<img src="https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16A_culprit_PHI_not_in_cf_.png" alt="drawing" width="600"/>
+
+_**Figure 13A**: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with PHI. The red points are the genes (n = 9) that could not be successfully analysed with ClonalFrameML. In order to highlight the location of these genes in the plot, the size has been raised on these._
 
 My interpretation of this plot is that the number of genes that are included in ClonalFrameML but missing from PHI are very few and widespread
 
 
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16B_culprit_CF_not_in_phi_.png)
-_**Figure 13B**: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with ClonalFrameML. The red points are the genes (n = 1348) that could not be successfully analysed with PHI. 
+<img src="https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16B_culprit_CF_not_in_phi_.png" alt="drawing" width="600"/>
+
+*__Figure 13B__: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with ClonalFrameML. The red points are the genes (n = 1348) that could not be successfully analysed with PHI.*
 
 My interpretation of this plot is that most genes have been skipped in 0C_DK. This might explain why the model fits have such different measures of power (R^2) between the two methods in this geographical group
 
@@ -175,7 +178,19 @@ The conclusion then must be that ClonalFrameML has more power than PHI.
 
 
 
-### Segregating sites as a proxy for selection.
+### Segregating sites
+
+In bacteria, due to gBGC newly incorporated (recombined) genomic fragments might have a higher GC-content than the original genes. We know that newly recombined genes are still segregating in the population. Thus, we can investigate this relationship by showing how the number of informative sites correlates with GC3.
+
+Because the number of informative sites per gene is exponentially distributed, we will visualize it with log-transformation.
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/17_GC_infsites.png)
+_**Figure 14**: Informative sites (log-transformed) against GC3 for each gene in the core genome of Rhizobium leguminosarum. Each pane represents a genospecies._
+
+There doesn't seem to be any correlation between the two covariates here.
+
+Because the variation in the number of informative sites can be structured differently between geographical groups, it might be possible to get a clearer signal by stratifying these groups:
+
 
 
 
