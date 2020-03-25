@@ -136,7 +136,7 @@ Genospecies C consists of 116 isolates (samples). I want to investigate whether 
 Genospecies C stems from 3 geographical groups. 30 from DK, 46 from DKO and 40 from F.
 _(I assume DK in denmark, DKO is Denmark Organic and F is Faroe islands.)_
 
-_Concern: Does it make sense to group into organic and non-organic (DK)?_
+_Concern: DK and DKO are in geographically close proximity to each other. Does it make sense to group into organic and non-organic (DK)?_
 
 #### Results from PHI
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/13_phi_permut_bin.png)
