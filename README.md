@@ -177,13 +177,14 @@ The conclusion then must be that ClonalFrameML has more power than PHI.
 
 ### Segregating sites
 
-In bacteria, due to gBGC newly incorporated (recombined) genomic fragments might have a higher GC-content than the original genes. We know that newly recombined genes are still segregating in the population. Thus, we can investigate this relationship by how the number of informative sites correlates with GC3.
+In bacteria, due to gBGC newly incorporated (recombined) genomic fragments might have a higher GC-content than the original genes. We know that newly recombined genes are still segregating in the population. Thus, we can investigate this relationship by showing how the number of informative sites correlates with GC3.
 
 Because the number of informative sites per gene is exponentially distributed, we will visualize it with log-transformation.
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/17_GC_infsites.png)
 _**Figure 14**: Informative sites (log-transformed) against GC3 for each gene in the core genome of Rhizobium leguminosarum. Each pane represents a genospecies._
 
+There doesn't seem to be any correlation between the two covariates here.
 
 
 
