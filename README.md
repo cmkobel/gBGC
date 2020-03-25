@@ -158,12 +158,14 @@ It got me thinking that it might be because ClonalFrameML is able to infer recom
 
 
 <img src="https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16A_culprit_PHI_not_in_cf_.png" alt="drawing" width="600"/>
+
 _**Figure 13A**: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with PHI. The red points are the genes (n = 9) that could not be successfully analysed with ClonalFrameML. In order to highlight the location of these genes in the plot, the size has been raised on these. 
 
 My interpretation of this plot is that the number of genes that are included in ClonalFrameML but missing from PHI are very few and widespread
 
 
 <img src="https://raw.githubusercontent.com/cmkobel/gBGC/master/log/16B_culprit_CF_not_in_phi_.png" alt="drawing" width="600"/>
+
 _**Figure 13B**: Raw relationship (raw in the sense that I usually plot with some 20 bins) between GC3 and recombination as inferred with ClonalFrameML. The red points are the genes (n = 1348) that could not be successfully analysed with PHI. 
 
 My interpretation of this plot is that most genes have been skipped in 0C_DK. This might explain why the model fits have such different measures of power (R^2) between the two methods in this geographical group
