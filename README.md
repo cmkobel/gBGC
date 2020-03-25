@@ -167,7 +167,10 @@ _**Figure 13B**: Raw relationship (raw in the sense that I usually plot with som
 
 My interpretation of this plot is that most genes have been skipped in 0C_DK. This might explain why the model fits have such different measures of power (R^2) between the two methods in this geographical group
 
-A have yet to investigate why some of the genes are only successfully analysed in one of the two methods.
+The reason why these genes are not included in the PHI test is that the individual genes do not have enough informative sites to test significance.
+
+The conclusion then must be that ClonalFrameML has more power than PHI.
+
 
 
 
