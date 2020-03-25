@@ -33,7 +33,9 @@ gwf = Workflow(defaults={
 
 
 title_prefix = 'Rlegum' 
-genome_dir = '../Rhizobium_project_MICA/corrected_headers/consistent_order/0C_origin2'
+genome_dir = '../Rhizobium_project_MICA/corrected_headers/consistent_order/0C_origin2' # Only 0C structured on Origin2 in soiltypes.
+genome_dir = '../Rhizobium_project_MICA/corrected_headers' # Per genospecies
+
 
 bin_sizes = [1]
 
@@ -46,10 +48,13 @@ for bin_size in bin_sizes:
         genome_basename = os.path.basename(genome)
         genome_stem = os.path.splitext(genome_basename)[0]
 
-        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size)
+        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size)  # 0C structured
+        title = title_prefix + '_' + str(genome_stem) + '_' + str(bin_size) + '_2' # per genospecies
 
-        #if not "unitig_0" in title:
-        #    continue
+
+        # per genospecies
+        if not "unitig_0" in title:
+            continue
                 
 
         print(f"{genome} ({genome_stem})")
@@ -186,12 +191,12 @@ for bin_size in bin_sizes:
             rm -r {single_gene_stem}_temp
             # collect results in tab file 
             cat {single_gene_stem}_phiresult.txt | sed 's/NSS/NSS NA/g' | grep -E "^NSS|^Max|^PHI" | awk '{{print $1 "\t" $2 "\t" $3 "\t{genome_stem}\t{single_gene_stem}"}}' > {single_gene_stem}_phiresult.tab
-            echo -e "infsites\\t\\t"$(grep -E "Found [0-9]+ informative sites\\." {single_gene_stem}_phi.txt | grep -oE "[0-9]+")"\\t\\t{single_gene_stem}" >> {single_gene_stem}_phiresult.tab
+            echo -e "infsites\\t\\t"$(grep -E "Found [0-9]+ informative sites\\." {single_gene_stem}_phi.txt | grep -oE "[0-9]+")"\\t{genome_stem}\\t{single_gene_stem}" >> {single_gene_stem}_phiresult.tab
 
 
 
             """
-            break
+            
             
             # Clonalframe also uses .fa files, thus it can use the same single_gene* variables as PHI
             gwf.target(sanify('C_cf_' + title + '_' + str(num) + '_' + single_gene_stem),
