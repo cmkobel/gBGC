@@ -189,6 +189,9 @@ _**Figure 14**: Informative sites (log-transformed) against GC3 for each gene in
 
 There doesn't seem to be any correlation between the two covariates here.
 
+Because the variation in the number of informative sites can be structured differently between geographical groups, it might be possible to get a clearer signal by stratifying these groups:
+
+
 
 
 
