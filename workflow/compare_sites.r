@@ -135,7 +135,7 @@ phi_gc_data = inner_join(phi_data, gc_data_summarised)
 # todo: include lengths of genes
 phi_gc_data %>% ggplot(aes(log(infsites+1e-10), GC3)) +
     geom_point(alpha = 0.2) + 
-    facet_wrap(~genospecies) 
+    facet_wrap(~genospecies)
 ggsave("~/genomedk/gBGC/carl/log/17_GC_infsites.png", height = height, width = width)
 
 
@@ -152,10 +152,8 @@ cf_phi_data = phi_gc_data %>% select(gene, unitig, genospecies, infsites) %>%
     inner_join(cf_data)
 
     cf_phi_data %>% ggplot(aes(log10(infsites+1e-10), log10(post_mean+1e-10))) + 
-    geom_point() + 
-    geom_smooth(method = 'lm') + 
-    annotate_r_squared
-
+    geom_point() 
+ggsave("~/genomedk/gBGC/carl/log/19_cf_infsites.png")
 
 rm(cf_phi_data)
 
