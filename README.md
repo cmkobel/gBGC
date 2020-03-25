@@ -198,7 +198,7 @@ _**Figure 14**: Informative sites (log-transformed) against GC3 for each gene in
 Stratifying into geographical groups does not change the lack of correlation between GC3 and the number of infinite sites.
 
 
-_Problem: PHI only calculates the number of informative sites on genes that have enough informative sites to be able to say significantly if recombination is happening or not. This impacts a major bias on genes with a low number of informative sites. This analysis needs to be redone._ 
+_Problem: PHI only calculates the number of informative sites on genes that have enough informative sites to be able to say significantly if recombination is happening or not. This impacts a major bias on genes with a low number of informative sites. This analysis needs to be redone. Another thing is that I need to include the lengths of the gene._ 
 
 
 
