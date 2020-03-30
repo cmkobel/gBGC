@@ -202,4 +202,7 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 
 
+## Recombination over the genome.
+
+
 
