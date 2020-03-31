@@ -204,5 +204,7 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 ## Recombination over the genome.
 
+First thing I had to reconstruct core genomes from the xmfa-files. By interleaving a gff-file, I can loop through the 
+
 
 
