@@ -202,9 +202,11 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 
 
-## Recombination over the genome.
+## How is recombination (and GC) distributed over the genome.
 
-First thing I had to reconstruct core genomes from the xmfa-files. By interleaving a gff-file, I can loop through the 
+First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. I ran PHI with 100bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Then I tried visualizing, but not with much success.
+
+
 
 
 
