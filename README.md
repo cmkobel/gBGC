@@ -204,9 +204,13 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 ## How is recombination (and GC) distributed over the genome.
 
-First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. I ran PHI with 100bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Then I tried visualizing, but not with much success.
+First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. I ran PHI with 100bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Visualizing without further tweaking gives the following results:
 
 
+_[**Figure 16**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/30_recomb.png) Recombination inferred in windows throughout the chromosome (unitig 0) for all genospecies._
+
+
+_[**Figure 17**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/31_gc.png) Recombination in windows throughout the chromosome (unitig 0) for all genospecies._
 
 
 
