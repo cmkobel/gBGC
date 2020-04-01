@@ -224,5 +224,5 @@ _Idea:_ It could be interesting to look into the genes located in the long regio
 
 _Concern about p-values equal to zero and multiple testing:_ When we adjust for multiple testing (dividing significance threshold by number of tests), we offset the distribution of p-values. The problem is, that when many p-values are equal to zero, which they are in our case, multiple test adjustments have no effect. This effectively means that the number of significantly recombining genes is inflated. This is why I have 20000 to 60000 significantly recombining genes in each genospecies.
 
-The solution to this problem is to use ClonalFrameML instead. 
+The solution to this problem is to use ClonalFrameML instead, or to increase _w_ in PHI such that more linked sites will be taken into account.
 
