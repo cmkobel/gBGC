@@ -218,7 +218,7 @@ Binning into 500 bins gives the following much more readable plots:
 _[**Figure 18**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for all genospecies._
 
 
-_Concern about p-values equal to zero and multiple testing:_ When we adjust for multiple testing (dividing significance threshold by number of tests), we offset the distribution of p-values. The problem is, that when many p-values are equal to zero, which they are in our case, multiple test adjustments have no effect. This effectively means that the number of significantly recombining genes is inflated.
+_Concern about p-values equal to zero and multiple testing:_ When we adjust for multiple testing (dividing significance threshold by number of tests), we offset the distribution of p-values. The problem is, that when many p-values are equal to zero, which they are in our case, multiple test adjustments have no effect. This effectively means that the number of significantly recombining genes is inflated. This is why I have 20000 to 60000 significantly recombining genes in each genospecies.
 
 The solution to this problem is to use ClonalFrameML instead. 
 
