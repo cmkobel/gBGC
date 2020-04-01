@@ -204,7 +204,9 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 ## How is recombination (and GC) distributed over the genome.
 
-First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. I ran PHI with 100bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Visualizing without further tweaking gives the following results:
+First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. It should be noted that it is non-trivial to retain the open reading frame when reconstructing the chromosomes. I ran PHI with 1000bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Visualizing without further tweaking gives the following results:
+
+
 
 
 _[**Figure 16**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/30_recomb.png) Recombination inferred in windows throughout the chromosome (unitig 0) for all genospecies._
@@ -213,4 +215,14 @@ _[**Figure 16**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/30_r
 _[**Figure 17**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/31_gc.png) Recombination in windows throughout the chromosome (unitig 0) for all genospecies._
 
 
+Binning into 500 bins on the position (horizonthal axis) gives the following much more readable plots:
+
+
+_[**Figure 18**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for all genospecies._
+
+_Idea:_ It could be interesting to look into the genes located in the long regions of high recombination. Curiously, the GC3-content is low in these regions.
+
+_Concern about p-values equal to zero and multiple testing:_ When we adjust for multiple testing (dividing significance threshold by number of tests), we offset the distribution of p-values. The problem is, that when many p-values are equal to zero, which they are in our case, multiple test adjustments have no effect. This effectively means that the number of significantly recombining genes is inflated. This is why I have 20000 to 60000 significantly recombining genes in each genospecies.
+
+The solution to this problem is to use ClonalFrameML instead. 
 
