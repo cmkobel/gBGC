@@ -226,3 +226,5 @@ _Concern about p-values equal to zero and multiple testing:_ When we adjust for 
 
 The solution to this problem is to use ClonalFrameML instead, or to increase _w_ in PHI such that a bigger incompatibility matrix is computed and more linked sites are taken into account.
 
+And maybe use reads and align directly to the reference instead of this xmfa-to-mfa reconstruction mess.
+
