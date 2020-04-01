@@ -215,7 +215,7 @@ _[**Figure 16**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/30_r
 _[**Figure 17**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/31_gc.png) Recombination in windows throughout the chromosome (unitig 0) for all genospecies._
 
 
-Binning into 500 bins gives the following much more readable plots:
+Binning into 500 bins on the position (horizonthal axis) gives the following much more readable plots:
 
 
 _[**Figure 18**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for all genospecies._
