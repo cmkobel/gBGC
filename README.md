@@ -215,6 +215,6 @@ _[**Figure 17**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/31_g
 
 Binning into 500 bins gives the following much more readable plots:
 
-_[**Figure 17**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for all genospecies._
+_[**Figure 18**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for all genospecies._
 
 
