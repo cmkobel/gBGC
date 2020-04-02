@@ -219,10 +219,13 @@ Binning into 500 bins on the position (horizonthal axis) gives the following muc
 
 
 _[**Figure 18**:](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/32_C_recomb_gc.png) Recombination in 500 bins throughout the chromosome (unitig 0) for genospecies C._
+(Visually, there is no difference between the genospecies. Thus this single figure will suffice as a representative.)
 
 _Idea:_ It could be interesting to look into the genes located in the long regions of high recombination. Curiously, the GC3-content is low in these regions.
 
 _Concern about p-values equal to zero and multiple testing:_ When we adjust for multiple testing (dividing significance threshold by number of tests), we offset the distribution of p-values. The problem is, that when many p-values are equal to zero, which they are in our case, multiple test adjustments have no effect. This effectively means that the number of significantly recombining genes is inflated. This is why I have 20000 to 60000 significantly recombining genes in each genospecies.
 
 The solution to this problem is to use ClonalFrameML instead, or to increase _w_ in PHI such that a bigger incompatibility matrix is computed and more linked sites are taken into account.
+
+And maybe use reads and align directly to the reference instead of this xmfa-to-mfa reconstruction mess.
 
