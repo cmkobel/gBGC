@@ -203,6 +203,7 @@ _Problem: PHI only calculates the number of informative sites on genes that have
 
 
 ## How is recombination (and GC) distributed over the genome.
+### Scanning method
 
 First thing I had to reconstruct core genomes from the xmfa-files. This is done using the reference annotation. It should be noted that it is non-trivial to retain the open reading frame when reconstructing the chromosomes. I ran PHI with 1000bp long windows with a step size of 25 bp. I used the bundled 'Profile' program. Visualizing without further tweaking gives the following results:
 
@@ -228,4 +229,12 @@ _Concern about p-values equal to zero and multiple testing:_ When we adjust for 
 The solution to this problem is to use ClonalFrameML instead, or to increase _w_ in PHI such that a bigger incompatibility matrix is computed and more linked sites are taken into account.
 
 And maybe use reads and align directly to the reference instead of this xmfa-to-mfa reconstruction mess.
+
+
+### Per gene method
+Scanning the chromosome for recombination and GC3 proved itself problematic and unnecessary. By plotting recombination inferred instead with ClonalFrame and GC3 per gene is shown in the following figure:
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_small.png)
+_**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median are teal in all panes. Below the median GC3 they are red. _
+Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc.png)
 
