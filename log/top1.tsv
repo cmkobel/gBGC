@@ -1,81 +1,81 @@
-genospecies	unitig	gene_group	R/theta	Var(R/theta)	start	end	length	product
-A	0	group4843	2.37692	0.129658	2317535	2318416	881	transcriptional regulator%2C AraC family
-A	0	group3384	2.25471	0.175404	853262	853534	272	hypothetical protein
-A	0	group2727	2.01551	0.151256	155684	156757	1073	transcriptional regulator%2C AraC family
-A	0	group3299	2.0131	0.156703	752934	753653	719	ABC transporter related
-A	0	group2646	1.95278	0.160158	79687	80406	719	adenylate/guanylate cyclase
-A	0	group3029	1.88769	0.0800767	472898	474283	1385	Aldehyde Dehydrogenase
-A	0	group2860	1.71551	0.123499	294038	295093	1055	periplasmic solute binding protein
-A	0	group4626	1.70169	0.0983079	2086766	2087749	983	UDP-glucose 4-epimerase
-A	0	group3095	1.60787	0.0836217	529074	529811	737	hypothetical protein
-A	0	group4277	1.59486	0.124294	1774094	1775503	1409	3-isopropylmalate dehydratase%2C large subunit
-A	0	group4191	1.58105	0.123338	1868303	1868875	572	NADPH-dependent FMN reductase
-A	0	group3083	1.57686	0.0974105	521843	522562	719	transcriptional regulator%2C Crp/Fnr family
-A	0	group4164	1.52424	0.0555533	1910054	1910602	548	GCN5-related N-acetyltransferase
-A	0	group4817	1.52221	0.0989148	2283779	2284762	983	Rubrerythrin
-A	0	group3998	1.46439	0.117446	1356819	1357850	1031	transcriptional regulator%2C LacI family
-A	0	group3550	1.45721	0.113153	1062611	1064353	1742	Citrate transporter
-B	0	group3389	0.839253	0.0614718	856209	857258	1049	Haemin-degrading family protein
-B	0	group4131	0.801879	0.0699597	1942787	1943479	692	ABC transporter related
-B	0	group5931	0.764708	0.0561549	1672382	1673479	1097	agmatinase
-B	0	group2928	0.758219	0.0578391	360095	361603	1508	DNA-binding protein
-B	0	group4642	0.69771	0.0663948	2105590	2106687	1097	oxidoreductase domain protein
-B	0	group4275	0.684735	0.0574769	1776262	1777092	830	2%2C5-didehydrogluconate reductase
-B	0	group3392	0.67808	0.0618481	860273	860617	344	hypothetical protein
-B	0	group2764	0.669411	0.060097	197061	197273	212	hypothetical protein
-B	0	group4717	0.658099	0.0527014	2187185	2187880	695	phosphonate metabolism protein
-B	0	group3111	0.630597	0.0582209	552304	555792	3488	carbamoyl-phosphate synthase%2C large subunit
-B	0	group4257	0.597518	0.0457745	1794764	1796272	1508	extracellular solute-binding protein family 5
-B	0	group3718	0.596353	0.0548208	1232818	1234779	1961	5'-Nucleotidase domain protein
-B	0	group4755	0.584038	0.0519058	2223581	2224888	1307	thymidine phosphorylase
-B	0	group4843	0.583688	0.0509691	2317535	2318416	881	transcriptional regulator%2C AraC family
-B	0	group3604	0.58249	0.0458036	1121430	1123376	1946	ATP-dependent metalloprotease FtsH
-B	0	group3101	0.566941	0.0468095	536313	537041	728	Methyltransferase type 11
-C	0	group4884	3.38149	0.258998	2352237	2353217	980	NAD-dependent epimerase/dehydratase
-C	0	group4277	2.85853	0.184723	1774094	1775503	1409	3-isopropylmalate dehydratase%2C large subunit
-C	0	group4628	2.353	0.134922	2089653	2090174	521	hypothetical protein
-C	0	group4785	2.26265	0.1546	2257719	2259011	1292	membrane protein
-C	0	group4795	2.23703	0.159296	2265775	2266353	578	transferase hexapeptide repeat containing protein
-C	0	group2653	2.23654	0.11149	88876	91650	2774	Hemolysin-type calcium-binding region
-C	0	group5931	2.14638	0.0971947	1672382	1673479	1097	agmatinase
-C	0	group4794	2.10224	0.143495	2264940	2265692	752	Cephalosporin hydroxylase
-C	0	group2924	2.04293	0.158721	352721	353569	848	aldo/keto reductase
-C	0	group3029	2.0261	0.0751254	472898	474283	1385	Aldehyde Dehydrogenase
-C	0	group4186	2.0204	0.130058	1877042	1878280	1238	putative protein required for succinylation of osmoregulated periplasmic glucans
-C	0	group4907	1.98002	0.143709	2371837	2372238	401	glutathione-dependent formaldehyde-activating GFA
-C	0	group4335	1.96818	0.154836	1716100	1716807	707	uroporphyrinogen III synthase
-C	0	group4177	1.87181	0.141233	1895840	1897381	1541	ABC transporter related
-C	0	group2654	1.80644	0.145288	91736	92047	311	antibiotic biosynthesis monooxygenase
-C	0	group4134	1.80341	0.0734024	1938503	1939183	680	phosphoesterase PA-phosphatase related
-D	0	group3029	0.634874	0.0462107	472898	474283	1385	Aldehyde Dehydrogenase
-D	0	group3028	0.462252	0.0450305	471750	472901	1151	iron-containing alcohol dehydrogenase
-D	0	group4655	0.453529	0.0386044	2123261	2123908	647	cytidylate kinase
-D	0	group3705	0.451325	0.0407856	1218031	1219470	1439	pyruvate kinase
-D	0	group3273	0.401487	0.0387618	718567	718758	191	hypothetical protein
-D	0	group2924	0.389976	0.0379113	352721	353569	848	aldo/keto reductase
-D	0	group4908	0.382823	0.0353981	2372305	2373834	1529	peptidase S10 serine carboxypeptidase
-D	0	group3712	0.381478	0.0308732	1223841	1225385	1544	two component%2C sigma54 specific%2C transcriptional regulator%2C Fis family
-D	0	group2599	0.380493	0.0333083	40219	40911	692	transcriptional regulator%2C GntR family
-D	0	group4038	0.377469	0.0353212	1397618	1398616	998	ABC transporter related
-D	0	group2727	0.375948	0.0348382	155684	156757	1073	transcriptional regulator%2C AraC family
-D	0	group2967	0.374425	0.0350719	402880	403125	245	hypothetical protein
-D	0	group3061	0.368483	0.0364809	506860	508785	1925	glycosyhydrolase
-D	0	group3296	0.366992	0.0362692	749241	750143	902	fatty acid hydroxylase
-D	0	group3603	0.361316	0.0350407	1119836	1121188	1352	phosphoglucosamine mutase
-D	0	group2647	0.35923	0.0340592	80494	80877	383	glutathione-dependent formaldehyde-activating GFA
-E	0	group3741	1.12986	0.0971036	1261894	1262937	1043	porin
-E	0	group4186	0.983212	0.080252	1877042	1878280	1238	putative protein required for succinylation of osmoregulated periplasmic glucans
-E	0	group3005	0.932588	0.07232	447155	448366	1211	phosphofructokinase
-E	0	group4892	0.828376	0.0684511	2358535	2359023	488	cupin
-E	0	group3416	0.817349	0.0708585	890340	891023	683	transcriptional regulator%2C Crp/Fnr family
-E	0	group4141	0.807829	0.0687263	1933110	1933316	206	hypothetical protein
-E	0	group3204	0.779659	0.0670324	643083	643991	908	metallophosphoesterase
-E	0	group4402	0.761591	0.0621181	1636472	1638100	1628	glycoside hydrolase family 39
-E	0	group2837	0.757789	0.0730503	273573	273941	368	Deoxynogalonate monooxygenase
-E	0	group2647	0.740576	0.0593648	80494	80877	383	glutathione-dependent formaldehyde-activating GFA
-E	0	group3335	0.684657	0.039754	799307	800197	890	exopolysaccharide production protein
-E	0	group4030	0.682693	0.0557135	1387463	1388488	1025	LacI family transcriptional regulator
-E	0	group2881	0.640911	0.0612387	312889	313947	1058	aldo/keto reductase
-E	0	group3760	0.630769	0.0494946	1284608	1285807	1199	von Willebrand factor type A
-E	0	group3237	0.627804	0.0560693	678692	679795	1103	Extracellular ligand-binding receptor
-E	0	group3304	0.627731	0.0546342	758683	759507	824	transglutaminase domain protein
+genospecies	unitig	gene_group	R/theta	Var(R/theta)	start	end	length	product	Putative function
+A	0	group4843	2.37692	0.129658	2317535	2318416	881	transcriptional regulator%2C AraC family	 GMP synthase%2C large subunit
+A	0	group3384	2.25471	0.175404	853262	853534	272	hypothetical protein	 transcriptional regulator
+A	0	group2727	2.01551	0.151256	155684	156757	1073	transcriptional regulator%2C AraC family	 cytochrome c oxidase%2C subunit I
+A	0	group3299	2.0131	0.156703	752934	753653	719	ABC transporter related	 ROK family protein
+A	0	group2646	1.95278	0.160158	79687	80406	719	adenylate/guanylate cyclase	 TIM-barrel protein%2C yjbN family
+A	0	group3029	1.88769	0.0800767	472898	474283	1385	Aldehyde Dehydrogenase	 methionine synthase
+A	0	group2860	1.71551	0.123499	294038	295093	1055	periplasmic solute binding protein	 binding-protein-dependent transport systems inner membrane component
+A	0	group4626	1.70169	0.0983079	2086766	2087749	983	UDP-glucose 4-epimerase	 FAD dependent oxidoreductase
+A	0	group3095	1.60787	0.0836217	529074	529811	737	hypothetical protein	 carbamoyl-phosphate synthase%2C large subunit
+A	0	group4277	1.59486	0.124294	1774094	1775503	1409	3-isopropylmalate dehydratase%2C large subunit	 MlrC domain protein
+A	0	group4191	1.58105	0.123338	1868303	1868875	572	NADPH-dependent FMN reductase	 sulfatase
+A	0	group3083	1.57686	0.0974105	521843	522562	719	transcriptional regulator%2C Crp/Fnr family	 DNA primase
+A	0	group4164	1.52424	0.0555533	1910054	1910602	548	GCN5-related N-acetyltransferase	 DNA polymerase III%2C alpha subunit
+A	0	group4817	1.52221	0.0989148	2283779	2284762	983	Rubrerythrin	 hypothetical protein
+A	0	group3998	1.46439	0.117446	1356819	1357850	1031	transcriptional regulator%2C LacI family	 Aldehyde Dehydrogenase
+A	0	group3550	1.45721	0.113153	1062611	1064353	1742	Citrate transporter	 hypothetical protein
+B	0	group3389	0.839253	0.0614718	856209	857258	1049	Haemin-degrading family protein	 putative PAS/PAC sensor protein
+B	0	group4131	0.801879	0.0699597	1942787	1943479	692	ABC transporter related	 AMP-dependent synthetase and ligase
+B	0	group5931	0.764708	0.0561549	1672382	1673479	1097	agmatinase	 adenine deaminase
+B	0	group2928	0.758219	0.0578391	360095	361603	1508	DNA-binding protein	 hypothetical protein
+B	0	group4642	0.69771	0.0663948	2105590	2106687	1097	oxidoreductase domain protein	 hypothetical protein
+B	0	group4275	0.684735	0.0574769	1776262	1777092	830	2%2C5-didehydrogluconate reductase	 extracellular solute-binding protein family 5
+B	0	group3392	0.67808	0.0618481	860273	860617	344	hypothetical protein	 dihydropyrimidinase
+B	0	group2764	0.669411	0.060097	197061	197273	212	hypothetical protein	 transcriptional regulator%2C LysR family
+B	0	group4717	0.658099	0.0527014	2187185	2187880	695	phosphonate metabolism protein	 extracellular solute-binding protein family 5
+B	0	group3111	0.630597	0.0582209	552304	555792	3488	carbamoyl-phosphate synthase%2C large subunit	 LysR family transcriptional regulator
+B	0	group4257	0.597518	0.0457745	1794764	1796272	1508	extracellular solute-binding protein family 5	 glycoside hydrolase family 2 sugar binding protein
+B	0	group3718	0.596353	0.0548208	1232818	1234779	1961	5'-Nucleotidase domain protein	 histidinol-phosphate phosphatase
+B	0	group4755	0.584038	0.0519058	2223581	2224888	1307	thymidine phosphorylase	 Leucyl aminopeptidase
+B	0	group4843	0.583688	0.0509691	2317535	2318416	881	transcriptional regulator%2C AraC family	 GMP synthase%2C large subunit
+B	0	group3604	0.58249	0.0458036	1121430	1123376	1946	ATP-dependent metalloprotease FtsH	 methyl-accepting chemotaxis sensory transducer
+B	0	group3101	0.566941	0.0468095	536313	537041	728	Methyltransferase type 11	 histidine kinase
+C	0	group4884	3.38149	0.258998	2352237	2353217	980	NAD-dependent epimerase/dehydratase	 deoxyuridine 5'-triphosphate nucleotidohydrolase
+C	0	group4277	2.85853	0.184723	1774094	1775503	1409	3-isopropylmalate dehydratase%2C large subunit	 MlrC domain protein
+C	0	group4628	2.353	0.134922	2089653	2090174	521	hypothetical protein	 Glucuronate isomerase
+C	0	group4785	2.26265	0.1546	2257719	2259011	1292	membrane protein	 glutamine amidotransferase class-I
+C	0	group4795	2.23703	0.159296	2265775	2266353	578	transferase hexapeptide repeat containing protein	 histone deacetylase superfamily protein
+C	0	group2653	2.23654	0.11149	88876	91650	2774	Hemolysin-type calcium-binding region	 integral membrane sensor signal transduction histidine kinase
+C	0	group5931	2.14638	0.0971947	1672382	1673479	1097	agmatinase	 adenine deaminase
+C	0	group4794	2.10224	0.143495	2264940	2265692	752	Cephalosporin hydroxylase	 HAD-superfamily hydrolase%2C subfamily IA%2C variant 3
+C	0	group2924	2.04293	0.158721	352721	353569	848	aldo/keto reductase	 Thymidylate synthase
+C	0	group3029	2.0261	0.0751254	472898	474283	1385	Aldehyde Dehydrogenase	 methionine synthase
+C	0	group4186	2.0204	0.130058	1877042	1878280	1238	putative protein required for succinylation of osmoregulated periplasmic glucans	 hypothetical protein
+C	0	group4907	1.98002	0.143709	2371837	2372238	401	glutathione-dependent formaldehyde-activating GFA	 Allantoinase
+C	0	group4335	1.96818	0.154836	1716100	1716807	707	uroporphyrinogen III synthase	 Argininosuccinate synthase
+C	0	group4177	1.87181	0.141233	1895840	1897381	1541	ABC transporter related	 gamma-glutamyl phosphate reductase
+C	0	group2654	1.80644	0.145288	91736	92047	311	antibiotic biosynthesis monooxygenase	 two component transcriptional regulator%2C winged helix family
+C	0	group4134	1.80341	0.0734024	1938503	1939183	680	phosphoesterase PA-phosphatase related	 acetyl-CoA synthetase
+D	0	group3029	0.634874	0.0462107	472898	474283	1385	Aldehyde Dehydrogenase	 methionine synthase
+D	0	group3028	0.462252	0.0450305	471750	472901	1151	iron-containing alcohol dehydrogenase	 transcriptional regulator%2C GntR family
+D	0	group4655	0.453529	0.0386044	2123261	2123908	647	cytidylate kinase	 translation initiation factor IF-2
+D	0	group3705	0.451325	0.0407856	1218031	1219470	1439	pyruvate kinase	 KpsF/GutQ family protein
+D	0	group3273	0.401487	0.0387618	718567	718758	191	hypothetical protein	 5-methylaminomethyl-2-thiouridine methyltransferase
+D	0	group2924	0.389976	0.0379113	352721	353569	848	aldo/keto reductase	 Thymidylate synthase
+D	0	group4908	0.382823	0.0353981	2372305	2373834	1529	peptidase S10 serine carboxypeptidase	 histidine ammonia-lyase
+D	0	group3712	0.381478	0.0308732	1223841	1225385	1544	two component%2C sigma54 specific%2C transcriptional regulator%2C Fis family	 Glutamate synthase (ferredoxin)
+D	0	group2599	0.380493	0.0333083	40219	40911	692	transcriptional regulator%2C GntR family	 adenylate cyclase protein
+D	0	group4038	0.377469	0.0353212	1397618	1398616	998	ABC transporter related	L-arabinose ABC transporter ATP-binding protein AraG [Rhizobium leguminosarum]
+D	0	group2727	0.375948	0.0348382	155684	156757	1073	transcriptional regulator%2C AraC family	 cytochrome c oxidase%2C subunit I
+D	0	group2967	0.374425	0.0350719	402880	403125	245	hypothetical protein	 cell division protein FtsA
+D	0	group3061	0.368483	0.0364809	506860	508785	1925	glycosyhydrolase	 major facilitator superfamily MFS_1
+D	0	group3296	0.366992	0.0362692	749241	750143	902	fatty acid hydroxylase	 hypothetical protein
+D	0	group3603	0.361316	0.0350407	1119836	1121188	1352	phosphoglucosamine mutase	 Luciferase-like monooxygenase
+D	0	group2647	0.35923	0.0340592	80494	80877	383	glutathione-dependent formaldehyde-activating GFA	 peptidase S1 and S6 chymotrypsin/Hap
+E	0	group3741	1.12986	0.0971036	1261894	1262937	1043	porin	 von Willebrand factor type A
+E	0	group4186	0.983212	0.080252	1877042	1878280	1238	putative protein required for succinylation of osmoregulated periplasmic glucans	 hypothetical protein
+E	0	group3005	0.932588	0.07232	447155	448366	1211	phosphofructokinase	 thiamine pyrophosphate protein domain protein TPP-binding protein
+E	0	group4892	0.828376	0.0684511	2358535	2359023	488	cupin	 major facilitator superfamily MFS_1
+E	0	group3416	0.817349	0.0708585	890340	891023	683	transcriptional regulator%2C Crp/Fnr family	 autotransporter-associated beta strand repeat protein
+E	0	group4141	0.807829	0.0687263	1933110	1933316	206	hypothetical protein	 NAD-glutamate dehydrogenase
+E	0	group3204	0.779659	0.0670324	643083	643991	908	metallophosphoesterase	 Formate--tetrahydrofolate ligase
+E	0	group4402	0.761591	0.0621181	1636472	1638100	1628	glycoside hydrolase family 39	 2-oxoglutarate dehydrogenase%2C E1 subunit
+E	0	group2837	0.757789	0.0730503	273573	273941	368	Deoxynogalonate monooxygenase	 hypothetical protein
+E	0	group2647	0.740576	0.0593648	80494	80877	383	glutathione-dependent formaldehyde-activating GFA	 peptidase S1 and S6 chymotrypsin/Hap
+E	0	group3335	0.684657	0.039754	799307	800197	890	exopolysaccharide production protein	 Carbohydrate-binding and sugar hydrolysis
+E	0	group4030	0.682693	0.0557135	1387463	1388488	1025	LacI family transcriptional regulator	 Beta-N-acetylhexosaminidase
+E	0	group2881	0.640911	0.0612387	312889	313947	1058	aldo/keto reductase	 FAD-dependent pyridine nucleotide-disulphide oxidoreductase
+E	0	group3760	0.630769	0.0494946	1284608	1285807	1199	von Willebrand factor type A	 signal transduction histidine kinase
+E	0	group3237	0.627804	0.0560693	678692	679795	1103	Extracellular ligand-binding receptor	 hypothetical protein
+E	0	group3304	0.627731	0.0546342	758683	759507	824	transglutaminase domain protein	 hypothetical protein
