@@ -235,7 +235,7 @@ And maybe use reads and align directly to the reference instead of this xmfa-to-
 Scanning the chromosome for recombination and GC3 proved itself problematic and unnecessary. By plotting recombination inferred instead with ClonalFrame and GC3 per gene is shown in the following figure:
 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_small_.png)
-_**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median are teal in all panes. Below the median GC3 they are red._
+_**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median GC3 are teal in all panes. Below the median GC3 they are red._
 
 Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_.png)
 
