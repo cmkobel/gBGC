@@ -1,4 +1,4 @@
-genospecies	unitig	gene_group	R/theta	Var(R/theta)	start	end	length	product	Putative function
+genospecies	unitig	gene_group	R/theta	Var(R/theta)	start	end	length	Product (3206-3.gff)	Putative function (pop_gene_data.csv)
 A	0	group4843	2.37692	0.129658	2317535	2318416	881	transcriptional regulator%2C AraC family	 GMP synthase%2C large subunit
 A	0	group3384	2.25471	0.175404	853262	853534	272	hypothetical protein	 transcriptional regulator
 A	0	group2727	2.01551	0.151256	155684	156757	1073	transcriptional regulator%2C AraC family	 cytochrome c oxidase%2C subunit I
