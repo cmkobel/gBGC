@@ -1,17 +1,21 @@
 # This script compares the recombination values inferred from mcorr and phi. Possibly later also ClonalFrame.
 
 
+
 rm(list = ls())
 library(tidyverse)
 library(ggpmisc)
 library(egg)
-æs = aes
-setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
+#setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
+setwd('c:/Users/carl/urecomb/lokal/exports/export4compare_binsize1/')
 
+gff_data <- read_csv("C:/Users/carl/Desktop/xmfa2mfa/3206-3.gff") %>% select(-X1)
+gff2_data <- read_delim("C:/Users/carl/Desktop/xmfa2mfa/Gene_function_pop_gene_data.csv", delim = ';')
+gff_data = left_join(gff_data, gff2_data %>% select(`Gene group`, `Putative function`) %>% rename(gene_group = `Gene group`))
 
 ## GC
 gather_gc = function(whatever = NULL) {
-    gc_files = list.files(path=".", pattern="*bp_gc.tab", full.names=TRUE, recursive=T)
+    gc_files = list.files(path=".", pattern="*bp_gc.tab", full.names=TRUE, recursive=F)
     gc_data = tibble()
     i = 1
     for (file in gc_files) {
@@ -32,7 +36,9 @@ gather_gc = function(whatever = NULL) {
         mutate(unitig = str_sub(genome, 8, 8),
                genospecies = str_sub(genome, 24, 24)) %>% 
         group_by(gene, unitig, genospecies, bin_size, genome) %>% 
-                 summarise(GC3 = mean(gc_content))
+                 summarise(GC3 = mean(gc_content)) %>% 
+        ungroup() %>% 
+        mutate(gene = as.character(gene))
 }
 gc_data_summarised = gather_gc()
 
@@ -45,7 +51,8 @@ gc_data_summarised %>% filter(unitig == 0) %>%
 
 ## ClonalFrameML
 gather_cf = function(whatever = NULL) {
-    cf_files = list.files(path="filtered", pattern="*clonalframe.tab", full.names=TRUE, recursive=T)
+    cf_files = list.files(path=".", pattern="*clonalframe.tab", full.names=TRUE, recursive=F)
+    print(paste('parsing from', cf_files))
     cf_data = tibble()
     i = 1
     for (file in cf_files) {
@@ -55,9 +62,7 @@ gather_cf = function(whatever = NULL) {
         rm(import)
         i = i + 1
     }
-    #rm(cf_files, cf_data, file, i) # clean up
-    #cf_data %>% group_by(gene, bin_size = cli_comment_1, genome = cli_comment_2) %>% 
-    #    summarise(GC3 = mean(gc_content))
+
     cf_data %>%
         mutate(unitig = str_sub(title, 15, 15),
                genospecies = str_sub(title, 31, 31)) %>%
@@ -65,6 +70,9 @@ gather_cf = function(whatever = NULL) {
 }
 cf_data = gather_cf()
 cf_data$genospecies %>% table
+cf_data %>% ggplot(aes(post_mean)) +
+    geom_histogram() +
+    facet_wrap(~genospecies)
 
 
 ## mcorr    import fitted (recombination) parameters
@@ -304,3 +312,107 @@ data %>% ggplot(aes(log(post_mean+1e-10), -log10(p_phi_normal+1e-10))) +
     facet_wrap(~genospecies, scales = "free")
 ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF__.png")
                 
+
+
+
+
+
+
+
+
+
+
+#### Let's look at the distribution of GC3 and recombination over the genome.
+
+# import annotaton 
+gff_data$plasmid %>% table
+cf_gc_annot = gff_data %>% filter(plasmid == '3206-3_scaf_3_chromosome-00') %>% 
+    arrange(start) %>%
+    mutate(length = abs(end - start),
+           mid = end- (length/2),
+           gene = str_sub(gene_group, 6)) %>%
+    inner_join(cf_data %>% mutate(gene = as.character(gene))) %>% 
+    inner_join(gc_data_summarised) %>% 
+    # add quantile information
+    group_by(unitig, genospecies) %>% 
+    arrange(post_mean) %>% 
+    mutate(rown = row_number(), rank = rown/(length(GC3)))
+
+# Compute threshold: #TODO: Try with the median instead.
+variable_GC3_threshold = mean(cf_gc_annot %>% filter(genospecies == genospecies) %>% pull(GC3) %>% .^1)
+variable_GC3_threshold = cf_gc_annot$GC3 %>% median
+
+
+# Mark genes above threshold
+cf_gc_annot = cf_gc_annot %>%
+    mutate(GC3_threshold = if_else(GC3 > variable_GC3_threshold, T, F))
+
+
+
+
+genospecies = 'C'
+
+A = cf_gc_annot %>% filter(genospecies == genospecies) %>%
+    ggplot(aes(mid, (post_mean), color = GC3_threshold)) + 
+    geom_point(alpha = 0.5, size = 1.2) +
+    #geom_errorbar(aes(ymin = post_mean - sqrt(post_var),
+    #                  ymax = post_mean + sqrt(post_var)), alpha = 0.15) + 
+    labs(#title = paste('Genospecies', genospecies),
+         #caption = 'error bars: SD',
+         x = '',
+         y = 'R/theta') +
+    theme(legend.position="none")
+    #guides(color=guide_legend(title="Above median GC3"))
+A
+
+A_hist = cf_gc_annot %>% filter(genospecies == genospecies) %>% 
+    ggplot(aes((post_mean), fill = GC3_threshold)) +
+    geom_histogram() +
+    theme(legend.position="none") 
+    #scale_y_log10()
+A_hist
+
+
+B = cf_gc_annot %>% filter(genospecies == genospecies) %>%
+    ggplot(aes(mid, GC3, color = GC3_threshold)) + 
+    geom_point(alpha = 0.5, size = 1) +
+    labs(title = paste('Genospecies', genospecies), x = 'unitig 0') + 
+    geom_hline(yintercept = variable_GC3_threshold) +
+    theme(legend.position="none") +
+    scale_y_reverse()
+B
+
+B_hist = cf_gc_annot %>% filter(genospecies == genospecies) %>% 
+    ggplot(aes(GC3, fill = GC3_threshold)) +
+    geom_histogram() +
+    geom_vline(xintercept = variable_GC3_threshold) +
+    theme(legend.position = 'none') +
+    scale_x_reverse()
+B_hist
+
+ratio = .85
+arr = ggarrange(B, B_hist, A, A_hist, ncol = 2, widths = c(ratio, 1-ratio))
+#ggarrange(A, B, ncol = 1)
+arr
+
+ggsave('c:/Users/carl/repositories/gBGC/log/33_cf_gc.png', plot = arr, height = 8, width = 30, dpi = 400)
+ggsave('c:/Users/carl/repositories/gBGC/log/33_cf_gc_small.png', plot = arr)
+
+# Find the top genes:
+top1 = cf_gc_annot %>% group_by(genospecies, unitig) %>% 
+    filter(post_mean > quantile(post_mean, .99)) %>% 
+    ungroup %>% arrange(genospecies, desc(post_mean)) %>% 
+    select(genospecies, unitig, gene_group, post_mean, post_var, start, end, length, product, `Putative function`) %>% 
+    rename(`R/theta` = post_mean,
+           `Var(R/theta)` = post_var,
+           `Product (3206-3.gff)` = product,
+           `Putative function (pop_gene_data.csv)` = `Putative function`)
+
+write_tsv(top1, 'c:/Users/carl/repositories/gBGC/log/top1.tsv')
+
+
+    
+
+
+
+
