@@ -243,7 +243,7 @@ Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBG
 The list of the genes with the highest rate of recombination for each genospecies can be seen [here](https://github.com/cmkobel/gBGC/blob/master/log/top1.tsv).
 
 
-## Looking for patterns
+## Behind the noise
 Let's work a bit more on the previous plot. What if there is regions present, but we have too many points to recognize the visually?
 I will try and make a sliding window througout the chromosome, where the window might contain few to many genes.
 
