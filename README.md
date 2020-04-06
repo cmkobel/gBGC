@@ -237,7 +237,7 @@ Scanning the chromosome for recombination and GC3 proved itself problematic and 
 ![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_small_.png)
 _**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median GC3 are teal in all panes. Below the median GC3 they are red._
 
-Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_.png)
+Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_.png).
 
 
 The list of the genes with the highest rate of recombination for each genospecies can be seen [here](https://github.com/cmkobel/gBGC/blob/master/log/top1.tsv).
