@@ -243,7 +243,7 @@ Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBG
 The list of the genes with the highest rate of recombination for each genospecies can be seen [here](https://github.com/cmkobel/gBGC/blob/master/log/top1.tsv).
 
 
-## Behind the noise
+## ~Behind~ Averaging the noise
 Let's work a bit more on the previous plot. What if there is regions present, but we have too many points to recognize it visually?
 By making a rolling window we will loose the ends of the chromosome, but we will get a smooth overview of the variation in recombination and GC3 throughout the chromosome. Because there was very little difference between the genospecies, I decided to stick with just a single one - Genospecies C. Because this method is highly sensitive to the width of the window, I created an animation where the window width is increasing by 1 percent-point in each frame.
 
