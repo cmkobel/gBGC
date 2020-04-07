@@ -234,8 +234,8 @@ And maybe use reads and align directly to the reference instead of this xmfa-to-
 ### Per gene method
 Scanning the chromosome for recombination and GC3 proved itself problematic and unnecessary. By plotting recombination inferred instead with ClonalFrame and GC3 per gene is shown in the following figure:
 
-![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_small_.png)
-_**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median GC3 are teal in all panes. Below the median GC3 they are red._
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_small.png)
+_**Figure 19**: Recombination per gene throughout the chromosome (unitig 0) for genospecies C. Genes with GC3 values above median GC3 are teal in all panes. Below the median GC3 they are red. Notice the inverted y-axis in the GC3-pane. This was done in order to make it easier to align the peaks between the GC3 and recombination rate panes._
 
 Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/33_cf_gc_.png).
 
@@ -244,6 +244,16 @@ The list of the genes with the highest rate of recombination for each genospecie
 
 
 ## Behind the noise
-Let's work a bit more on the previous plot. What if there is regions present, but we have too many points to recognize the visually?
-I will try and make a sliding window througout the chromosome, where the window might contain few to many genes.
+Let's work a bit more on the previous plot. What if there is regions present, but we have too many points to recognize it visually?
+By making a rolling window we will loose the ends of the chromosome, but we will get a smooth overview of the variation in recombination and GC3 throughout the chromosome. Because there was very little difference between the genospecies, I decided to stick with just a single one - Genospecies C. Because this method is highly sensitive to the width of the window, I created an animation where the window width is increasing by 1 percent-point in each frame.
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/35.gif)
+_**Figure 20**: Recombination (y-axis) and GC3 content (color) throughout the chromosome, calculated in a rolling window. For each frame in the animation, the width of the window is increased by 1 percent-point. Low GC3: red, median GC3: grey, high GC3: green._
+
+If you would rather browse the stills, they are accessible [here](https://github.com/cmkobel/gBGC/tree/master/log/34).
+
+The animation shows that depending on what size the window is set to, the graph shows a very different progression of recombination througout the chromosome.
+
+
+Let's try flipping the visualization: GC3 as y-axis and recombination rate as color:
 
