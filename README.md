@@ -255,5 +255,5 @@ If you would rather browse the stills, these can be accessed [here](https://gith
 The animation shows that depending on what size the window is set to, the graph shows a very different progression of recombination througout the chromosome.
 
 
-Let's try flipping the visualization: GC3 as y-axis and recombination rate as color [Figure 21](https://github.com/cmkobel/gBGC/raw/master/log/36.gif).
+Let's try flipping the visualization: GC3 as y-axis and recombination rate as color: [Figure 21](https://github.com/cmkobel/gBGC/raw/master/log/36.gif).
 The stills for Figure 21 can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/36).
