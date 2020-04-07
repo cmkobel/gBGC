@@ -250,7 +250,7 @@ By making a rolling window we will loose the ends of the chromosome, but we will
 ![](https://github.com/cmkobel/gBGC/raw/master/log/35.gif)
 _**Figure 20**: Recombination (y-axis) and GC3 content (color) throughout the chromosome, calculated in a rolling window. For each frame in the animation, the width of the window is increased by 1 percent-point. Low GC3: red, median GC3: grey, high GC3: green._
 
-If you would rather browse the stills, they are accessible [here](https://github.com/cmkobel/gBGC/tree/master/log/34).
+If you would rather browse the stills, these can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/34).
 
 The animation shows that depending on what size the window is set to, the graph shows a very different progression of recombination througout the chromosome.
 
