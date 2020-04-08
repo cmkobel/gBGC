@@ -6,6 +6,7 @@ rm(list = ls())
 library(tidyverse)
 library(ggpmisc)
 library(egg)
+library(zoo)
 #setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
 setwd('c:/Users/carl/urecomb/lokal/exports/export4compare_binsize1/')
 
@@ -414,5 +415,129 @@ write_tsv(top1, 'c:/Users/carl/repositories/gBGC/log/top1.tsv')
     
 
 
+# Sliding window of many genes.
+# also, use three classes of GC3 (for coloring)
+
+selected_genospecies = 'C'
+number_of_bins = 50
+midpoint_ = mean(cf_gc_annot %>% filter(genospecies == selected_genospecies) %>% pull(GC3) %>% mean)
+
+cf_gc_annot %>%
+    ungroup() %>% 
+    group_by(unitig, genospecies) %>% 
+    mutate(position_bin = cut_number(mid, number_of_bins)) %>% 
+    
+    group_by(position_bin, add = T) %>% 
+    mutate(binned_position = mean(`mid`),
+           median_post_mean = median(post_mean),
+           mean_GC3 = mean(GC3)) %>% 
+    
+    ungroup() %>% 
+    filter(genospecies == selected_genospecies) %>% 
+    arrange(binned_position)  %>% 
+    ggplot(aes(binned_position, (median_post_mean), color = mean_GC3)) + 
+    geom_line(color = "black", alpha = 0.15)  +
+    geom_point(size = 2) +
+    #geom_errorbar(aes(ymin = post_mean - sqrt(post_var),
+    #                  ymax = post_mean + sqrt(post_var)), alpha = 0.15) + 
+    #labs(#title = paste('Genospecies', genospecies),
+    #    caption = paste('number of bins:', number_of_bins),#'error bars: SD',
+    #    x = '',
+    #    y = 'R/theta')  +
+    scale_color_gradient2(midpoint = .62, low = "red1", mid = "grey", high = "green4", space = "Lab")
+    #theme(legend.position="none")
+
+scaleFUN <- function(x) sprintf("%.2f", x) 
+
+truncFUN <- function(x) x - (x%%10)
 
 
+
+annotation_custom2 <- 
+    function (grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, data) 
+    {
+        layer(data = data, stat = StatIdentity, position = PositionIdentity, 
+              geom = ggplot2:::GeomCustomAnn,
+              inherit.aes = TRUE, params = list(grob = grob, 
+                                                xmin = xmin, xmax = xmax, 
+                                                ymin = ymin, ymax = ymax))
+    }
+
+# 35
+# R/theta (color GC3)
+# roll instead
+i = 1
+#p = 0; for (i in c(1, 5, seq(10, 1000, 10), seq(990, 10, -10), 5)) {
+for (i in c(1, 5, seq(10, 1000, 10))) {
+    p = p + 1
+    print(i)
+    roll_width = i
+    cf_gc_annot %>% 
+        group_by(unitig, genospecies) %>% 
+        arrange(mid) %>% 
+        mutate(roll_post_mean = rollapply(post_mean, roll_width, median, fill = NA)) %>%  #View
+        mutate(roll_GC3 = rollapply(GC3, roll_width, mean, fill = NA)) %>%
+        filter(genospecies == 'C') %>%  #View
+        rename(`R/theta` = roll_post_mean,
+               `rolling window mean GC3` = roll_GC3) %>% 
+        
+        ggplot(aes(mid, `R/theta`+1e-10, color = `rolling window mean GC3`)) + 
+        #geom_point() +
+        geom_line(size = 1) +
+        
+
+                      
+        scale_color_gradientn(colours = c('red1', 'grey', 'green4')) +
+        labs(#caption = 'green: high GC3\ngrey: median GC3\nred: low GC3',
+            x = 'chromosome position',
+            y = 'rolling window median R/theta',
+            title = 'Genospecies C',
+            subtitle = paste('width', roll_width))  +
+        #theme(legend.position = 'none') +
+        scale_y_log10(#breaks = seq(0, 4, .02), 
+                      labels=scaleFUN) +
+        theme(panel.grid.minor = element_blank()) 
+    #guides(color=guide_legend(title="Rolling window GC3"))
+    #scale_color_continuous(breaks = seq(0.00, 1.00, 0.1)) +
+    #ylim(c(0.15, 1.2))
+    ggsave(paste0('c:/Users/carl/repositories/gBGC/log/34/34_rolling_recomb_GC3_', str_pad(roll_width, 4, pad = 0), '.png'))
+}
+
+
+#37
+# GC3 (color R/theta)
+# roll instead
+i = 100
+#p = 0; for (i in c(1, 5, seq(10, 1000, 10), seq(990, 10, -10), 5)) {
+for (i in c(1, 5, seq(10, 1000, 10))) {
+        
+    print(i)
+    p = p + 1
+    roll_width = i
+    cf_gc_annot %>% 
+        group_by(unitig, genospecies) %>% 
+        arrange(mid) %>% 
+        mutate(roll_post_mean = rollapply(post_mean, roll_width, median, fill = NA)) %>%  #View
+        mutate(roll_GC3 = rollapply(GC3, roll_width, mean, fill = NA)) %>%
+        filter(genospecies == 'C') %>%  #View
+        rename(`R/theta` = roll_post_mean) %>% 
+        
+        ggplot(aes(mid, roll_GC3, color = log10(`R/theta`+1e-10))) + 
+        #geom_point() +
+        geom_line(size = 1) +
+        
+        scale_color_gradientn(colours = c('red1', 'grey', 'green4')) +
+        labs(#caption = 'green: high GC3\ngrey: median GC3\nred: low GC3',
+            x = 'chromosome position',
+            y = 'rolling window mean GC3',
+            title = 'Genospecies C',
+            subtitle = paste('width', roll_width)) +
+        #theme(legend.position = 'none') +
+        scale_y_continuous(breaks = seq(0, 4, .01), labels=scaleFUN)
+    #theme(panel.grid.minor = element_blank()) 
+    #guides(color=guide_legend(title="log10(R/theta + 1e-10)"))
+    #scale_color_continuous(breaks = seq(0.00, 1.00, 0.1)) +
+    #ylim(c(0.15, 1.2))
+    ggsave(paste0('c:/Users/carl/repositories/gBGC/log/36/36_rolling_GC3_recomb_', str_pad(roll_width, 4, pad = 0), '.png'))
+}
+           
