@@ -248,7 +248,7 @@ Let's work a bit more on the previous plot. What if there is regions present, bu
 By making a rolling window we will loose the ends of the chromosome, but we will get a smooth overview of the variation in recombination and GC3 throughout the chromosome. Because there was very little difference between the genospecies, I decided to stick with just a single one - Genospecies C. Because this method is highly sensitive to the width of the window, I created an animation where the window width is increasing by 1 percent-point in each frame.
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/35.gif)
-_**Figure 20**: Recombination (y-axis) and GC3 content (color) throughout the chromosome, calculated in a rolling window. For each frame in the animation, the width of the window is increased by 1 percent-point. Low GC3: red, median GC3: grey, high GC3: green. Y-axis is log-transformed._
+_**Figure 20**: Recombination (y-axis) and GC3 content (color) throughout the chromosome, calculated in a rolling window. For each frame in the animation, the width of the window is increased by 1 percent-point. Low GC3: red, median GC3: grey, high GC3: green. The y-axis is log-transformed._
 
 If you would rather browse the stills, these can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/34).
 
