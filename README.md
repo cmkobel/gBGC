@@ -243,7 +243,7 @@ Larger version of Figure 19 [here](https://raw.githubusercontent.com/cmkobel/gBG
 The list of the genes with the highest rate of recombination for each genospecies can be seen [here](https://github.com/cmkobel/gBGC/blob/master/log/top1.tsv).
 
 
-## Behind the noise
+## ~Behind~Averaging the noise
 Let's work a bit more on the previous plot. What if there is regions present, but we have too many points to recognize it visually?
 By making a rolling window we will loose the ends of the chromosome, but we will get a smooth overview of the variation in recombination and GC3 throughout the chromosome. Because there was very little difference between the genospecies, I decided to stick with just a single one - Genospecies C. Because this method is highly sensitive to the width of the window, I created an animation where the window width is increasing by 1 percent-point in each frame.
 
@@ -255,5 +255,8 @@ If you would rather browse the stills, these can be accessed [here](https://gith
 The animation shows that depending on what size the window is set to, the graph shows a very different progression of recombination througout the chromosome.
 
 
-Let's try flipping the visualization: GC3 as y-axis and recombination rate as color:
+Let's try flipping the visualization: GC3 as y-axis and recombination rate as color: [Figure 21](https://github.com/cmkobel/gBGC/raw/master/log/36.gif).
+The stills for Figure 21 can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/36).
 
+
+After looking at the chromosome, I can conclude the gBGC hypothesis does not have a region-wise base.
