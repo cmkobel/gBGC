@@ -53,7 +53,8 @@ for bin_size in bin_sizes:
 
 
         # per genospecies
-        if not "unitig_0" in title:
+        #if not "unitig_0" in title:
+        if "unitig_0" in title:
             continue
                 
 
@@ -74,21 +75,21 @@ for bin_size in bin_sizes:
             memory = '4gb',
             account = "gBGC") << f"""
 
-        
-            mkdir -p output/{title}
-            cd output/{title}
             
-            # bin
-            ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
+                mkdir -p output/{title}
+                cd output/{title}
+                
+                # bin
+                ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
 
 
-            # compute GC from the binned genome
-            ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa {bin_size} {genome_stem} > {file_binned_xmfa_out}_gc.tab
+                # compute GC from the binned genome
+                ../../script/xmfa_gc.py {file_binned_xmfa_out}.xmfa {bin_size} {genome_stem} > {file_binned_xmfa_out}_gc.tab
 
 
 
 
-        """
+            """
         
 
 
@@ -100,23 +101,23 @@ for bin_size in bin_sizes:
             memory = '1gb',
             account = "gBGC") << f"""
 
-            cd output/{title}
-            
-            mkdir -p split
-            cd split
+                cd output/{title}
+                
+                mkdir -p split
+                cd split
 
 
-            # split the binned xmfa into single xmfa files for mcorr
-            ../../../script/xmfa_split.py ../{file_binned_xmfa_out}.xmfa
-            touch ./xmfasplitted
+                # split the binned xmfa into single xmfa files for mcorr
+                ../../../script/xmfa_split.py ../{file_binned_xmfa_out}.xmfa
+                touch ./xmfasplitted
 
-            # split the binned xmfa into single fa files for phi
-            ../../../script/xmfa_split_to_fa.py ../{file_binned_xmfa_out}.xmfa
-            touch ./fasplitted
+                # split the binned xmfa into single fa files for phi
+                ../../../script/xmfa_split_to_fa.py ../{file_binned_xmfa_out}.xmfa
+                touch ./fasplitted
 
-            touch ../leg_split.completed
+                touch ../leg_split.completed
 
-        """
+            """
         
         
 
@@ -139,20 +140,21 @@ for bin_size in bin_sizes:
                 memory = '12gb',
                 account = "gBGC") << f"""
 
-    cd output/{title}/split
+                cd output/{title}/split
 
-    mcorr-xmfa {single_gene_basename} {single_gene_stem}
+                mcorr-xmfa {single_gene_basename} {single_gene_stem}
 
-    mcorr-fit {single_gene_stem}.csv {single_gene_stem}
+                mcorr-fit {single_gene_stem}.csv {single_gene_stem}
 
-    printf {single_gene_stem}, >> {single_gene_stem}_fitpar.csv
-    awk '/^all,/' {single_gene_stem}_fit_results.csv >> {single_gene_stem}_fitpar.csv
-    #echo "" >> {single_gene_stem}_fitpar.csv; done
+                printf {single_gene_stem}, >> {single_gene_stem}_fitpar.csv
+                awk '/^all,/' {single_gene_stem}_fit_results.csv >> {single_gene_stem}_fitpar.csv
+                #echo "" >> {single_gene_stem}_fitpar.csv; done
 
 
         
-        """
-        '''
+            """
+            '''
+
         # Run PHI
         splitted_fas = glob.glob(f"output/{title}/split/*.fa")
         
@@ -169,31 +171,29 @@ for bin_size in bin_sizes:
             memory = '4gb',
             account = "gBGC") << f"""
 
-            cd output/{title}/split
-            
-            echo {single_gene_stem}
-            mkdir -p "{single_gene_stem}_temp"   
-            cd {single_gene_stem}_temp
-            
-            ../../../../script/PhiPack/Phi -f ../{single_gene_basename} -p 1000 -o > ../{single_gene_stem}_phi.txt 2> ../{single_gene_stem}_phierr.txt
-            
-            # above line fails when there is not enough informative sites.
-            #check if stderr is empty
+                cd output/{title}/split
+                
+                echo {single_gene_stem}
+                mkdir -p "{single_gene_stem}_temp"   
+                cd {single_gene_stem}_temp
+                
+                ../../../../script/PhiPack/Phi -f ../{single_gene_basename} -p 1000 -o > ../{single_gene_stem}_phi.txt 2> ../{single_gene_stem}_phierr.txt
+                
+                # above line fails when there is not enough informative sites.
+                #check if stderr is empty
 
-            if [ $(stat -c%s ../{single_gene_stem}_phierr.txt) -eq 0 ]; then
-                echo "empty"
-                tail -n 5 ../{single_gene_stem}_phi.txt > ../{single_gene_stem}_phiresult.txt
-            else
-                echo "not empty"
-            fi
-            cd ..
-            rm  {single_gene_stem}_phierr.txt
-            rm -r {single_gene_stem}_temp
-            # collect results in tab file 
-            cat {single_gene_stem}_phiresult.txt | sed 's/NSS/NSS NA/g' | grep -E "^NSS|^Max|^PHI" | awk '{{print $1 "\t" $2 "\t" $3 "\t{genome_stem}\t{single_gene_stem}"}}' > {single_gene_stem}_phiresult.tab
-            echo -e "infsites\\t\\t"$(grep -E "Found [0-9]+ informative sites\\." {single_gene_stem}_phi.txt | grep -oE "[0-9]+")"\\t{genome_stem}\\t{single_gene_stem}" >> {single_gene_stem}_phiresult.tab
-
-
+                if [ $(stat -c%s ../{single_gene_stem}_phierr.txt) -eq 0 ]; then
+                    echo "empty"
+                    tail -n 5 ../{single_gene_stem}_phi.txt > ../{single_gene_stem}_phiresult.txt
+                else
+                    echo "not empty"
+                fi
+                cd ..
+                rm  {single_gene_stem}_phierr.txt
+                rm -r {single_gene_stem}_temp
+                # collect results in tab file 
+                cat {single_gene_stem}_phiresult.txt | sed 's/NSS/NSS NA/g' | grep -E "^NSS|^Max|^PHI" | awk '{{print $1 "\t" $2 "\t" $3 "\t{genome_stem}\t{single_gene_stem}"}}' > {single_gene_stem}_phiresult.tab
+                echo -e "infsites\\t\\t"$(grep -E "Found [0-9]+ informative sites\\." {single_gene_stem}_phi.txt | grep -oE "[0-9]+")"\\t{genome_stem}\\t{single_gene_stem}" >> {single_gene_stem}_phiresult.tab
 
             """
             
@@ -207,40 +207,38 @@ for bin_size in bin_sizes:
                 memory = '4gb',
                 account = "gBGC") << f"""
 
-                echo {single_gene_stem}     
+                    echo {single_gene_stem}     
 
-                cd output/{title}/split/
+                    cd output/{title}/split/
 
-                mkdir -p {single_gene_stem}_cf
-                rm -r {single_gene_stem}_cf
-                mkdir -p {single_gene_stem}_cf
-                cd {single_gene_stem}_cf
-
-
-                # generate guide-tree
-                #mkdir -p tree
-                #cd tree
+                    mkdir -p {single_gene_stem}_cf
+                    rm -r {single_gene_stem}_cf
+                    mkdir -p {single_gene_stem}_cf
+                    cd {single_gene_stem}_cf
 
 
-
-                cat ../{single_gene_stem}.fa | ../../../../script/fasta_serialize_headers.py > {single_gene_stem}_serialized.fa
-
-                raxml-ng --msa {single_gene_stem}_serialized.fa --model GTR --threads 1 --redo
-
-                ClonalFrameML {single_gene_stem}_serialized.fa.raxml.bestTree {single_gene_stem}_serialized.fa {single_gene_stem}_cf
+                    # generate guide-tree
+                    #mkdir -p tree
+                    #cd tree
 
 
-                # clean up output
-                grep -E "(^nu)|(^1/delta)|(^R/theta)" {single_gene_stem}_cf.em.txt | awk '{{ print "{single_gene_stem}\t{title}\t" $0}}' > {single_gene_stem}_cf_final.tab
+
+                    cat ../{single_gene_stem}.fa | ../../../../script/fasta_serialize_headers.py > {single_gene_stem}_serialized.fa
+
+                    raxml-ng --msa {single_gene_stem}_serialized.fa --model GTR --threads 1 --redo
+
+                    ClonalFrameML {single_gene_stem}_serialized.fa.raxml.bestTree {single_gene_stem}_serialized.fa {single_gene_stem}_cf
 
 
-                cat {single_gene_stem}_cf_final.tab >> ../../{title}_clonalframe.tab
+                    # clean up output
+                    grep -E "(^nu)|(^1/delta)|(^R/theta)" {single_gene_stem}_cf.em.txt | awk '{{ print "{single_gene_stem}\t{title}\t" $0}}' > {single_gene_stem}_cf_final.tab
 
 
-                # we are in the cf folder
+                    cat {single_gene_stem}_cf_final.tab >> ../../{title}_clonalframe.tab
 
 
-        
+                    # we are in the cf folder
+
                 """
             #break # PHI and CF for only one gene
 
@@ -261,23 +259,23 @@ for bin_size in bin_sizes:
             account = "gBGC") << f"""
 
 
-cd output/{title}
+                cd output/{title}
 
-inputfile="split/*_fitpar.csv"
+                inputfile="split/*_fitpar.csv"
 
-outputfile="{file_binned_xmfa_out}_fitpars.csv"
+                outputfile="{file_binned_xmfa_out}_fitpars.csv"
 
-echo "" > $outputfile
+                echo "" > $outputfile
 
 
-if stat -t $inputfile >/dev/null 2>&1; then
-    for fitpar in $inputfile; do
-        awk '{{print $0, ",{bin_size}, {genome_stem}"}}' $fitpar >> $outputfile
-    done
-fi
+                if stat -t $inputfile >/dev/null 2>&1; then
+                    for fitpar in $inputfile; do
+                        awk '{{print $0, ",{bin_size}, {genome_stem}"}}' $fitpar >> $outputfile
+                    done
+                fi
 
             """
-        '''
+            '''
 
 
         # Run this target when all the PHI jobs are done.
@@ -291,22 +289,24 @@ fi
             walltime = '10:00',
             memory = '1gb',
             account = "gBGC") << f"""
-            cd output/{title}
-            inputfile="split/*_phiresult.tab"
-            outputfile="{genome_stem}_phi_results.tab"
 
-            # reset outputfile
-            echo "" > $outputfile
-            if stat -t $inputfile >/dev/null 2>&1; then
-                echo inside
-                echo -e "method\tdetail\tpvalue\tgenome\tgene" > $outputfile
-                cat $inputfile >> $outputfile
-                
-                #for resultfile in $inputfile; do
-                #    #awk '{{print $0, ",bin_size, {genome_stem}"}}' $resultfile >> $outputfile
-                #    cat 
-                #done
-            fi
+                cd output/{title}
+                inputfile="split/*_phiresult.tab"
+                outputfile="{genome_stem}_phi_results.tab"
+
+                # reset outputfile
+                echo "" > $outputfile
+                if stat -t $inputfile >/dev/null 2>&1; then
+                    echo inside
+                    echo -e "method\tdetail\tpvalue\tgenome\tgene" > $outputfile
+                    cat $inputfile >> $outputfile
+                    
+                    #for resultfile in $inputfile; do
+                    #    #awk '{{print $0, ",bin_size, {genome_stem}"}}' $resultfile >> $outputfile
+                    #    cat 
+                    #done
+                fi
+            
             """
 
         #break # single genome

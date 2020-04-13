@@ -472,18 +472,20 @@ for (i in c(1, 5, seq(10, 1000, 10))) {
     p = p + 1
     print(i)
     roll_width = i
-    cf_gc_annot %>% 
+    plot_data = cf_gc_annot %>% 
         group_by(unitig, genospecies) %>% 
         arrange(mid) %>% 
         mutate(roll_post_mean = rollapply(post_mean, roll_width, median, fill = NA)) %>%  #View
         mutate(roll_GC3 = rollapply(GC3, roll_width, mean, fill = NA)) %>%
         filter(genospecies == 'C') %>%  #View
         rename(`R/theta` = roll_post_mean,
-               `rolling window mean GC3` = roll_GC3) %>% 
-        
+               `rolling window mean GC3` = roll_GC3)
+    plot_data %>% 
         ggplot(aes(mid, `R/theta`+1e-10, color = `rolling window mean GC3`)) + 
         #geom_point() +
         geom_line(size = 1) +
+        #geom_vline(xintercept = min(plot_data$mid), color = 'grey') +
+        #geom_vline(xintercept = max(plot_data$mid), color = 'grey') +
         
 
                       
