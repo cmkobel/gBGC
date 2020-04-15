@@ -9,6 +9,8 @@ library(egg)
 library(zoo)
 #setwd("~/urecomb/lokal/exports/export4compare_binsize1/")
 setwd('c:/Users/carl/urecomb/lokal/exports/export4compare_binsize1/')
+setwd('c:/Users/carl/urecomb/lokal/exports/export7_cf_all_chromids/')
+
 
 gff_data <- read_csv("C:/Users/carl/Desktop/xmfa2mfa/3206-3.gff") %>% select(-X1)
 gff2_data <- read_delim("C:/Users/carl/Desktop/xmfa2mfa/Gene_function_pop_gene_data.csv", delim = ';')
@@ -44,10 +46,13 @@ gather_gc = function(whatever = NULL) {
 gc_data_summarised = gather_gc()
 
 # check distributions of GC
-gc_data_summarised %>% filter(unitig == 0) %>% 
+gc_data_summarised %>% #filter(unitig == 0) %>% 
     ggplot(aes(GC3)) + 
     geom_histogram() + 
-    facet_wrap(~genospecies)
+    facet_grid(unitig~genospecies, scales = "free_y")
+ggsave('g:/gBGC/carl/log/38_all_gc_dist.png')
+
+
 
 
 ## ClonalFrameML
@@ -70,10 +75,10 @@ gather_cf = function(whatever = NULL) {
         filter(parameter == "R/theta") %>% select(-title)
 }
 cf_data = gather_cf()
-cf_data$genospecies %>% table
+cf_data$unitig %>% table; cf_data$genospecies %>% table
 cf_data %>% ggplot(aes(post_mean)) +
     geom_histogram() +
-    facet_wrap(~genospecies)
+    facet_grid(unitig~genospecies, scales = 'free_y')
 
 
 ## mcorr    import fitted (recombination) parameters
@@ -327,17 +332,37 @@ ggsave("~/genomedk/gBGC/carl/log/9_PHIvsCF__.png")
 
 # import annotaton 
 gff_data$plasmid %>% table
-cf_gc_annot = gff_data %>% filter(plasmid == '3206-3_scaf_3_chromosome-00') %>% 
+cf_gc_annot = gff_data %>% #filter(plasmid == '3206-3_scaf_3_chromosome-00') %>%
+    group_by(plasmid) %>% 
     arrange(start) %>%
     mutate(length = abs(end - start),
            mid = end- (length/2),
-           gene = str_sub(gene_group, 6)) %>%
-    inner_join(cf_data %>% mutate(gene = as.character(gene))) %>% 
-    inner_join(gc_data_summarised) %>% 
+           gene = str_sub(gene_group, 6)) %>% 
+    inner_join(cf_data %>% mutate(gene = as.character(gene))) %>%   # add CF
+    inner_join(gc_data_summarised) %>%                              # add gc
     # add quantile information
     group_by(unitig, genospecies) %>% 
     arrange(post_mean) %>% 
     mutate(rown = row_number(), rank = rown/(length(GC3)))
+
+
+perimeter = cf_gc_annot %>%
+    filter(genospecies == "C") %>%
+    filter(unitig == '1')
+# Create simple plots for each chromid
+
+X = perimeter %>% 
+    ggplot(aes(x = mid)) +
+    geom_point(aes(y = post_mean))
+
+Y = perimeter %>% 
+    ggplot(aes(x = mid)) +
+    geom_point(aes(y = GC3))
+
+ggarrange(X, Y, ncol = 1)
+
+
+
 
 # Compute threshold: #TODO: Try with the median instead.
 variable_GC3_threshold = mean(cf_gc_annot %>% filter(genospecies == genospecies) %>% pull(GC3) %>% .^1)
