@@ -9,7 +9,16 @@ import sys
 
 
 
+
+def eprint(*args, **kwargs):
+    # I'm too lazy to write 'file = sys.stderr' manually...
+    print(*args, **kwargs, file = sys.stderr)
 #input_file = sys.argv[1]
+
+cli_comment_1 = ""
+cli_comment_2 = ""
+cli_comment_3 = ""
+
 try:
     cli_comment_1 = str(sys.argv[1])
     cli_comment_2 = str(sys.argv[2])
@@ -17,20 +26,14 @@ try:
 
     
 except Exception as e:
-    print(e)
-    cli_comment_1 = ""
-    cli_comment_2 = ""
-    cli_comment_3 = ""
+    pass
+    
 
 
 
 
 
 
-
-def eprint(*args, **kwargs):
-    # I'm too lazy to write 'file = sys.stderr' manually...
-    print(*args, **kwargs, file = sys.stderr)
 
 
 
