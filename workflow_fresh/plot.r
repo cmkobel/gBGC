@@ -22,7 +22,7 @@ GC3 = GC3 %>% group_by(genospecies, unitig, gene) %>%
 
 
 
-gff_data <- read_csv("C:/Users/carl/Desktop/xmfa2mfa/3206-3.gff") %>% select(-X1) %>% mutate(mid = start - ((end-start)/2))
+gff_data <- read_csv("C:/Users/carl/Desktop/xmfa2mfa/3206-3.gff") %>% select(-X1) %>% mutate(mid = start + ((end-start)/2))
 gff2_data <- read_delim("C:/Users/carl/Desktop/xmfa2mfa/Gene_function_pop_gene_data.csv", delim = ';')
 gff_data = left_join(gff_data, gff2_data %>% select(`Gene group`, `Putative function`) %>% rename(gene_group = `Gene group`)) %>% rename(gene = gene_group)
 rm(gff2_data)
@@ -31,7 +31,11 @@ rm(gff2_data)
 data = inner_join(GC3, CF) %>% inner_join(gff_data)
 
 
-data %>% ggplot(aes(
+data %>% filter(genospecies == 'A') %>%  ggplot(aes(mid, post_mean, color = mean_GC3^4)) + 
+    geom_point() + 
+    facet_grid(plasmid~., scales = "free") + 
+    scale_color_gradientn(colours = c('red1', 'grey', 'green4'))
+ggsave("40_cf_coregenetrees.png")
 
 
 
