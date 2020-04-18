@@ -47,7 +47,8 @@ gwf.target(sanify(F"GC"),
 			for j in {{0..3}}; do
 				for k in ${{i}}/${{j}}/*.fasta; do
 					echo $k;
-					cat $k | {base_path}/scripts/fasta_gc.py $i $j $k >> {GC3_output_file}
+					l = $(basename $k)
+					cat $k | {base_path}/scripts/fasta_gc.py $i $j $l >> {GC3_output_file}
 				done;
 			done;
 		done
