@@ -37,10 +37,45 @@ for sel_gs in ['A', 'B', 'C', 'D', 'E']:
 
 
 			print(gene_file, gene_stem)
+
+			GC3_output_file = f"{base_path}/output/GC3.tab"
+
+			gwf.target(sanify(F"GC_{sel_gs}_{sel_un}_{gene_stem}"),
+				inputs = [gene], 
+				outputs = [GC3_output_file],
+				cores = 1,
+				walltime = '2:00:00',
+				memory = '4gb',
+				account = 'gBGC') << f"""
+
+				echo {gene_stem}
+				ls -l {gene}
+				ls -l {tree_path}
+
+				cd data/tabseq/genospecies_unitig_genes/fasta
+
+				# Reset output.
+				
+				echo -e header\tGC3\tgene\tgs\tunitig\tfile > {GC3_output_file}
+
+				# Loop through all files and output GC3
+				for i in {{A..E}}; do
+					for j in {{0..3}}; do
+						for k in ${{i}}/${{j}}/*.fasta; do
+							echo $k;
+							cat $k | {base_path}/scripts/fasta_gc.py {gene_stem} {sel_gs} {sel_un} $k >> {GC3_output_file}
+						done;
+					done;
+				done
+
+				"""
+
+
+
 			
 			gwf.target(sanify(f"CF_{sel_gs}_{sel_un}_{gene_stem}"),
 				inputs = [gene],
-				outputs = [],
+				outputs = [f"{path}/{gene_stem}_cf/{gene_stem}.em.txt"],
 				cores = 1,
 				walltime = '2:00:00',
 				memory = '4gb',
@@ -56,6 +91,8 @@ for sel_gs in ['A', 'B', 'C', 'D', 'E']:
 				mkdir -p {gene_stem}_cf
 				rm -r {gene_stem}_cf
 				mkdir {gene_stem}_cf
+				cd {gene_stem}_cf
+
 
 				# Execute CF.
 				ClonalFrameML {base_path}/{tree_path} {base_path}/{gene} {gene_stem}

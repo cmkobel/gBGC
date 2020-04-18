@@ -18,11 +18,14 @@ def eprint(*args, **kwargs):
 cli_comment_1 = ""
 cli_comment_2 = ""
 cli_comment_3 = ""
+cli_comment_4 = ""
+
 
 try:
     cli_comment_1 = str(sys.argv[1])
     cli_comment_2 = str(sys.argv[2])
     cli_comment_3 = str(sys.argv[3])
+    cli_comment_4 = str(sys.argv[4])
 
     
 except Exception as e:
@@ -37,7 +40,7 @@ except Exception as e:
 
 
 
-print('header', 'GC3', 'cli_comment_1', 'cli_comment_2', 'cli_comment_3', sep = '\t')
+#print('header', 'GC3', 'cli_comment_1', 'cli_comment_2', 'cli_comment_3', sep = '\t')
 
 
 sequence = ''
@@ -58,7 +61,7 @@ for line in sys.stdin:
             GC3 = temp_GC3 / (float(len(sequence)) / 3)    
             
             # Output .tab format to stdout
-            print(header, GC3, cli_comment_1, cli_comment_2, cli_comment_3, sep = '\t')
+            print(header, GC3, cli_comment_1, cli_comment_2, cli_comment_3, cli_comment_4, sep = '\t')
 
             # Reset variables.
             del temp_GC3, GC3, header
