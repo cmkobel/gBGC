@@ -39,7 +39,7 @@ gwf.target(sanify(F"GC"),
 
 		# Reset output.
 		
-		echo -e "header\tGC3\tgs\tunitig\tfile" > {GC3_output_file}
+		echo -e "header\tGC3\tgenospecies\tunitig\tfile" > {GC3_output_file}
 		touch GC_done && rm GC_done
 
 		# Loop through all files and output GC3
