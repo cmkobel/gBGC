@@ -268,15 +268,19 @@ I ran ClonalFrameML again, and remade the most important plots.
 
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/50_A.png)
+_**Figure 21**: Comparison of results from ClonalFrameML and PHI._
 
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/51_B.png)
-
+_**Figure 22**: 20 bins for GC3, where the number of significantly recombining genes are shown on the y-axis._
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/52_B_CF.png)
+_**Figure 23**: text._
+
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/53_C_CF.png)
-
+_**Figure 24**: text._
 ![](https://github.com/cmkobel/gBGC/raw/master/log/54_position_top10.png)
-
+_**Figure 25**: text._
 ![](https://github.com/cmkobel/gBGC/raw/master/log/55_boxplot_top10.png)
+_**Figure 26**: text._
