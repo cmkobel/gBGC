@@ -259,4 +259,33 @@ Let's try flipping the visualization: GC3 as y-axis and recombination rate as co
 The stills for Figure 21 can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/36).
 
 
-After looking at the chromosome, I can conclude the gBGC hypothesis does not have a region-wise base.
+After looking at the chromosome, I can conclude the gBGC hypothesis does not have a region-wise base. But there seems to be some structuring of recombination and GC3 content when averaging ~100 genes.
+
+
+# ClonalFrameML from scratch
+As it turned out, I used gene trees as input for ClonalFrameML, when I should have use genome-trees (or core genome trees).
+I ran ClonalFrameML again, and remade the most important plots.
+
+I made an [interactive plot](https://cmkobel.shinyapps.io/Rleg) to look for GC3 and recombination structure in the scaffolds
+
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/50_A.png)
+_**Figure 21**: Comparison of results from ClonalFrameML and PHI._
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/51_B.png)
+_**Figure 22**: 20 bins for GC3, where the number of significantly recombining genes (PHI) are shown on the y-axis._
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/52_B_CF.png)
+_**Figure 23**: 20 bins for GC3, where the median R/theta value from PHI is shown on the y-axis._
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/53_C_CF.png)
+_**Figure 24**: GC3 and R/theta from ClonalFrame._
+![](https://github.com/cmkobel/gBGC/raw/master/log/54_position_top10.png)
+_**Figure 25**: Unitig 0 from each genospecies. The top 1% most recombining genes are colored blue._
+![](https://github.com/cmkobel/gBGC/raw/master/log/55_boxplot_top10.png)
+_**Figure 26**: Same as 25, but with boxplots instead of chromosomal position._
+
+
