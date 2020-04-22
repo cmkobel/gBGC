@@ -259,4 +259,24 @@ Let's try flipping the visualization: GC3 as y-axis and recombination rate as co
 The stills for Figure 21 can be accessed [here](https://github.com/cmkobel/gBGC/tree/master/log/36).
 
 
-After looking at the chromosome, I can conclude the gBGC hypothesis does not have a region-wise base.
+After looking at the chromosome, I can conclude the gBGC hypothesis does not have a region-wise base. But there seems to be some structuring of recombination and GC3 content when averaging ~100 genes.
+
+
+# ClonalFrameML from scratch
+As it turned out, I used gene trees as input for ClonalFrameML, when I should have use genome-trees (or core genome trees).
+I ran ClonalFrameML again, and remade the most important plots.
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/50_A.png)
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/51_B.png)
+
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/52_B_CF.png)
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/53_C_CF.png)
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/54_position_top10.png)
+
+![](https://github.com/cmkobel/gBGC/raw/master/log/55_boxplot_top10.png)
