@@ -266,6 +266,9 @@ After looking at the chromosome, I can conclude the gBGC hypothesis does not hav
 As it turned out, I used gene trees as input for ClonalFrameML, when I should have use genome-trees (or core genome trees).
 I ran ClonalFrameML again, and remade the most important plots.
 
+I made an [interactive plot](https://cmkobel.shinyapps.io/Rleg) to look for GC3 and recombination structure in the scaffolds
+
+
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/50_A.png)
 _**Figure 21**: Comparison of results from ClonalFrameML and PHI._
@@ -284,3 +287,5 @@ _**Figure 24**: GC3 and R/theta from ClonalFrame._
 _**Figure 25**: Unitig 0 from each genospecies. The top 1% most recombining genes are colored blue._
 ![](https://github.com/cmkobel/gBGC/raw/master/log/55_boxplot_top10.png)
 _**Figure 26**: Same as 25, but with boxplots instead of chromosomal position._
+
+
