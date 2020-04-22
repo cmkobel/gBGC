@@ -274,7 +274,7 @@ I made an [interactive plot](https://cmkobel.shinyapps.io/Rleg) to look for GC3 
 _**Figure 21**: Comparison of results from ClonalFrameML and PHI._
 
 
-![](https://github.com/cmkobel/gBGC/raw/master/log/51_B.png)
+![](https://github.com/cmkobel/gBGC/raw/master/log/51_B_.png)
 _**Figure 22**: 20 bins for GC3, where the number of significantly recombining genes (PHI) are shown on the y-axis._
 
 ![](https://github.com/cmkobel/gBGC/raw/master/log/52_B_CF.png)
