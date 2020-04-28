@@ -1,8 +1,12 @@
 library(tidyverse)
 library(zoo)
 library(gganimate)
+library(ggpmisc)
+library(ggpubr)
+setwd("c:/users/carl/urecomb/lokal")
 
 
+# ClonalFrameML files
 CF_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/CF_collected.tab", 
                            "\t", escape_double = FALSE, trim_ws = TRUE,
                  col_names = c('genospecies', 'unitig', 'file', 'parameter', 'post_mean', 'post_var', 'a_post', 'b_post')) %>% 
@@ -10,9 +14,11 @@ CF_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/CF_collected.tab",
 
 
 #CF = CF_raw %>% pivot_wider(names_from = parameter, values_from = c(post_mean, post_var, a_post, b_post))
-CF = CF_raw %>% filter(parameter == "R/theta") %>% select(-parameter)
+CF = CF_raw %>% filter(parameter == "R/theta") %>% select(-parameter) 
 
 
+
+# GC3 files
 GC3_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/GC3.tab", 
                   "\t", escape_double = FALSE, trim_ws = TRUE) %>%
     rename(genospecies = gs) %>%
@@ -20,9 +26,81 @@ GC3_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/GC3.tab",
            gene = str_sub(file, 8, str_length(file)-13)) %>% 
     select(-header, -file)
 
+
 GC3 = GC3_raw %>% group_by(genospecies, unitig, gene) %>% 
-    summarize(mean_GC3 = mean(GC3), n_samples_GC3 = length(GC3))
+    summarize(mean_GC3 = mean(GC3), n_samples_GC3 = length(GC3)) %>% ungroup %>% rename(GC3 = mean_GC3) 
+   
+# extract statistics from the GC3 measurement
+GC3_raw %>% group_by(genospecies, unitig) %>% 
+    summarize(n_genes = length(unique(gene))) %>% 
+    spread(unitig, n_genes) %>% View
+
+
+## Investigate distribution of GC3
+d_mean = GC3$GC3 %>% mean
+d_sd = GC3$GC3 %>% sd
+d_seq = seq(0, 1, 0.01)
+d_d = dnorm(d_seq, mean = d_mean, sd = d_sd)*203.41
+
+ggplot() + 
+    geom_histogram(
+        data = GC3, 
+        mapping = aes(GC3), 
+        bins = 100) +
+    geom_histogram(
+        data = GC3, 
+        mapping = aes(GC3), 
+        bins = 100) +
     
+    
+    geom_line(
+        data = tibble(x = d_seq, y = d_d), 
+        mapping = aes(x,y), linetype = "dashed") +
+    geom_area(
+        data = tibble(x = d_seq, y = d_d), 
+        mapping = aes(x,y), linetype = "dashed", fill = "blue", alpha = 0.15) + 
+    theme_light()
+
+
+
+
+
+## PHI files
+gather_PHI = function() {
+    alpha = 0.5
+    phi_files = list.files(path="c:/users/carl/urecomb/lokal/exports/export7_cf_all_chromids", pattern="*phi_results.tab", full.names=TRUE, recursive=T)
+    phi_data = tibble()
+    i = 1
+    file = phi_files[1]
+    for (file in phi_files) {
+        import = read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE, na = c("--")) %>% 
+            mutate(genospecies = str_sub(basename(file), 24, 24),
+                   unitig = str_sub(basename(file), 8,8),
+                   method = paste(method, detail)) %>% 
+            select(-detail, -genome)# %>% filter(method == "PHI (Permutation):")
+        print(paste(i, file, dim(import)[1]))
+        phi_data = bind_rows(phi_data, import)
+        rm(import)
+        i = i + 1
+    }
+    phi_data %>% 
+        # mutate(method = paste(method, detail),
+        #        unitig = str_sub(genome, 8, 8),
+        #        genospecies = str_sub(genome, 24, 24)) %>% 
+        # select(-detail) %>% 
+        # group_by(method, unitig, genospecies) %>% 
+        # #alpha/length(pvalue), T, F), n_genes = length(pvalue))
+        
+        spread(method, pvalue) %>%
+        rename(infsites = `infsites `,
+               p_maxchisq = 'Max Chi^2:',
+               p_nss = 'NSS NA:',
+               p_phi_normal = 'PHI (Normal):',
+               p_phi_permut = 'PHI (Permutation):')
+    
+}
+phi_data = gather_PHI() %>% select(genospecies, unitig, infsites, gene, p_phi_permut) %>%  mutate(gene = paste0("group", gene))  %>% mutate(unitig = as.numeric(unitig))
+
 
 
 
@@ -31,31 +109,202 @@ gff2_data <- read_delim("C:/Users/carl/Desktop/xmfa2mfa/Gene_function_pop_gene_d
 gff_data = left_join(gff_data, gff2_data %>% select(`Gene group`, `Putative function`) %>% rename(gene_group = `Gene group`)) %>% rename(gene = gene_group)
 rm(gff2_data)
 
+### Join all data
+data = inner_join(GC3, CF) %>% inner_join(phi_data) %>% inner_join(gff_data)
+#saveRDS(data2, "main.rds")
+data = readRDS("main.rds")
 
-data = inner_join(GC3, CF) %>% inner_join(gff_data) %>% inner_join(phi_data %>% rename(gene_group = gene), mutate(unitig = as.character(unitig)))
-write_tsv(data, "CF_Rleg_coregenometrees.tab")
 
 
-data %>% filter(genospecies == 'C') %>%  ggplot(aes(mid, post_mean, color = mean_GC3^4)) + 
+### Create a plot that shows the distribution PHI
+data %>% ggplot(aes(p_phi_permut)) +
+    geom_histogram() +
+    facet_grid(plasmid ~ genospecies)
+
+
+# Create a plot that shows the distribution of CFML
+data %>% ggplot(aes(post_mean)) +
+    geom_histogram() +
+    facet_grid(plasmid ~ genospecies)
+
+
+
+### Create a plot that shows how PHI and CF correlate
+data %>% ggplot(aes(log(post_mean), -p_phi_permut)) + 
+    geom_point(alpha = 0.5) + 
+    facet_grid(genospecies ~ plasmid) + 
+    geom_smooth()
+ggsave("g:/gBGC/carl/log/50_A.png")
+
+
+
+
+
+
+### Create a plot emulates what lassale did with 20 bins. 
+### Here it is grouped by plasmids
+data %>% ungroup %>% select(genospecies, plasmid, gene, p_phi_permut, GC3) %>% 
+    group_by(genospecies, plasmid) %>% 
+    mutate(sig_rec = if_else(p_phi_permut < 0.05/length(p_phi_permut), 1, 0),
+           GC3_bin = cut_number(GC3, 20)) %>% 
+    group_by(GC3_bin, add = T) %>% 
+    mutate(n_sig_rec = sum(sig_rec),
+           mean_GC3 = mean(GC3)) %>% 
+    
+    ggplot(aes(mean_GC3, n_sig_rec)) + 
     geom_point() + 
-    facet_grid(plasmid~., scales = "free") + 
-    scale_color_gradientn(colours = c('red1', 'grey', 'green4'))
-ggsave("40_cf_coregenetrees.png")
+    facet_grid(plasmid ~ genospecies, scales = "free") + 
+    geom_smooth(method = "lm") + 
+    stat_poly_eq(formula = y ~ x, 
+                 aes(label = paste(..rr.label.., sep = "~~~")), 
+                 parse = TRUE)
+
+
+### This one is the same, but it is grouped by unitig.
+data %>% ungroup %>%
+    filter(unitig == 0) %>% 
+    select(genospecies, unitig, gene, p_phi_permut, GC3) %>% 
+    group_by(genospecies, unitig) %>% 
+    mutate(sig_rec = if_else(p_phi_permut < 0.05/length(p_phi_permut), 1, 0),
+           GC3_bin = cut_number(GC3, 20)) %>% 
+    group_by(GC3_bin, add = T) %>% 
+    mutate(n_sig_rec = sum(sig_rec),
+           mean_GC3 = mean(GC3)) %>% 
+    
+    ggplot(aes(mean_GC3, n_sig_rec)) + 
+    geom_point() + 
+    facet_wrap(~ genospecies, scales = "free") + 
+    geom_smooth(method = "lm") + 
+    stat_poly_eq(formula = y ~ x, 
+                 aes(label = paste(..rr.label.., sep = "~~~")), 
+                 parse = TRUE)
+ggsave("g:/gBGC/carl/log/51_B_.png")
 
 
 
-# Create animation
 
+
+### Now, create a Lassalle-ish plot, but with CF instead of PHI.
+data %>% ungroup %>%
+    filter(unitig == 0) %>%
+    #filter(plasmid %in% c("3206-3_scaf_1_chromosome-01", "3206-3_scaf_2_chromosome-02", "3206-3_scaf_3_chromosome-00")) %>% 
+    select(genospecies, unitig, gene, post_mean, GC3) %>% 
+    group_by(genospecies, unitig) %>% 
+    mutate(#sig_rec = if_else(p_phi_permut < 0.05/length(p_phi_permut), 1, 0),
+           GC3_bin = cut_number(GC3, 20)) %>% 
+    group_by(GC3_bin, add = T) %>% 
+    mutate(#n_sig_rec = sum(sig_rec),
+           median_post_mean = median(post_mean),
+           mean_GC3 = mean(GC3)) %>% 
+    
+    ggplot(aes(mean_GC3, median_post_mean)) + 
+    geom_point() + 
+    facet_wrap(~ genospecies, scales = "free") + 
+    geom_smooth(method = "lm") + 
+    stat_poly_eq(formula = y ~ x, 
+                 aes(label = paste(..rr.label.., sep = "~~~")), 
+                 parse = TRUE)
+ggsave("g:/gBGC/carl/log/52_B_CF.png")
+
+### Regarding CF, we need to see the data without binning
+data %>% ungroup %>% 
+    filter(unitig == 0) %>% 
+    select(genospecies, unitig, gene, post_mean, GC3) %>% 
+    mutate(post_mean = log(post_mean)) %>% 
+    ggplot(aes(GC3, post_mean)) + 
+    geom_point() + 
+    facet_wrap(~genospecies) + 
+    geom_smooth()
+ggsave("g:/gBGC/carl/log/53_C_CF.png")
+
+
+
+
+### Let's isolate the most extreme values of recombination, and look at GC3
+A = data %>% ungroup %>% 
+    filter(unitig == 0) %>% 
+    group_by(genospecies) %>% 
+    filter(post_mean > quantile(post_mean, .95)) %>% 
+    ggplot(aes(mid, post_mean, color = GC3)) +
+    geom_point()
+
+B = data %>% ungroup %>% 
+    filter(unitig == 0) %>% 
+    group_by(genospecies) %>% 
+    filter(post_mean > quantile(post_mean, .95)) %>% 
+    ggplot(aes(mid, GC3)) +
+    geom_point()
+
+ggarrange(A, B, ncol = 1)
+
+
+top_percent = 1
+data %>% ungroup %>% 
+    filter(unitig == 0) %>% 
+    group_by(genospecies) %>% 
+    mutate(`recombination class` = if_else(post_mean > quantile(post_mean, 1-(top_percent/100)), paste0("top ", top_percent,"%"), "rest")) %>% 
+    
+    ggplot(aes(mid, GC3, color = `recombination class`)) + 
+    geom_point() +
+    facet_wrap(~genospecies)+ 
+    labs(x = 'position')
+ggsave("g:/gBGC/carl/log/54_position_top10.png")
+
+
+top_percent = 1
+data %>% ungroup %>% 
+    filter(unitig == 0) %>% 
+    group_by(genospecies) %>% 
+    mutate(`recombination class` = if_else(post_mean > quantile(post_mean, 1-(top_percent/100)), paste0("top ", top_percent,"%"), "rest")) %>% 
+    
+    ggplot(aes(GC3, `recombination class`, fill = `recombination class`)) + 
+    geom_boxplot() +
+    #facet_grid(.~genospecies)
+    facet_grid(genospecies~.)
+
+ggsave("g:/gBGC/carl/log/55_boxplot_top10.png")
+
+
+
+### Create data that is used for the shiny app
 # First we have to create the sliding window.
+
+#import gene map
+gene_map <- read_delim("C:/Users/carl/urecomb/lokal/exonerate/gene_map.tsv", 
+                       "\t", escape_double = FALSE, trim_ws = TRUE) %>% 
+    rename(genospecies = sample_genospecies,
+           unitig = sample_unitig,
+           gene = sample_gene) %>% rowid_to_column() %>% group_by(rowid) %>%  mutate(SM3_mid = mean(c(SM3_start, SM3_end)))
+
+data = inner_join(data, gene_map)
+
+# if the unitigs agree, we can remove one of them
+data %>% transmute(vs = paste(unitig, SM3_unitig)) %>% table
+#   0 0   1 1   2 2   3 3 
+# 12535  1301  1176   511
+data = data %>% select(-SM3_unitig) 
+
+
+
+# Enquire Maria about this:
+data %>% mutate(diff = mid - SM3_mid) %>%
+    ggplot(aes(diff)) +
+    geom_histogram(bins = 100) +
+    facet_grid(unitig ~ genospecies) + 
+    labs(caption = "bins = 100") +
+    theme(axis.text.x = element_text(angle = 90, vjust = .5))
+ggsave("Enquire_Maria.png", height = 8, width = 10)
+
 
 #test:
 data_anim = data %>% 
-    select(genospecies, unitig, gene, GC3 = mean_GC3, post_mean, post_var, plasmid, mid, length)
+    select(genospecies, unitig, gene, GC3, post_mean, post_var, plasmid, SM3_mid, length) %>% 
+    rename(mid = SM3_mid)
 sel_gs = 'C'
 
 #for (roll_width in c(100, 250, 500, 750, 1000)) {
-widths = c(1, seq(10, 1000, 10))
 widths = c(1, 100, 1000)
+widths = c(1, 5, seq(10, 500, 5))
 data_anim_binds = tibble(); for (roll_width in widths) {
     print(roll_width)
     data_anim_binds = bind_rows(data_anim %>%
@@ -69,7 +318,7 @@ data_anim_binds = tibble(); for (roll_width in widths) {
                                     drop_na(),
                                 data_anim_binds)
 }
-saveRDS(data_anim_binds, 'C:/Users/carl/Documents/test2/data_anim_binds_2.rds')
+saveRDS(data_anim_binds, 'C:/Users/carl/Documents/test2/data_anim_binds_4.rds')
                                 
 
 
@@ -151,44 +400,7 @@ phi_data %>% pivot_longer(starts_with("p_")) %>%
     
     
     
-
-## PHI files
-gather_PHI = function() {
-    alpha = 0.5
-    phi_files = list.files(path="c:/users/carl/urecomb/lokal/exports/export7_cf_all_chromids", pattern="*phi_results.tab", full.names=TRUE, recursive=T)
-    phi_data = tibble()
-    i = 1
-    file = phi_files[1]
-    for (file in phi_files) {
-        import = read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE, na = c("--")) %>% 
-            mutate(genospecies = str_sub(basename(file), 24, 24),
-                   unitig = str_sub(basename(file), 8,8),
-                   method = paste(method, detail)) %>% 
-            select(-detail, -genome)# %>% filter(method == "PHI (Permutation):")
-        print(paste(i, file, dim(import)[1]))
-        phi_data = bind_rows(phi_data, import)
-        rm(import)
-        i = i + 1
-    }
-    phi_data %>% 
-        # mutate(method = paste(method, detail),
-        #        unitig = str_sub(genome, 8, 8),
-        #        genospecies = str_sub(genome, 24, 24)) %>% 
-        # select(-detail) %>% 
-        # group_by(method, unitig, genospecies) %>% 
-        # #alpha/length(pvalue), T, F), n_genes = length(pvalue))
-        
-        spread(method, pvalue) %>%
-        rename(infsites = `infsites `,
-               p_maxchisq = 'Max Chi^2:',
-               p_nss = 'NSS NA:',
-               p_phi_normal = 'PHI (Normal):',
-               p_phi_permut = 'PHI (Permutation):')
-    
-}
-phi_data = gather_PHI() %>% select(genospecies, unitig, infsites, gene, p_phi_permut) %>%  mutate(gene = paste0("group", gene)) 
-
-
+#################
 
 phi_data %>% ggplot(aes(p_phi_permut)) + geom_histogram()
 saveRDS(phi_data, "PHI_final.rds")
