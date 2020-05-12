@@ -8,8 +8,8 @@ library(egg)
 
 x_labels_rotated = theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
-setwd("~/urecomb/lokal/exports/export5_0C_structure/") # could also be on the cluster
-
+setwd("~/urecomb/lokal/exports/export5_0C_structure/") # could also be on the cluster:
+setwd("g:/gBGC/carl/workflow/output/structure_gc3/")
 
 ## GC
 gather_gc = function(whatever = NULL) {
@@ -33,6 +33,7 @@ gather_gc = function(whatever = NULL) {
         rename(bin_size = cli_comment_1, genome = cli_comment_2) %>%
         group_by(gene, genome) %>% 
                  summarise(GC3 = mean(gc_content))
+    
 }
 gc_data_summarised = gather_gc()
 
@@ -79,16 +80,59 @@ gather_PHI = function() {
         i = i + 1
     }
 
-    phi_data %>% 
-        mutate(method = paste(method, detail)) %>% 
-        select(-detail)  %>% 
-        spread(method, pvalue) %>% 
-        rename(p_maxchisq = 'Max Chi^2:',
-               p_nss = 'NSS NA:',
-               p_phi_normal = 'PHI (Normal):',
-               p_phi_permut = 'PHI (Permutation):')
+    phi_data %>% mutate(method = paste(method, detail)) %>% 
+        select(-detail) %>% 
+        
+        mutate(lag = lag(genome)) %>% 
+        mutate(genome = if_else(genome == "", lag, genome)) %>% 
+        select(-lag) %>% 
+        
+        spread(method, pvalue)  %>% 
+        rename(
+        
 }
 phi_data = gather_PHI() 
+phi_data = phi_data %>% select(genome, gene, infsites = "infsites ", p_phi_permut = "PHI (Permutation):")
+# new structure file actually looking at GC3, and not GC1
+
+alpha = 0.05
+phi_data_thresh = phi_data %>% 
+    group_by(genome) %>% 
+    mutate(recombine = if_else(p_phi_permut < alpha/length(p_phi_permut), 1, 0), n_genes = length(p_phi_permut))
+
+
+data = inner_join(gc_data_summarised, phi_data_thresh) 
+
+data %>% group_by(genome) %>% summarize(sum(infsites))
+# A tibble: 3 x 2
+# genome `sum(infsites)`
+# <chr>            <dbl>
+# 1 0C_DK            52428
+# 2 0C_DKO          142737
+# 3 0C_F            137986
+
+data %>% 
+    group_by(genome) %>% 
+    mutate(bin = cut_number(GC3, 20)) %>% 
+    group_by(bin, add = T) %>% 
+    
+    summarize(median_GC3 = median(GC3),
+              n_recomb = sum(recombine)) %>%
+    
+
+    #View
+    
+    ggplot(aes(median_GC3, n_recomb)) + 
+    geom_point() + 
+    facet_wrap(~genome, scales = "free_y") + 
+    geom_smooth(method = "lm") +
+    stat_poly_eq(formula = y~x, 
+                 aes(label = paste(..rr.label..)), 
+                 parse = TRUE)
+    
+ggsave("g:/gBGC/carl/log/structure_actually_GC3.png")
+    
+
 
 
 
