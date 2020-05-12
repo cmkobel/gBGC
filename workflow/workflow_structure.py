@@ -74,7 +74,8 @@ for bin_size in bin_sizes:
             cd output/{title}
             
             # bin
-            ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
+            # DISABLED: 
+            # ../../script/xmfa_bin.py ../../{genome} {int(bin_size)} > {file_binned_xmfa_out}.xmfa
 
 
             # compute GC from the binned genome

@@ -59,7 +59,7 @@ with open(input_file, 'r') as file:
 
             dna_gc = 0.0
             for _i, i in enumerate(dna):
-                if _i %3 == 0 and i.upper() in "GC":
+                if _i %3 == 2 and i.upper() in "GC":
                     dna_gc += 1
 
             gc_content = dna_gc / (float(len(dna)) / 3)
