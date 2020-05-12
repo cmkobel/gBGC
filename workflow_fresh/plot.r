@@ -2,8 +2,11 @@ library(tidyverse)
 library(zoo)
 library(gganimate)
 library(ggpmisc)
-library(ggpubr)
+#library(ggpubr)
+library(cowplot)
 setwd("c:/users/carl/urecomb/lokal")
+
+height = 5; width = 8
 
 
 # ClonalFrameML files
@@ -19,19 +22,128 @@ CF = CF_raw %>% filter(parameter == "R/theta") %>% select(-parameter)
 
 
 # GC3 files
-GC3_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/GC3.tab", 
-                  "\t", escape_double = FALSE, trim_ws = TRUE) %>%
-    rename(genospecies = gs) %>%
+GC_raw = read_delim("G:/gBGC/carl/workflow_fresh/output/GC3_correct.tab", 
+                  "\t", escape_double = FALSE, trim_ws = TRUE) %>% 
     mutate(sample = str_sub(header, 6),
-           gene = str_sub(file, 8, str_length(file)-13)) %>% 
+           gene = str_sub(file, 4, str_length(file)-13)) %>% 
     select(-header, -file)
 
 
-GC3 = GC3_raw %>% group_by(genospecies, unitig, gene) %>% 
-    summarize(mean_GC3 = mean(GC3), n_samples_GC3 = length(GC3)) %>% ungroup %>% rename(GC3 = mean_GC3) 
+GC3 = GC_raw %>% group_by(genospecies, unitig, gene) %>% 
+    summarize(mean_GC = mean(GC), 
+              mean_GC1 = mean(GC1), 
+              mean_GC2 = mean(GC2), 
+              mean_GC3 = mean(GC3), 
+              n_samples_GC3 = length(GC3)) %>%
+    ungroup %>%
+    rename(GC = mean_GC,
+           GC1 = mean_GC1,
+           GC2 = mean_GC2,
+           GC3 = mean_GC3) 
+
+GC_all = GC_raw %>% group_by(genospecies, unitig, gene) %>% 
+    summarize(GC = mean(GC),
+              GC1 = mean(GC1),
+              GC2 = mean(GC2),
+              GC3 = mean(GC3)) %>% 
+    ungroup
+
+x_min = 0.20
+x_max = .90
+
+# Visualize GC1, 2, 3 distributions
+A1 = GC_all %>% #pivot_longer(starts_with("GC"), names_to = "positions", values_to = "proportion GC") %>% 
+    #filter(positions != "GC") %>% 
+    ggplot(aes(GC1)) +
+    geom_histogram(fill = "red") +
+    #geom_histogram(aes(mean_GC1), alpha = 0.4, fill = "red") +
+    #geom_histogram(aes(mean_GC2), alpha = 0.4, fill = "green") +
+    #geom_histogram(aes(mean_GC3), alpha = 0.4, fill = "blue")
+    
+    #facet_grid(.~positions) +
+    theme_light() + 
+    labs(x = "") +
+    coord_flip()  + 
+    theme(legend.position = "none") + 
+    xlim(c(x_min, x_max))
+A1
+A2 = GC_all %>% #pivot_longer(starts_with("GC"), names_to = "positions", values_to = "proportion GC") %>% 
+    #filter(positions != "GC") %>% 
+    ggplot(aes(GC2)) +
+    geom_histogram(fill = "green") +
+    #geom_histogram(aes(mean_GC1), alpha = 0.4, fill = "red") +
+    #geom_histogram(aes(mean_GC2), alpha = 0.4, fill = "green") +
+    #geom_histogram(aes(mean_GC3), alpha = 0.4, fill = "blue")
+    
+    #facet_grid(.~positions) +
+    theme_light() + 
+    labs(x = "") +
+    coord_flip()  + 
+    theme(legend.position = "none") +
+    xlim(c(x_min, x_max))
+A2
+A3 = GC_all %>% #pivot_longer(starts_with("GC"), names_to = "positions", values_to = "proportion GC") %>% 
+    #filter(positions != "GC") %>% 
+    ggplot(aes(GC3)) +
+    geom_histogram(fill = "blue") +
+    #geom_histogram(aes(mean_GC1), alpha = 0.4, fill = "red") +
+    #geom_histogram(aes(mean_GC2), alpha = 0.4, fill = "green") +
+    #geom_histogram(aes(mean_GC3), alpha = 0.4, fill = "blue")
+    
+    #facet_grid(.~positions) +
+    theme_light() + 
+    labs(x = "") +
+    coord_flip()  + 
+    theme(legend.position = "none") +
+    xlim(c(x_min, x_max))
+A3
+
+AA = GC_all %>% pivot_longer(starts_with("GC"), names_to = "position", values_to = "proportion GC") %>%# View
+    #mutate(position = factor(position, levels=c("GC", "GC3", "GC1", "GC2"))) %>% 
+    filter(position != "GC") %>% 
+    ggplot(aes(`proportion GC`, fill = position)) +
+    geom_histogram(position = "dodge") +
+
+    
+    facet_grid(.~position) +
+    theme_light() + 
+    labs(x = "") +
+    #theme(axis.text.x = element_text(angle = -90, vjust = .4)) +
+    coord_flip()  + 
+    #theme(legend.position = "none") +
+    theme(
+        strip.background = element_blank(),
+        strip.text.x = element_blank()
+    ) +
+    theme(axis.text.x = element_text(angle = -90, vjust = .3)) +
+    xlim(c(x_min, x_max)) 
+AA
+
+
+
+
+
+B = GC_all %>% pivot_longer(c(GC1, GC2, GC3), names_to = "positions", values_to = "GCn") %>% 
+    ggplot(aes(GC, GCn, color = positions)) + 
+    geom_point(alpha = 0.4) +
+    geom_smooth(method = "lm") +
+    theme_light() + 
+    theme(legend.position = "none") + 
+    ylim(c(x_min, x_max)) +
+    theme(axis.text.x = element_text(angle = -90, vjust = .5))
+B
+
+#ggarrange(B, ggarrange(A1, A2, A3, ncol = 3), ncol = 2)
+#ggarrange(B, AA, ncol = 2, labels = c("A", "B"))
+plot_grid(BB, A, labels = c("A", "B"), ncol = 2, align = "h", axis = "bt")
+
+#ggsave("final_plots/Y.png", height = height, width = width)
+
+
+
    
 # extract statistics from the GC3 measurement
-GC3_raw %>% group_by(genospecies, unitig) %>% 
+GC_raw %>% group_by(genospecies, unitig) %>% 
     summarize(n_genes = length(unique(gene))) %>% 
     spread(unitig, n_genes) %>% View
 
@@ -106,13 +218,42 @@ phi_data = gather_PHI() %>% select(genospecies, unitig, infsites, gene, p_phi_pe
 
 gff_data <- read_csv("C:/Users/carl/Desktop/xmfa2mfa/3206-3.gff") %>% select(-X1) %>% mutate(mid = start + ((end-start)/2), length = end-start)
 gff2_data <- read_delim("C:/Users/carl/Desktop/xmfa2mfa/Gene_function_pop_gene_data.csv", delim = ';')
+
+# Before I delete gff2_data, I want to investigate a few things.
+gff2_data %>% pull
+
 gff_data = left_join(gff_data, gff2_data %>% select(`Gene group`, `Putative function`) %>% rename(gene_group = `Gene group`)) %>% rename(gene = gene_group)
 rm(gff2_data)
 
 ### Join all data
 data = inner_join(GC3, CF) %>% inner_join(phi_data) %>% inner_join(gff_data)
-#saveRDS(data2, "main.rds")
-data = readRDS("main.rds")
+#saveRDS(data, "main_correctGC3_gcall.rds")
+data = readRDS("main_correctGC3_gcall.rds")
+
+
+### informative sites information
+### Maybe informative sites can explain R^2
+data %>% group_by(genospecies, unitig) %>% 
+    ggplot(aes(infsites)) + geom_histogram() +
+    facet_grid(genospecies ~ unitig)
+
+infsites_info = data %>% group_by(genospecies, unitig) %>% 
+    summarize(sum_infsites = sum(infsites)) %>% 
+    mutate(p = paste(genospecies, unitig))
+
+infsites_info %>%     
+    ggplot(aes(p, sum_infsites, fill = genospecies)) + 
+    geom_col()
+
+infsites_info %>% filter(unitig == 0)
+# Groups:   genospecies [5]
+# genospecies unitig sum_infsites p    
+# <chr>        <dbl>        <dbl> <chr>
+# 1 A                0       145718 A 0  
+# 2 B                0        41606 B 0  
+# 3 C                0       178092 C 0  
+# 4 D                0        13112 D 0  
+# 5 E                0        51992 E 0 
 
 
 
@@ -286,12 +427,12 @@ data = data %>% select(-SM3_unitig)
 
 
 
-# Enquire Maria about this:
+# How have the genes jumped with the SM3 reference (sanity check)
 data %>% mutate(diff = mid - SM3_mid) %>%
     ggplot(aes(diff)) +
     geom_histogram(bins = 100) +
     facet_grid(unitig ~ genospecies) + 
-    labs(caption = "bins = 100") +
+    labs(caption = "# bins = 100") +
     theme(axis.text.x = element_text(angle = 90, vjust = .5))
 ggsave("Enquire_Maria.png", height = 8, width = 10)
 
@@ -312,13 +453,13 @@ data_anim_binds = tibble(); for (roll_width in widths) {
                                     group_by(genospecies, plasmid) %>% 
                                     
                                     mutate(roll_post_mean = rollapply(post_mean, roll_width, median, fill = NA)) %>%  #View
-                                    mutate(roll_GC3 = rollapply(GC3, roll_width, mean, fill = NA)) %>%
+                                    mutate(roll_GC3 = rollapply(GC3, roll_width, median, fill = NA)) %>%
                                     
                                     mutate(roll_width = roll_width) %>% 
                                     drop_na(),
                                 data_anim_binds)
 }
-saveRDS(data_anim_binds, 'C:/Users/carl/Documents/test2/data_anim_binds_4.rds')
+saveRDS(data_anim_binds, 'C:/Users/carl/Documents/test2/data_anim_binds_6_median_GC.rds')
                                 
 
 

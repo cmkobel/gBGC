@@ -40,6 +40,8 @@ gwf.target(sanify(F"GC"),
 		# Reset output.
 		
 		echo -e "header\tGC3\tgenospecies\tunitig\tfile" > {GC3_output_file}
+		echo -e "header\tGC\tGC1\tGC2\tGC3\tgenospecies\tunitig\tfile" > {GC3_output_file}
+
 		touch GC_done && rm GC_done
 
 		# Loop through all files and output GC3
@@ -47,8 +49,10 @@ gwf.target(sanify(F"GC"),
 			for j in {{0..3}}; do
 				for k in ${{i}}/${{j}}/*.fasta; do
 					echo $k;
-					l = $(basename $k)
-					cat $k | {base_path}/scripts/fasta_gc.py $i $j $l >> {GC3_output_file}
+					l=$(basename $k)
+					#cat $k | {base_path}/scripts/fasta_gc.py $i $j $l >> {GC3_output_file}
+					cat $k | {base_path}/scripts/fasta_GC.py $i $j $l >> {GC3_output_file}
+
 				done;
 			done;
 		done
