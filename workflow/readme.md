@@ -1,6 +1,6 @@
 This pipeline uses a syntenic cg-alignment of Rleguminosarum.
 
-It extracts the core genes in the alignment.
+It extracts all genes in the alignment.
 
 From each gene it measures GC content (GC, GC1, GC2, GC3).
 It also measures recombination. This is done with PHI and ClonalFrameML.
