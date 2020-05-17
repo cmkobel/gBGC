@@ -1,7 +1,5 @@
 This pipeline uses a syntenic cg-alignment of Rleguminosarum.
 
-It concatenates the syntenic core genes in bins of a given size. This size is given in the `bin-size` variable in `workflow.py`. Then it infers recombination with the Kussell-lab mcorr-package and also with the Bruen PHI-package.
-
 It extracts the core genes in the alignment.
 
 From each gene it measures GC content (GC, GC1, GC2, GC3).
