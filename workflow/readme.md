@@ -1,15 +1,17 @@
-This pipeline uses a syntenic cg-alignment of Rleguminosarum.
+This pipeline isolates the genes from a .xmfa alignment. Subsequently inferring the recombination rate with Bruen's implementation of PHI (Pairwise Homoplasy Index).
 
-It extracts all genes in the alignment.
+If you wish to infer recombination with ClonalFrameML instead, use the workflow in `../workflow_fresh`
 
-From each gene it measures GC content (GC, GC1, GC2, GC3).
-It also measures recombination. This is done with PHI and ClonalFrameML.
 
-ClonalFrameML needs a phylogenetic tree, this is inferred with raxml-ng for each genospecies.
-The phylogenetic trees will have to be manually created in advance.
+This pipeline also measures the GC3-content.
 
 Because the recombination inference jobs are dependent on the name of each gene, the pipeline will have to be run in multiple steps.
 
 First step extracts genes and measures GC-content.
-Second step measures recombination with PHI and ClonalFrameML.
-Third (last) step collects the parameters from all genes into a single file for each recombination inference tool.
+Second step measures recombination with PHI.
+Third (last) step collects the results for each gene into one tab-file.
+
+Dependencies:
+ * python3
+ * gwf-org
+ * slurm workload manager

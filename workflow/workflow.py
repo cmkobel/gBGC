@@ -198,7 +198,8 @@ for bin_size in bin_sizes:
 
             """
             
-            
+            # For using CFML, workflow_fresh should be used instead, as it uses the correct phylogenic trees.
+            '''
             # Clonalframe also uses .fa files, thus it can use the same single_gene* variables as PHI
             gwf.target(sanify('C_cf_' + title + '_' + str(num) + '_' + single_gene_stem),
                 inputs = [single_gene],
@@ -241,6 +242,7 @@ for bin_size in bin_sizes:
                     # we are in the cf folder
 
                 """
+                '''
             #break # PHI and CF for only one gene
 
         # Merge the _fitpar.csv files together, so it can be imported in R later.
