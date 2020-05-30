@@ -6,6 +6,9 @@ If you wish to infer recombination with PHI instead, use the workflow in [`../wo
 Each gene must be isolated in advance an put in the specified directory. The phylogenetic tree must also be supplied manually.
 There is no reason these things are not automated, other than that the lack of time permits only a limited degree of automation.
 
+
+![](https://raw.githubusercontent.com/cmkobel/gBGC/master/log/workflow.png)
+
 Dependencies:
  * python3
  * gwf-org
