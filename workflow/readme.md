@@ -1,6 +1,6 @@
 This pipeline isolates the genes from a .xmfa alignment. Subsequently inferring the recombination rate with Bruen's implementation of PHI (Pairwise Homoplasy Index).
 
-If you wish to infer recombination with ClonalFrameML instead, use the workflow in `../workflow_fresh`
+If you wish to infer recombination with ClonalFrameML instead, use the workflow in [`../workflow_fresh`](https://github.com/cmkobel/gBGC/tree/master/workflow_fresh).
 
 
 This pipeline also measures the GC3-content.
